@@ -14,6 +14,7 @@ import {
   BellRing,
   FileText,
   Timer,
+  Link,
 } from 'lucide-react';
 import { exercises, quotes } from './data';
 
@@ -820,6 +821,30 @@ const App = () => {
           </div>
         )}
       </div>
+
+      {/* Footer - Helpful Links */}
+      <footer
+        className={`w-full border-t mt-8 ${darkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
+      >
+        <div className="px-6 py-4">
+          <h3
+            className={`text-xs font-semibold mb-3 flex items-center gap-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}
+          >
+            <Link size={14} className={darkMode ? 'text-gray-500' : 'text-gray-400'} />
+            Helpful Links
+          </h3>
+          <a
+            href="https://www.youtube.com/watch?v=_wi7j1_-O3Q"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`text-sm transition-colors hover:underline ${
+              darkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-600 hover:text-gray-800'
+            }`}
+          >
+            🕐 10s interval timer
+          </a>
+        </div>
+      </footer>
     </div>
   );
 };
