@@ -617,7 +617,7 @@ const App = () => {
   };
 
   return (
-    <div className={`fixed inset-0 bg-gradient-to-br ${bgGradient} overflow-y-auto`}>
+    <div className={`flex flex-col min-h-screen bg-gradient-to-br ${bgGradient}`}>
       <style>{`
         @keyframes confetti {
           0% {
@@ -769,7 +769,7 @@ const App = () => {
       </div>
 
       {/* Main Content */}
-      <div className="w-full p-6">
+      <div className="w-full p-6 overflow-y-auto flex-1">
         {syncMessage && (
           <div
             className={`mb-4 text-sm px-3 py-2 rounded-md ${darkMode ? 'bg-emerald-900/60 text-emerald-100' : 'bg-emerald-50 text-emerald-700'} border ${darkMode ? 'border-emerald-700' : 'border-emerald-200'}`}
