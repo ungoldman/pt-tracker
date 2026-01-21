@@ -488,8 +488,10 @@ const App = () => {
                                   : 'text-gray-500'
                             }`}
                           >
-                            {ex.sets} × {ex.reps ? `${ex.reps}` : ''}
-                            {ex.hold ? ` ${ex.hold}` : ''}
+                            {ex.sets ? `${ex.sets} x ` : ''}
+                            {ex.reps}
+                            {ex.hold}
+                            {ex.target}
                           </div>
                           {viewMode === 'week' && noteText && (
                             <div

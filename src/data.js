@@ -38,8 +38,9 @@ export const exercises = {
       { name: 'Wrist Supination Stretch', sets: 3, reps: 10 },
       { name: 'Bicep Curls with Rotation with Dumbbell', sets: 3, reps: 10 },
       { name: 'Bent Over Triceps Extension with Dumbbell', sets: 3, reps: 8 },
-      { name: 'Serratus Punches with Dumbbell', sets: 2, reps: 10 },
-      { name: 'Horizontal Abd/Add with Dumbbell', sets: 3, reps: 8 },
+      { name: 'Supine Serratus Punches with Dumbbell', sets: 2, reps: 10 },
+      { name: 'Supine Horizontal Abd/Add with Dumbbell', sets: 3, reps: 8 },
+      { name: 'Seated Horizontal Abduction with Dumbbell', sets: 2, reps: 10 },
     ],
   },
   resistance: {
@@ -58,6 +59,7 @@ export const exercises = {
       { name: 'Isometric Internal Rotation', sets: 10, hold: '10s' },
       { name: 'Isometric Extension', sets: 10, hold: '10s' },
       { name: 'Isometric External Rotation', sets: 10, hold: '10s' },
+      { name: 'Isometric Abduction', sets: 10, hold: '10s' },
       { name: 'Isometric Adduction', sets: 10, hold: '10s' },
     ],
   },
@@ -75,6 +77,10 @@ export const exercises = {
       { name: 'Pendulums (all)', sets: 3, reps: 15 },
       { name: 'Corner Pec Minor Stretch', sets: 3, hold: '30s' },
     ],
+  },
+  steps: {
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    exercises: [{ name: 'Daily Steps Goal', target: 5000 }],
   },
 };
 
