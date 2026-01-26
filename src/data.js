@@ -8,7 +8,7 @@ export const exercises = {
     ],
   },
   standing: {
-    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     exercises: [
       { name: 'Flexion to 45-90°', sets: 2, reps: 10 },
       { name: 'Extension (backwards)', sets: 2, reps: 10 },
@@ -30,30 +30,34 @@ export const exercises = {
     exercises: [{ name: 'Pulley (flex/scap/abd)', sets: '2-3', reps: 12 }],
   },
   strength: {
-    days: ['Mon', 'Wed', 'Fri'],
+    days: ['Mon', 'Thu'],
     exercises: [
       { name: 'Wrist Flexion with Dumbbell', sets: 3, reps: 12 },
       { name: 'Wrist Extension with Dumbbell', sets: 3, reps: 12 },
       { name: 'Wrist Sup/Pro with Dumbbell', sets: 3, reps: 12 },
-      { name: 'Wrist Supination Stretch', sets: 3, reps: 10 },
-      { name: 'Bicep Curls with Rotation with Dumbbell', sets: 3, reps: 10 },
+      { name: 'Bicep Curls with Dumbbell', sets: 3, reps: 10 },
+      { name: 'Hammer Curls with Dumbbell', sets: 3, reps: 10 },
       { name: 'Bent Over Triceps Extension with Dumbbell', sets: 3, reps: 8 },
       { name: 'Supine Serratus Punches with Dumbbell', sets: 2, reps: 10 },
       { name: 'Supine Horizontal Abd/Add with Dumbbell', sets: 3, reps: 8 },
       { name: 'Seated Horizontal Abduction with Dumbbell', sets: 2, reps: 10 },
+      { name: 'Bench Press with Dumbbell', sets: 3, reps: 10 },
+      { name: 'Bent Over Row with Dumbbell', sets: 3, reps: 10 },
     ],
   },
   resistance: {
-    days: ['Mon', 'Wed', 'Fri'],
+    days: ['Mon', 'Thu'],
     exercises: [
       { name: 'Shoulder Row with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder Extension with Resistance', sets: 3, reps: 10 },
       { name: 'Shoulder Flexion with Resistance', sets: 2, reps: 10 },
       { name: 'Tricep Extensions with Resistance', sets: 3, reps: 12 },
+      { name: 'Internal Rotation Reactive Isometrics with Resistance', sets: 3, reps: 12 },
+      { name: 'External Rotation Reactive Isometrics with Resistance', sets: 3, reps: 12 },
     ],
   },
   isometric: {
-    days: ['Tue', 'Thu', 'Sat'],
+    days: ['Tue', 'Fri'],
     exercises: [
       { name: 'Isometric Shoulder Flexion', sets: 10, hold: '10s' },
       { name: 'Isometric Internal Rotation', sets: 10, hold: '10s' },
@@ -76,6 +80,7 @@ export const exercises = {
     exercises: [
       { name: 'Pendulums (all)', sets: 3, reps: 15 },
       { name: 'Corner Pec Minor Stretch', sets: 3, hold: '30s' },
+      { name: 'Serratus Activation with Foam Roll', sets: 2, hold: '30s' },
     ],
   },
   steps: {
