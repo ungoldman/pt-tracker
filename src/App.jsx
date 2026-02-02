@@ -20,6 +20,15 @@ import {
 import { exercises, quotes } from './data';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const focus = {
+  Mon: 'Strength',
+  Tue: 'Isometric',
+  Wed: 'Mobility',
+  Thu: 'Strength',
+  Fri: 'Isometric',
+  Sat: 'Mobility',
+  Sun: 'Rest',
+};
 
 const Confetti = ({ onComplete }) => {
   useEffect(() => {
@@ -181,6 +190,33 @@ const App = () => {
     setQuote(randomQuote);
   }, []);
 
+  useEffect(() => {
+    // Keyboard shortcuts for view switching
+    const handleKeyPress = (e) => {
+      // Only trigger if not typing in an input or textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      switch (e.key.toLowerCase()) {
+        case 'w':
+          setViewMode('week');
+          break;
+        case 'd':
+          setViewMode('day');
+          break;
+        case 't':
+          setViewMode('three');
+          break;
+        default:
+          return;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
   const showNextQuote = () => {
     if (!quotes || quotes.length === 0) return;
     setQuote((prev) => {
@@ -290,6 +326,30 @@ const App = () => {
     }
   };
 
+  const resetDay = (day) => {
+    if (window.confirm(`Are you sure you want to reset all checkboxes for ${day}?`)) {
+      setCompleted((prev) => {
+        const updated = { ...prev };
+        Object.keys(updated).forEach((key) => {
+          if (key.startsWith(day + '-')) {
+            delete updated[key];
+          }
+        });
+        return updated;
+      });
+      setJustCompleted(new Set());
+      setNotes((prev) => {
+        const updated = { ...prev };
+        Object.keys(updated).forEach((key) => {
+          if (key.startsWith(day + '-')) {
+            delete updated[key];
+          }
+        });
+        return updated;
+      });
+    }
+  };
+
   const getExercisesForDay = (day) => {
     const result = [];
     Object.entries(exercises).forEach(([category, data]) => {
@@ -339,6 +399,7 @@ const App = () => {
       <span className="flex items-baseline justify-between w-full gap-2">
         <span>{day}</span>
         <span className={`text-[11px] ${dateColor}`}>{formatDateLabel(getDateForDay(day))}</span>
+        <span className={`text-[11px] italic ${dateColor} align`}>({focus[day]})</span>
       </span>
     );
   };
@@ -812,17 +873,32 @@ const App = () => {
               >
                 {darkMode ? <Sun size={16} /> : <Moon size={16} />}
               </button>
-              <button
-                onClick={resetWeek}
-                className={`flex items-center gap-1 px-3 py-2 rounded-lg transition-all text-sm ${
-                  darkMode
-                    ? 'bg-red-900/50 text-red-200 hover:bg-red-800'
-                    : 'bg-red-100 text-red-700 hover:bg-red-200'
-                } shadow-sm border ${darkMode ? 'border-red-700' : 'border-red-300'}`}
-                title="Reset all checkboxes"
-              >
-                <RotateCcw size={16} />
-              </button>
+              <div className="inline-flex">
+                <button
+                  onClick={() => resetDay(selectedDay)}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-l-lg transition-all text-sm ${
+                    darkMode
+                      ? 'bg-orange-900/50 text-orange-200 hover:bg-orange-800'
+                      : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+                  } shadow-sm border ${darkMode ? 'border-orange-700' : 'border-orange-300'}`}
+                  title="Reset selected day's checkboxes"
+                >
+                  <RotateCcw size={16} />
+                  Day
+                </button>
+                <button
+                  onClick={resetWeek}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-r-lg transition-all text-sm ${
+                    darkMode
+                      ? 'bg-red-900/50 text-red-200 hover:bg-red-800'
+                      : 'bg-red-100 text-red-700 hover:bg-red-200'
+                  } shadow-sm border ${darkMode ? 'border-red-700' : 'border-red-300'}`}
+                  title="Reset all checkboxes for the week"
+                >
+                  <RotateCcw size={16} />
+                  Week
+                </button>
+              </div>
               <div className="inline-flex">
                 <button
                   onClick={exportData}
