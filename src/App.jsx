@@ -78,22 +78,35 @@ const Footer = ({ darkMode }) => {
       className={`w-full border-t mt-6 ${darkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
     >
       <div className="px-6 py-4">
-        <h3
-          className={`text-xs font-semibold mb-3 flex items-center gap-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}
-        >
-          <Link size={14} className={darkMode ? 'text-gray-500' : 'text-gray-400'} />
-          Helpful Links
-        </h3>
-        <a
-          href="https://www.youtube.com/watch?v=_wi7j1_-O3Q"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`text-sm transition-colors hover:underline ${
-            darkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-600 hover:text-gray-800'
-          }`}
-        >
-          🕐 10s interval timer
-        </a>
+        <div className={`flex items-center gap-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <h3 className={`text-sm font-semibold flex items-center gap-2`}>
+            <Link size={16} className={darkMode ? 'text-gray-500' : 'text-gray-400'} />
+            Helpful Links
+          </h3>
+
+          <div className="flex items-center gap-6">
+            <a
+              href="https://www.youtube.com/watch?v=_wi7j1_-O3Q"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-sm transition-colors hover:underline ${
+                darkMode ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'
+              }`}
+            >
+              🕒 10s interval timer
+            </a>
+            <a
+              href="https://www.youtube.com/watch?v=kD6FCbmAORY"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-sm transition-colors hover:underline ${
+                darkMode ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'
+              }`}
+            >
+              🕒 30s interval timer
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   );
@@ -412,6 +425,27 @@ const App = () => {
     });
   };
 
+  const toggleAllCategoriesCollapsed = () => {
+    // Get all possible category keys from all days and exercises
+    const allKeys = new Set();
+    days.forEach((day) => {
+      getExercisesForDay(day).forEach(({ category }) => {
+        allKeys.add(`${day}-${category}`);
+      });
+    });
+
+    // Check if all are collapsed
+    const allCollapsed = Array.from(allKeys).every((key) => collapsedCategories[key]);
+
+    // Toggle all
+    const newCollapsedCategories = {};
+    allKeys.forEach((key) => {
+      newCollapsedCategories[key] = !allCollapsed;
+    });
+
+    setCollapsedCategories(newCollapsedCategories);
+  };
+
   const getThreeDayWindow = () => {
     const todayIdx = days.indexOf(todayLabel);
     const prevIdx = (todayIdx - 1 + days.length) % days.length;
@@ -498,7 +532,7 @@ const App = () => {
     return (
       <div
         key={day}
-        className={`rounded-xl shadow-sm border p-4 ${
+        className={`h-full flex flex-col min-h-0 rounded-xl shadow-sm border p-4 ${
           darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
         } ${
           isToday
@@ -528,7 +562,7 @@ const App = () => {
           ''
         )}
 
-        <div className="space-y-4">
+        <div className="space-y-4 flex-1 overflow-auto min-h-0">
           {dayExercises.map(({ category, exercises: exList }) => {
             const isCollapsed = isCategoryCollapsed(day, category);
             const stats = getCategoryStats(day, category, exList);
@@ -863,6 +897,17 @@ const App = () => {
                 {viewMode === 'three' && '3-day view'}
               </button>
               <button
+                onClick={toggleAllCategoriesCollapsed}
+                className={`flex items-center gap-1 px-3 py-2 rounded-lg transition-all text-sm ${
+                  darkMode
+                    ? 'bg-indigo-900/50 text-indigo-100 hover:bg-indigo-800'
+                    : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+                } shadow-sm border ${darkMode ? 'border-indigo-700' : 'border-indigo-300'}`}
+                title="Collapse/uncollapse all categories"
+              >
+                <ChevronDown size={16} />
+              </button>
+              <button
                 onClick={() => setDarkMode(!darkMode)}
                 className={`flex items-center gap-1 px-3 py-2 rounded-lg transition-all text-sm ${
                   darkMode
@@ -929,7 +974,7 @@ const App = () => {
       </div>
 
       {/* Main Content */}
-      <div className="w-full p-6 overflow-y-auto flex-1">
+      <div className="w-full p-6 flex-1 min-h-0 flex flex-col overflow-hidden">
         {syncMessage && (
           <div
             className={`mb-4 text-sm px-3 py-2 rounded-md ${darkMode ? 'bg-emerald-900/60 text-emerald-100' : 'bg-emerald-50 text-emerald-700'} border ${darkMode ? 'border-emerald-700' : 'border-emerald-200'}`}
@@ -964,17 +1009,19 @@ const App = () => {
         )}
 
         {viewMode === 'week' ? (
-          <div className="grid grid-cols-7 gap-4">
+          <div className="grid grid-cols-7 gap-4 flex-1 min-h-0">
             {days.map((day) => renderDayCard(day, true))}
           </div>
         ) : viewMode === 'day' ? (
-          <div className="flex justify-center">
-            <div className="w-full max-w-2xl">{renderDayCard(selectedDay)}</div>
+          <div className="flex justify-center flex-1 min-h-0 items-stretch">
+            <div className="w-full max-w-2xl flex-1 h-full min-h-0">
+              {renderDayCard(selectedDay)}
+            </div>
           </div>
         ) : (
-          <div className="flex flex-col md:flex-row w-full gap-4">
+          <div className="flex flex-col md:flex-row w-full gap-4 flex-1 min-h-0 items-stretch">
             {threeDayWindow.map((day) => (
-              <div key={day} className="flex-1 min-w-0">
+              <div key={day} className="flex-1 min-w-0 h-full">
                 {renderDayCard(day)}
               </div>
             ))}

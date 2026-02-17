@@ -1,39 +1,51 @@
+import { Dumbbell } from 'lucide-react';
+
 export const exercises = {
-  warmup: {
-    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    exercises: [
-      { name: 'Pendulums (all)', sets: 3, reps: 15 },
-      { name: 'Towel Slides (flex/scap/abd)', sets: 2, reps: 10 },
-      { name: 'Putty Squeezes', sets: 3, reps: 12 },
-    ],
-  },
   standing: {
     days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     exercises: [
+      { name: 'Pendulums (all)', sets: 3, reps: 15 },
       { name: 'Flexion to 45-90°', sets: 2, reps: 10 },
       { name: 'Extension (backwards)', sets: 2, reps: 10 },
+    ],
+  },
+  towel: {
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    exercises: [
+      { name: 'Towel Slides (flex/scap/abd)', sets: 2, reps: 10 },
+      { name: 'Wall Slides (flex/scap/abd)', sets: 2, reps: 10 },
+    ],
+  },
+  ball: {
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    exercises: [
+      { name: 'Ball Squeezes', sets: 3, reps: 12 },
+      { name: 'Wall Ball Circles', sets: 3, reps: 12 },
+    ],
+  },
+  dowel: {
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    exercises: [
       { name: 'Abduction with Dowel', sets: 3, reps: 8 },
+      { name: 'Flexion Extension with Dowel', sets: 2, reps: 10 },
+      { name: 'External Rotation with Dowel', sets: 3, reps: 10 },
     ],
   },
   supine: {
-    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     exercises: [
-      { name: 'Flexion Extension with Dowel', sets: '2-3', reps: 5 },
-      { name: 'External Rotation with Dowel', sets: '2-3', reps: 10 },
-      { name: 'Flexion Extension Full Range', sets: '2-3', reps: 10 },
-      { name: 'Elbow Flexion Extension', sets: '2-3', reps: 10 },
-      { name: 'Sidelying External Rotation', sets: '2-3', reps: 10 },
+      { name: 'Flexion Extension Full Range', sets: 3, reps: 10 },
+      // { name: 'Elbow Flexion Extension', sets: 3, reps: 10 },
+      { name: 'Sidelying External Rotation', sets: 3, reps: 10 },
+      { name: 'Prone Shoulder Extension (facedown)', sets: 3, reps: 12 },
+      { name: 'Sit ups', sets: 3, reps: 15 },
     ],
   },
-  pulley: {
+  Dumbbell: {
     days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    exercises: [{ name: 'Pulley (flex/scap/abd)', sets: '2-3', reps: 12 }],
-  },
-  strength: {
-    days: ['Mon', 'Thu'],
     exercises: [
-      { name: 'Wrist Flexion with Dumbbell', sets: 3, reps: 12 },
-      { name: 'Wrist Extension with Dumbbell', sets: 3, reps: 12 },
+      // { name: 'Wrist Flexion with Dumbbell', sets: 3, reps: 12 },
+      // { name: 'Wrist Extension with Dumbbell', sets: 3, reps: 12 },
       { name: 'Wrist Sup/Pro with Dumbbell', sets: 3, reps: 12 },
       { name: 'Bicep Curls with Dumbbell', sets: 3, reps: 10 },
       { name: 'Hammer Curls with Dumbbell', sets: 3, reps: 10 },
@@ -42,43 +54,45 @@ export const exercises = {
       { name: 'Supine Horizontal Abd/Add with Dumbbell', sets: 3, reps: 8 },
       { name: 'Seated Horizontal Abduction with Dumbbell', sets: 2, reps: 10 },
       { name: 'Bench Press with Dumbbell', sets: 3, reps: 10 },
+      { name: 'Incline Bench Press with Dumbbell', sets: 3, reps: 10 },
       { name: 'Bent Over Row with Dumbbell', sets: 3, reps: 10 },
+      {
+        name: 'Seated Single Arm Shoulder Abduction with Elbow Bent with Dumbbell',
+        sets: 3,
+        reps: 10,
+      },
     ],
   },
   resistance: {
-    days: ['Mon', 'Thu'],
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     exercises: [
       { name: 'Shoulder Row with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder Extension with Resistance', sets: 3, reps: 10 },
       { name: 'Shoulder Flexion with Resistance', sets: 2, reps: 10 },
       { name: 'Tricep Extensions with Resistance', sets: 3, reps: 12 },
-      { name: 'Internal Rotation Reactive Isometrics with Resistance', sets: 3, reps: 12 },
-      { name: 'External Rotation Reactive Isometrics with Resistance', sets: 3, reps: 12 },
+      // { name: 'Internal Rotation Reactive Isometrics with Resistance', sets: 3, reps: 12 },
+      { name: 'Shoulder Internal Rotation (rotate) with Resistance', sets: 3, reps: 12 },
+      { name: 'Shoulder External Rotation (step) with Resistance', sets: 3, reps: 12 },
     ],
   },
   isometric: {
-    days: ['Tue', 'Fri'],
-    exercises: [
-      { name: 'Isometric Shoulder Flexion', sets: 10, hold: '10s' },
-      { name: 'Isometric Internal Rotation', sets: 10, hold: '10s' },
-      { name: 'Isometric Extension', sets: 10, hold: '10s' },
-      { name: 'Isometric External Rotation', sets: 10, hold: '10s' },
-      { name: 'Isometric Abduction', sets: 10, hold: '10s' },
-      { name: 'Isometric Adduction', sets: 10, hold: '10s' },
-    ],
-  },
-  wall: {
-    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    exercises: [
-      { name: 'Shoulder Flexion Wall Walk', sets: 2, reps: 8 },
-      { name: 'Wall Slides (flex/scap/abd)', sets: 2, reps: 10 },
-      { name: 'Wall Ball Circles', sets: 3, reps: 12 },
-    ],
-  },
-  cooldown: {
     days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     exercises: [
-      { name: 'Pendulums (all)', sets: 3, reps: 15 },
+      { name: 'Isometric Shoulder Flexion', sets: 10, hold: '10s' },
+      { name: 'Isometric Shoulder Extension', sets: 10, hold: '10s' },
+      { name: 'Isometric Internal Rotation', sets: 10, hold: '10s' },
+      { name: 'Isometric External Rotation', sets: 10, hold: '10s' },
+      { name: 'Isometric Shoulder Abduction', sets: 10, hold: '10s' },
+      { name: 'Isometric Shoulder Adduction', sets: 10, hold: '10s' },
+    ],
+  },
+  pulley: {
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    exercises: [{ name: 'Pulley (flex/scap/abd)', sets: 3, reps: 12 }],
+  },
+  stretch: {
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    exercises: [
       { name: 'Corner Pec Minor Stretch', sets: 3, hold: '30s' },
       { name: 'Serratus Activation with Foam Roll', sets: 2, hold: '30s' },
     ],
