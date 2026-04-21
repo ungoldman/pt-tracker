@@ -19,16 +19,16 @@ import {
 } from 'lucide-react';
 import { exercises, quotes } from './data';
 
-const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const focus = {
-  Mon: 'Strength',
-  Tue: 'Isometric',
-  Wed: 'Mobility',
-  Thu: 'Strength',
-  Fri: 'Isometric',
-  Sat: 'Mobility',
-  Sun: 'Rest',
-};
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+// const focus = {
+//   Mon: 'Strength',
+//   Tue: 'Isometric',
+//   Wed: 'Mobility',
+//   Thu: 'Strength',
+//   Fri: 'Isometric',
+//   Sat: 'Mobility',
+//   Sun: 'Rest',
+// };
 
 const Confetti = ({ onComplete }) => {
   useEffect(() => {
@@ -139,7 +139,7 @@ const App = () => {
     const saved = localStorage.getItem('ptTrackerViewMode');
     return saved ? JSON.parse(saved) : 'week';
   });
-  const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'short' });
+  const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'long' });
   const [selectedDay, setSelectedDay] = useState(todayLabel);
   const [syncMessage, setSyncMessage] = useState('');
   const [expandedNotes, setExpandedNotes] = useState(new Set());
@@ -412,7 +412,7 @@ const App = () => {
       <span className="flex items-baseline justify-between w-full gap-2">
         <span>{day}</span>
         <span className={`text-[11px] ${dateColor}`}>{formatDateLabel(getDateForDay(day))}</span>
-        <span className={`text-[11px] italic ${dateColor} align`}>({focus[day]})</span>
+        {/* <span className={`text-[11px] italic ${dateColor} align`}>({focus[day]})</span> */}
       </span>
     );
   };
