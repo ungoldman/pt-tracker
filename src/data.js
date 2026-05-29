@@ -1,47 +1,39 @@
 import { Dumbbell } from 'lucide-react';
 
 export const exercises = {
-  standing: {
+  'Wake Up': {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     exercises: [
       { name: 'Pendulums (all)', sets: 3, reps: 15 },
-      { name: 'Flexion to 45-90°', sets: 2, reps: 10 },
-      { name: 'Extension (backwards)', sets: 2, reps: 10 },
-    ],
-  },
-  towel: {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    exercises: [
-      { name: 'Towel Slides (flex/scap/abd)', sets: 2, reps: 10 },
       { name: 'Wall Slides (flex/scap/abd)', sets: 2, reps: 10 },
+      { name: 'Flexion (forward) with Dumbbell (2.5)', sets: 2, reps: 10 },
+      { name: 'Extension (backward) with Dumbbell (2.5)', sets: 2, reps: 10 },
+      // { name: 'Towel Slides (flex/scap/abd)', sets: 2, reps: 10 },
+      { name: 'Stress Ball Squeezes', sets: 3, reps: 15 },
+      { name: 'Wall Ball Circles', sets: 3, reps: 15 },
     ],
   },
-  ball: {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    exercises: [
-      { name: 'Ball Squeezes', sets: 3, reps: 12 },
-      { name: 'Wall Ball Circles', sets: 3, reps: 12 },
-    ],
-  },
-  dowel: {
+  '10:30 am': {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     exercises: [
       { name: 'Abduction with Dowel', sets: 3, reps: 8 },
       { name: 'Flexion Extension with Dowel', sets: 2, reps: 10 },
       { name: 'External Rotation with Dowel', sets: 3, reps: 10 },
-    ],
-  },
-  supine: {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    exercises: [
-      { name: 'Flexion Extension Full Range', sets: 3, reps: 10 },
+      { name: 'Supine Flexion Extension Full Range', sets: 3, reps: 10 },
       // { name: 'Elbow Flexion Extension', sets: 3, reps: 10 },
-      { name: 'Sidelying External Rotation', sets: 3, reps: 10 },
+      { name: 'Supine Flexion with Dumbbell (2.5)', sets: 3, reps: 15, priority: 'high' },
+      {
+        name: 'Sidelying External Rotation with Dumbbell (2.5)',
+        sets: 3,
+        reps: 15,
+        priority: 'high',
+      },
+      { name: 'Sidelying Abduction with Dumbbell (2.5)', sets: 3, reps: 15, priority: 'high' },
       { name: 'Prone Shoulder Extension (facedown)', sets: 3, reps: 12 },
       { name: 'Sit ups', sets: 3, reps: 15 },
     ],
   },
-  Dumbbell: {
+  '3:00 pm': {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     exercises: [
       // { name: 'Wrist Flexion with Dumbbell', sets: 3, reps: 12 },
@@ -61,11 +53,6 @@ export const exercises = {
         sets: 3,
         reps: 10,
       },
-    ],
-  },
-  resistance: {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    exercises: [
       { name: 'Shoulder Row with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder Extension with Resistance', sets: 3, reps: 10 },
       { name: 'Shoulder Flexion with Resistance', sets: 2, reps: 10 },
@@ -75,7 +62,7 @@ export const exercises = {
       { name: 'Shoulder External Rotation (step) with Resistance', sets: 3, reps: 12 },
     ],
   },
-  isometric: {
+  '7:00 pm': {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     exercises: [
       { name: 'Isometric Shoulder Flexion', sets: 10, hold: '10s' },
@@ -84,22 +71,22 @@ export const exercises = {
       { name: 'Isometric External Rotation', sets: 10, hold: '10s' },
       { name: 'Isometric Shoulder Abduction', sets: 10, hold: '10s' },
       { name: 'Isometric Shoulder Adduction', sets: 10, hold: '10s' },
+      { name: 'Pulley (flex/scap/abd)', sets: 3, reps: 12 },
     ],
   },
-  pulley: {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    exercises: [{ name: 'Pulley (flex/scap/abd)', sets: 3, reps: 12 }],
-  },
-  stretch: {
+  Bedtime: {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     exercises: [
       { name: 'Corner Pec Minor Stretch', sets: 3, hold: '30s' },
       { name: 'Serratus Activation with Foam Roll', sets: 2, hold: '30s' },
     ],
   },
-  steps: {
+  Goals: {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    exercises: [{ name: 'Daily Steps Goal', target: 5000 }],
+    exercises: [
+      { name: 'Daily Steps Goal', target: 5000 },
+      { name: 'Light Jog (every other day)', target: '0.5 miles' },
+    ],
   },
 };
 

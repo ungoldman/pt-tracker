@@ -16,6 +16,7 @@ import {
   Timer,
   Link,
   ChevronDown,
+  Star,
 } from 'lucide-react';
 import { exercises, quotes } from './data';
 
@@ -513,11 +514,16 @@ const App = () => {
     return null;
   };
 
+  const getPriorityIcon = (priority) => {
+    if (!priority) return null;
+    return <Star size={14} className={darkMode ? 'text-yellow-400' : 'text-yellow-500'} />;
+  };
+
   const formatExerciseName = (name) => {
     return name
-      .replace(/with Dumbbell/gi, '')
-      .replace(/with Dowel/gi, '')
-      .replace(/with Resistance/gi, '')
+      .replace(/ with Dumbbell/gi, '')
+      .replace(/ with Dowel/gi, '')
+      .replace(/ with Resistance/gi, '')
       .trim();
   };
 
@@ -532,7 +538,7 @@ const App = () => {
     return (
       <div
         key={day}
-        className={`h-full flex flex-col min-h-0 rounded-xl shadow-sm border p-4 ${
+        className={`h-full flex flex-col min-h-0 rounded-xl shadow-sm border p-2 ${
           darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
         } ${
           isToday
@@ -544,7 +550,7 @@ const App = () => {
       >
         {viewMode !== 'day' ? (
           <div
-            className={`mb-4 -mx-4 px-4 pb-2 border-b flex items-baseline justify-between ${
+            className={`mb-2 -mx-2 px-4 pb-2 border-b flex items-baseline justify-between ${
               isToday
                 ? darkMode
                   ? 'border-blue-500/70'
@@ -635,6 +641,7 @@ const App = () => {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
+                                {getPriorityIcon(ex.priority)}
                                 {getExerciseIcon(ex.name)}
                                 <div
                                   className={`font-medium text-sm leading-tight ${
@@ -1009,7 +1016,7 @@ const App = () => {
         )}
 
         {viewMode === 'week' ? (
-          <div className="grid grid-cols-7 gap-4 flex-1 min-h-0">
+          <div className="grid grid-cols-7 gap-1 flex-1 min-h-0">
             {days.map((day) => renderDayCard(day, true))}
           </div>
         ) : viewMode === 'day' ? (
