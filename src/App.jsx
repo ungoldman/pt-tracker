@@ -315,10 +315,10 @@ const App = () => {
     return collapsedCategories[key] || false;
   };
 
-  const getCategoryStats = (day, category, exercises) => {
-    const total = exercises.length;
-    const completedCount = exercises.reduce((acc, _, exIndex) => {
-      return acc + (isCompleted(day, category, exIndex) ? 1 : 0);
+  const getCategoryStats = (day, category, scheduled) => {
+    const total = scheduled.length;
+    const completedCount = scheduled.reduce((acc, { index }) => {
+      return acc + (isCompleted(day, category, index) ? 1 : 0);
     }, 0);
     return { completedCount, total };
   };
@@ -367,11 +367,17 @@ const App = () => {
   const getExercisesForDay = (day) => {
     const result = [];
     Object.entries(exercises).forEach(([category, data]) => {
-      if (data.days.includes(day)) {
-        result.push({
-          category,
-          exercises: data.exercises,
+      // Keep the original index so completion/note keys stay stable across days
+      // even though the visible list is filtered by each exercise's schedule.
+      const scheduled = data.exercises
+        .map((ex, index) => ({ ex, index }))
+        .filter(({ ex }) => {
+          // Per-exercise `days` wins; else the block's `days`; else daily.
+          const sched = ex.days || data.days;
+          return !sched || sched.includes(day);
         });
+      if (scheduled.length > 0) {
+        result.push({ category, exercises: scheduled });
       }
     });
     return result;
@@ -599,7 +605,7 @@ const App = () => {
                 </button>
                 {!isCollapsed && (
                   <div className="space-y-2">
-                    {exList.map((ex, exIndex) => {
+                    {exList.map(({ ex, index: exIndex }) => {
                       const exerciseKey = `${day}-${category}-${exIndex}`;
                       const completed = isCompleted(day, category, exIndex);
                       const justCompleted = wasJustCompleted(day, category, exIndex);

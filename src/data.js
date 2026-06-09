@@ -1,38 +1,47 @@
-import { Dumbbell } from 'lucide-react';
+// Blocks are organized by day-phase + energy, not clock time, to match when
+// things realistically get done. Scheduling:
+//   - Omit `days` (on the exercise or its block) → done DAILY.
+//   - Loaded strength/resistance loads the shoulder and needs ~48h recovery, so
+//     it runs Mon/Wed/Fri and rests the days between. PT guidance: don't push if
+//     pain is up the next session; once 3x15 at a weight is comfortable, try +1lb.
+//   - A per-exercise `days` wins; otherwise the block's `days` applies.
+//
+// Design intent:
+//   - Wake-Up rides the reliable morning tea ritual and now carries ALL priority
+//     work (the 3 priority dumbbells M/W/F + the 2 priority stretches daily),
+//     ordered after a quick warm-up so the must-do work happens first.
+//   - Strength is the M/W/F ~5pm workout: the non-priority loaded bulk only.
+//   - Isometrics get their own planned end-of-workday block (~5pm clock-out),
+//     harder to skip than the floaty evening.
+//   - Wind-Down is the bedtime stretches.
+//   - Personal Goals are NOT PT-prescribed (steps, jog, sit-ups) — Nate's own.
+const MWF = ['Monday', 'Wednesday', 'Friday'];
 
 export const exercises = {
-  'Wake Up': {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  'Wake-Up': {
     exercises: [
+      // Quick warm-up first
       { name: 'Pendulums (all)', sets: 3, reps: 15 },
       { name: 'Wall Slides (flex/scap/abd)', sets: 2, reps: 10 },
-      { name: 'Flexion (forward) with Dumbbell (2.5)', sets: 2, reps: 15 },
-      { name: 'Extension (backward) with Dumbbell (2.5)', sets: 2, reps: 15 },
-      // { name: 'Towel Slides (flex/scap/abd)', sets: 2, reps: 10 },
+      // Priority work, front-loaded so it gets done
+      { name: 'Supine Flexion with Dumbbell (2.5)', sets: 3, reps: 15, priority: 'high', days: MWF },
+      { name: 'Sidelying ER with Dumbbell (2.5)', sets: 3, reps: 10, priority: 'high', days: MWF },
+      { name: 'Sidelying Abduction with Dumbbell (2.5)', sets: 3, reps: 15, priority: 'high', days: MWF },
+      { name: 'Shoulder IR Stretch', sets: 3, reps: '30s', priority: 'high' },
+      { name: 'Cross Body Stretch with Towel', sets: 3, reps: '30s', priority: 'high' },
+      // Remaining mobility
       { name: 'Stress Ball Squeezes', sets: 3, reps: 15 },
       { name: 'Wall Ball Circles', sets: 3, reps: 15 },
-    ],
-  },
-  '10:30 am': {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    exercises: [
       { name: 'Abduction with Dowel', sets: 3, reps: 8 },
       { name: 'Flexion Extension with Dowel', sets: 2, reps: 10 },
       { name: 'External Rotation with Dowel', sets: 3, reps: 10 },
-      // { name: 'Supine Flexion Extension Full Range', sets: 3, reps: 10 },
-      // { name: 'Elbow Flexion Extension', sets: 3, reps: 10 },
-      { name: 'Supine Flexion with Dumbbell (2.5)', sets: 3, reps: 15, priority: 'high' },
-      { name: 'Sidelying ER with Dumbbell (2.5)', sets: 3, reps: 10, priority: 'high' },
-      { name: 'Sidelying Abduction with Dumbbell (2.5)', sets: 3, reps: 15, priority: 'high' },
-      { name: 'Prone Shoulder Extension (facedown)', sets: 3, reps: 12 },
-      { name: 'Sit ups', sets: 3, reps: 15 },
     ],
   },
-  '3:00 pm': {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  'Strength (M/W/F)': {
+    days: MWF,
     exercises: [
-      // { name: 'Wrist Flexion with Dumbbell', sets: 3, reps: 12 },
-      // { name: 'Wrist Extension with Dumbbell', sets: 3, reps: 12 },
+      { name: 'Flexion (forward) with Dumbbell (2.5)', sets: 2, reps: 15 },
+      { name: 'Extension (backward) with Dumbbell (2.5)', sets: 2, reps: 15 },
       { name: 'Wrist Sup/Pro with Dumbbell', sets: 3, reps: 12 },
       { name: 'Bicep Curls with Dumbbell', sets: 3, reps: 10 },
       { name: 'Hammer Curls with Dumbbell', sets: 3, reps: 10 },
@@ -52,13 +61,12 @@ export const exercises = {
       { name: 'Shoulder Extension with Resistance', sets: 3, reps: 10 },
       { name: 'Shoulder Flexion with Resistance', sets: 2, reps: 10 },
       { name: 'Tricep Extensions with Resistance', sets: 3, reps: 12 },
-      // { name: 'Internal Rotation Reactive Isometrics with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder IR (rotate) with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder ER (step) with Resistance', sets: 3, reps: 12 },
+      { name: 'Prone Shoulder Extension (facedown)', sets: 3, reps: 12 },
     ],
   },
-  '7:00 pm': {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  'Isometrics (End of Day)': {
     exercises: [
       { name: 'Isometric Shoulder Flexion', sets: 10, hold: '10s' },
       { name: 'Isometric Shoulder Extension', sets: 10, hold: '10s' },
@@ -66,23 +74,19 @@ export const exercises = {
       { name: 'Isometric External Rotation', sets: 10, hold: '10s' },
       { name: 'Isometric Shoulder Abduction', sets: 10, hold: '10s' },
       { name: 'Isometric Shoulder Adduction', sets: 10, hold: '10s' },
-      // { name: 'Pulley (flex/scap/abd)', sets: 3, reps: 12 },
     ],
   },
-  Bedtime: {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  'Wind-Down': {
     exercises: [
-      { name: 'Shoulder IR Stretch', sets: 3, reps: '30s', priority: 'high' },
-      { name: 'Cross Body Stretch with Towel', sets: 3, reps: '30s', priority: 'high' },
       { name: 'Corner Pec Minor Stretch', sets: 3, hold: '30s' },
       { name: 'Serratus Activation with Foam Roll', sets: 2, hold: '30s' },
     ],
   },
-  Goals: {
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  'Personal Goals (non-PT)': {
     exercises: [
       { name: 'Daily Steps Goal', target: 5000 },
       { name: 'Light Jog (every other day)', target: '0.5 miles' },
+      { name: 'Sit ups', sets: 3, reps: 15 },
     ],
   },
 };
