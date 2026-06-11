@@ -68,7 +68,7 @@ export default function Header({
           their own full-width line via order/w-full, controls stay by the title. */}
       <div className="w-full flex flex-wrap items-center gap-x-4 gap-y-2">
         <h1
-          className={`order-1 text-2xl sm:text-3xl font-bold flex-shrink-0 items-center gap-2 ${
+          className={`order-1 text-2xl sm:text-3xl font-bold tracking-tight flex-shrink-0 items-center gap-2 ${
             scrolled ? 'hidden lg:flex' : 'flex'
           } ${darkMode ? 'text-white' : 'text-gray-800'}`}
         >
@@ -88,7 +88,7 @@ export default function Header({
               darkMode
                 ? 'bg-blue-900/50 text-blue-100 hover:bg-blue-800'
                 : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-            } shadow-sm border ${darkMode ? 'border-blue-700' : 'border-blue-300'}`}
+            } shadow-sm border ${darkMode ? 'border-transparent' : 'border-blue-300'}`}
             title="Cycle views: week → day → 3-day"
           >
             <CalendarRange size={16} />
@@ -104,7 +104,7 @@ export default function Header({
               darkMode
                 ? 'bg-indigo-900/50 text-indigo-100 hover:bg-indigo-800'
                 : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
-            } shadow-sm border ${darkMode ? 'border-indigo-700' : 'border-indigo-300'}`}
+            } shadow-sm border ${darkMode ? 'border-transparent' : 'border-indigo-300'}`}
             title={`${COLLAPSE_MODES[collapseMode].label} — click to ${COLLAPSE_MODES[collapseMode].next}`}
           >
             {(() => {
@@ -118,7 +118,7 @@ export default function Header({
               darkMode
                 ? 'bg-gray-700 text-yellow-400 hover:bg-gray-600'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            } shadow-sm border ${darkMode ? 'border-gray-600' : 'border-gray-200'}`}
+            } shadow-sm border ${darkMode ? 'border-transparent' : 'border-gray-200'}`}
             title={darkMode ? 'Light mode' : 'Dark mode'}
           >
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
@@ -130,7 +130,7 @@ export default function Header({
                 darkMode
                   ? 'bg-orange-900/50 text-orange-200 hover:bg-orange-800'
                   : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
-              } shadow-sm border ${darkMode ? 'border-orange-700' : 'border-orange-300'}`}
+              } shadow-sm border ${darkMode ? 'border-transparent' : 'border-orange-300'}`}
               title="Reset selected day's checkboxes"
             >
               <RotateCcw size={16} />
@@ -142,7 +142,7 @@ export default function Header({
                 darkMode
                   ? 'bg-red-900/50 text-red-200 hover:bg-red-800'
                   : 'bg-red-100 text-red-700 hover:bg-red-200'
-              } shadow-sm border ${darkMode ? 'border-red-700' : 'border-red-300'}`}
+              } shadow-sm border ${darkMode ? 'border-transparent' : 'border-red-300'}`}
               title="Reset all checkboxes for the week"
             >
               <RotateCcw size={16} />
@@ -160,7 +160,7 @@ export default function Header({
               <Sparkles size={14} className={pct === 100 ? 'text-yellow-500' : ''} />
               <span className="text-sm font-medium">
                 Today:{' '}
-                <span className={`font-bold ${pct === 100 ? 'text-green-500' : ''}`}>
+                <span className={`font-bold tabular-nums ${pct === 100 ? 'text-green-500' : ''}`}>
                   {stats.completedToday}/{stats.totalToday}
                 </span>
               </span>

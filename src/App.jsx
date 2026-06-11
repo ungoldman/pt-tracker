@@ -315,7 +315,7 @@ const App = () => {
           <BlockIcon size={14} className="flex-shrink-0" />
           {category}
           <span
-            className={`ml-auto text-xs font-normal ${
+            className={`ml-auto text-xs font-normal tabular-nums ${
               isComplete ? 'text-green-500' : darkMode ? 'text-gray-400' : 'text-gray-500'
             }`}
           >
@@ -335,7 +335,7 @@ const App = () => {
           />
         </div>
         {!isCollapsed && (
-          <div className={`divide-y ${darkMode ? 'divide-gray-700/60' : 'divide-gray-200'}`}>
+          <div className={`divide-y ${darkMode ? 'divide-gray-700/40' : 'divide-gray-200'}`}>
             {exList.map(({ ex, index: exIndex }) => {
               const exerciseKey = `${day}-${category}-${exIndex}`;
               const noteText = getNote(day, category, exIndex);
@@ -378,8 +378,10 @@ const App = () => {
     return (
       <div
         key={day}
-        className={`h-full flex flex-col min-h-0 rounded-xl shadow-sm border p-2 ${
-          darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+        className={`h-full flex flex-col min-h-0 rounded-xl border p-2 ${
+          darkMode
+            ? 'bg-gray-800 border-transparent shadow-md shadow-black/30'
+            : 'bg-white border-gray-200 shadow-sm'
         } ${
           isToday
             ? darkMode
@@ -533,9 +535,13 @@ const App = () => {
               {getExercisesForDay(selectedDay).map(({ category, exercises: exList }) => (
                 <div
                   key={category}
-                  className={`break-inside-avoid mb-4 rounded-xl shadow-sm border border-t-2 p-2 ${
+                  className={`break-inside-avoid mb-4 rounded-xl border-t-2 p-2 ${
                     getBlockStyle(category).top
-                  } ${darkMode ? 'bg-gray-800 border-x-gray-700 border-b-gray-700' : 'bg-white border-x-gray-200 border-b-gray-200'}`}
+                  } ${
+                    darkMode
+                      ? 'bg-gray-800 shadow-md shadow-black/30'
+                      : 'bg-white border border-t-2 border-gray-200 shadow-sm'
+                  }`}
                 >
                   {renderBlock(selectedDay, category, exList)}
                 </div>

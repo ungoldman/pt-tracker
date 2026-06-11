@@ -93,14 +93,18 @@ export default memo(function ExerciseRow({
                 />
               )}
             </span>
-            <span className={`block text-xs mt-0.5 font-medium ${repsColor}`}>{repsText}</span>
+            <span className={`block text-xs mt-0.5 font-medium tabular-nums ${repsColor}`}>
+              {repsText}
+            </span>
           </span>
         ) : (
           <>
             <span className={`flex-1 min-w-0 text-sm font-medium leading-tight ${nameColor}`}>
               {formatExerciseName(ex.name)}
             </span>
-            <span className={`text-xs font-medium whitespace-nowrap ${repsColor}`}>{repsText}</span>
+            <span className={`text-xs font-medium whitespace-nowrap tabular-nums ${repsColor}`}>
+              {repsText}
+            </span>
           </>
         )}
       </button>
