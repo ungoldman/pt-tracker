@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { exercises } from './data';
 import { usePersistentState } from './hooks/usePersistentState';
@@ -66,13 +66,6 @@ const App = () => {
   const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'long' });
   const [selectedDay, setSelectedDay] = useState(todayLabel);
   const [expandedNotes, setExpandedNotes] = useState(new Set());
-  const selectedPillRef = useRef(null);
-
-  // Keep the selected pill visible in the horizontally scrolling strip on
-  // small screens (no-op when the strip wraps instead of scrolling).
-  useEffect(() => {
-    selectedPillRef.current?.scrollIntoView({ inline: 'center', block: 'nearest' });
-  }, [selectedDay, viewMode]);
 
   const toggleDarkMode = () => {
     const next = !darkMode;
@@ -466,29 +459,60 @@ const App = () => {
       {/* Main Content */}
       <div className="w-full p-3 sm:p-6 flex-1 min-h-0 flex flex-col lg:overflow-hidden">
         {viewMode === 'day' && (
-          <div className="mb-4 flex gap-2 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap sm:justify-center sm:overflow-x-visible">
-            {days.map((day) => {
-              const isSelectedDay = selectedDay === day;
-              return (
-                <button
-                  key={day}
-                  ref={isSelectedDay ? selectedPillRef : null}
-                  onClick={() => setSelectedDay(day)}
-                  className={`flex-shrink-0 px-3 py-2 rounded-lg text-sm font-medium border transition-all ${
-                    selectedDay === day
-                      ? darkMode
-                        ? 'bg-blue-700 text-white border-blue-600'
-                        : 'bg-blue-600 text-white border-blue-700'
-                      : darkMode
-                        ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-blue-500'
-                        : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
-                  } ${day === todayLabel && !isSelectedDay ? 'ring-1 ring-blue-400/70' : ''}`}
-                >
-                  {renderDayLabel(day, isSelectedDay)}
-                </button>
-              );
-            })}
-          </div>
+          <>
+            {/* Compact 7-up day grid (small screens) */}
+            <div className="mb-3 grid grid-cols-7 gap-1 sm:hidden">
+              {days.map((day) => {
+                const isSelectedDay = selectedDay === day;
+                return (
+                  <button
+                    key={day}
+                    onClick={() => setSelectedDay(day)}
+                    className={`py-1.5 rounded-lg border text-center transition-all ${
+                      isSelectedDay
+                        ? darkMode
+                          ? 'bg-blue-700 text-white border-blue-600'
+                          : 'bg-blue-600 text-white border-blue-700'
+                        : darkMode
+                          ? 'bg-gray-800 text-gray-200 border-gray-700'
+                          : 'bg-white text-gray-700 border-gray-200'
+                    } ${day === todayLabel && !isSelectedDay ? 'ring-1 ring-blue-400/70' : ''}`}
+                  >
+                    <span className="block text-xs font-semibold">{day.slice(0, 3)}</span>
+                    <span
+                      className={`block text-[10px] ${isSelectedDay ? 'text-white/80' : 'opacity-60'}`}
+                    >
+                      {getDateForDay(day).getDate()}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Full day pills (larger screens) */}
+            <div className="mb-4 hidden sm:flex gap-2 flex-wrap justify-center">
+              {days.map((day) => {
+                const isSelectedDay = selectedDay === day;
+                return (
+                  <button
+                    key={day}
+                    onClick={() => setSelectedDay(day)}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium border transition-all ${
+                      isSelectedDay
+                        ? darkMode
+                          ? 'bg-blue-700 text-white border-blue-600'
+                          : 'bg-blue-600 text-white border-blue-700'
+                        : darkMode
+                          ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-blue-500'
+                          : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
+                    } ${day === todayLabel && !isSelectedDay ? 'ring-1 ring-blue-400/70' : ''}`}
+                  >
+                    {renderDayLabel(day, isSelectedDay)}
+                  </button>
+                );
+              })}
+            </div>
+          </>
         )}
 
         {viewMode === 'week' ? (
