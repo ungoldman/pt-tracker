@@ -10,7 +10,7 @@
 .app-bg-light {
   background-color: #e9e9eb;
   background-image: url('/doodles.svg');
-  background-size: 480px auto;
+  background-size: 420px auto;
 }
 .app-bg-dark {
   background-color: #0c1322;
@@ -22,12 +22,14 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: linear-gradient(115deg, #6366f1 0%, #22d3ee 45%, #34d399 90%);
+  /* desaturated takes on the indigo→cyan→green ramp so the strokes stay
+     behind the foreground instead of competing with it */
+  background-image: linear-gradient(115deg, #4d5385 0%, #34707f 45%, #3f7a65 90%);
   -webkit-mask-image: url('/doodles.svg');
   mask-image: url('/doodles.svg');
-  -webkit-mask-size: 480px auto;
-  mask-size: 480px auto;
-  opacity: 0.45;
+  -webkit-mask-size: 420px auto;
+  mask-size: 420px auto;
+  opacity: 0.5;
 }
 
 body {

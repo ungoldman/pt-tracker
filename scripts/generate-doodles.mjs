@@ -123,12 +123,15 @@ const FILLERS = [
   '<path d="M-3 -3 l6 6 M3 -3 l-6 6"/>',
   '<path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/>',
   '<circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/>',
+  '<path d="M-6 -3 h9 M-3 3 h9"/>',
+  '<path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/>',
+  '<circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/>',
 ];
 
 // ---- parameters ----
 const COLS = 10;
 const ROWS = 14;
-const CELL = 48;
+const CELL = 42;
 const W = COLS * CELL;
 const H = ROWS * CELL;
 const SEED = 42;
@@ -137,9 +140,9 @@ const ROT = 18;
 // scale tiers: a few heroes, mostly mid, some small. Item radius is ~22*scale,
 // so the mid tier nearly fills its cell — WhatsApp-level item:gap ratio.
 const TIERS = [
-  [1.0, 0.2],
-  [0.82, 0.5],
-  [0.58, 0.3],
+  [1.38, 0.2],
+  [1.15, 0.5],
+  [0.82, 0.3],
 ];
 const FILLER_PROB = 0.8;
 const OPACITY = 1;
@@ -217,15 +220,43 @@ for (let row = 0; row < ROWS; row++) {
   }
 }
 
-// Micro fillers at every grid corner (the gaps between four neighbors).
+// Grid corners (the gaps between four neighbors): mostly micro fillers, but
+// ~30% get a nested small doodle — the reference packs small items into the
+// holes between big ones rather than leaving them to dots alone.
 for (let row = 0; row < ROWS; row++) {
   for (let col = 0; col < COLS; col++) {
-    if (rnd() > FILLER_PROB) continue;
+    const r = rnd();
     const x = col * CELL + between(-4, 4);
     const y = row * CELL + between(-4, 4);
     const rot = between(-ROT, ROT);
-    const f = FILLERS[Math.floor(rnd() * FILLERS.length)];
-    emit(x, y, { transform: ` rotate(${rot.toFixed(1)})`, svg: f });
+    if (r < 0.3) {
+      const [name, svg] = queue.next().value;
+      emit(x, y, {
+        transform: ` rotate(${rot.toFixed(1)}) scale(0.55)`,
+        svg: `<!-- ${name} (nested) -->${svg}`,
+      });
+    } else if (r < FILLER_PROB) {
+      const f = FILLERS[Math.floor(rnd() * FILLERS.length)];
+      emit(x, y, { transform: ` rotate(${rot.toFixed(1)})`, svg: f });
+    }
+  }
+}
+
+// Cell-edge midpoints: a second filler layer in the gaps between horizontal
+// and vertical neighbors. This is what closes the remaining empty channels.
+for (let row = 0; row < ROWS; row++) {
+  for (let col = 0; col < COLS; col++) {
+    for (const [dx, dy] of [
+      [CELL / 2, 0],
+      [0, CELL / 2],
+    ]) {
+      if (rnd() > 0.7) continue;
+      const x = col * CELL + dx + between(-3, 3);
+      const y = row * CELL + dy + between(-3, 3);
+      const rot = between(-ROT, ROT);
+      const f = FILLERS[Math.floor(rnd() * FILLERS.length)];
+      emit(x, y, { transform: ` rotate(${rot.toFixed(1)})`, svg: f });
+    }
   }
 }
 
@@ -234,7 +265,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" wid
        Strokes are solid white: light mode uses the tile directly
        (white-on-gray, ref image 1); dark mode uses it as a CSS mask over a
        color gradient (ref image 2). Opacity lives in src/index.css. -->
-  <g fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="${OPACITY}">
+  <g fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="${OPACITY}">
 ${body}  </g>
 </svg>
 `;
