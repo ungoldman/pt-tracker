@@ -49,9 +49,10 @@ export const exercises = {
 
 Scheduling: a per-exercise `days` wins; else the block's `days`; else daily.
 Loaded strength/resistance is gated to **Mon/Wed/Fri** (48h recovery between
-sessions); mobility, isometrics, and stretches are daily. Completion is stored
-in localStorage keyed by `${day}-${block}-${originalIndex}`; the original index
-is preserved through day-filtering so keys stay stable.
+sessions); isometrics alternate with strength (**Sun/Tue/Thu/Sat**) to avoid
+double-loading strength days; mobility and stretches are daily. Completion is
+stored in localStorage keyed by `${day}-${block}-${originalIndex}`; the
+original index is preserved through day-filtering so keys stay stable.
 
 ## Known next step (not yet done)
 

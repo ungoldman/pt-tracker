@@ -12,10 +12,14 @@
 //     ordered after a quick warm-up so the must-do work happens first.
 //   - Strength is the M/W/F ~5pm workout: the non-priority loaded bulk only.
 //   - Isometrics get their own planned end-of-workday block (~5pm clock-out),
-//     harder to skip than the floaty evening.
+//     harder to skip than the floaty evening. They alternate with Strength
+//     (Tue/Thu/Sat/Sun) so strength days don't carry a double load; isometrics
+//     are low-damage so daily would be safe, but 4x/week clears the 2-3x/week
+//     effective dose and evens out the week.
 //   - Wind-Down is the bedtime stretches.
 //   - Personal Goals are NOT PT-prescribed (steps, jog, sit-ups) — Nate's own.
 const MWF = ['Monday', 'Wednesday', 'Friday'];
+const NON_STRENGTH_DAYS = ['Sunday', 'Tuesday', 'Thursday', 'Saturday'];
 
 export const exercises = {
   'Wake-Up': {
@@ -67,6 +71,7 @@ export const exercises = {
     ],
   },
   'Isometrics (End of Day)': {
+    days: NON_STRENGTH_DAYS,
     exercises: [
       { name: 'Isometric Shoulder Flexion', sets: 10, hold: '10s' },
       { name: 'Isometric Shoulder Extension', sets: 10, hold: '10s' },
