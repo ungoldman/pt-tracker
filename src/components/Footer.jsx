@@ -7,33 +7,43 @@ const TIMER_LINKS = [
 ];
 
 /**
- * Load the real bowl recording into a WebAudio buffer on first user gesture.
- * /bowl.m4a is "Tibetan Singing Bowl hit 11inch" from Wikimedia Commons
- * (CC BY-SA 4.0): https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_11inch.flac
+ * Load the bowl recordings into WebAudio buffers on first user gesture.
+ * Both are real Tibetan singing bowl strikes from Wikimedia Commons
+ * (CC BY-SA 4.0), trimmed/faded to decay fully inside their rep window:
+ *   /bowl10.m4a — 4.5" bowl (brighter, ~9.7s) for the 10s interval
+ *   /bowl30.m4a — 11" bowl (deeper, ~16.4s) for the 30s interval
+ * Sources: https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_4.5inch.flac
+ *          https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_11inch.flac
  */
 async function ensureAudio(ref) {
   if (!ref.current) {
     const ctx = new AudioContext();
-    ref.current = { ctx, buffer: null, playing: new Set() };
-    try {
-      const res = await fetch('/bowl.m4a');
-      const data = await res.arrayBuffer();
-      ref.current.buffer = await ctx.decodeAudioData(data);
-    } catch {
-      // Recording unavailable; chime() falls back to the synthesized bowl.
-    }
+    ref.current = { ctx, buffers: {}, playing: new Set() };
+    await Promise.all(
+      [10, 30].map(async (secs) => {
+        try {
+          const res = await fetch(`/bowl${secs}.m4a`);
+          const data = await res.arrayBuffer();
+          ref.current.buffers[secs] = await ctx.decodeAudioData(data);
+        } catch {
+          // Recording unavailable; chime() falls back to the synthesized bowl.
+        }
+      })
+    );
   }
   ref.current.ctx.resume?.();
   return ref.current;
 }
 
 /**
- * Play the recorded bowl strike, or the synthesized one if loading failed.
- * Every strike is tracked in audio.playing so silence() can fade it out.
+ * Play the recorded bowl strike for the given interval, or the synthesized
+ * one if loading failed. Every strike is tracked in audio.playing so
+ * silence() can fade it out.
  */
-function chime(audio) {
+function chime(audio, secs) {
   if (!audio) return;
-  const { ctx, buffer } = audio;
+  const { ctx, buffers } = audio;
+  const buffer = buffers[secs] || buffers[10] || buffers[30];
   let entry;
   if (buffer) {
     const src = ctx.createBufferSource();
@@ -142,7 +152,7 @@ export default function Footer({ darkMode }) {
     const tick = setInterval(() => {
       const left = Math.ceil((endsAt - Date.now()) / 1000);
       if (left <= 0) {
-        chime(audioRef.current);
+        chime(audioRef.current, duration);
         navigator.vibrate?.(200);
         setReps((r) => r + 1);
         endsAt += duration * 1000;
@@ -157,7 +167,7 @@ export default function Footer({ darkMode }) {
   const start = (secs) => {
     // Strike the bowl immediately: confirms volume and marks the first rep.
     if (window.AudioContext) {
-      ensureAudio(audioRef).then(chime);
+      ensureAudio(audioRef).then((audio) => chime(audio, secs));
     }
     setReps(0);
     setRemaining(secs);

@@ -62,8 +62,10 @@ original index is preserved through day-filtering so keys stay stable.
 
 ## Credits
 
-`public/bowl.m4a` is ["Tibetan Singing Bowl hit 11inch"](https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_11inch.flac)
-from Wikimedia Commons, CC BY-SA 4.0, transcoded to AAC.
+The hold-timer chimes are Tibetan singing bowl strikes from Wikimedia
+Commons, CC BY-SA 4.0, normalized/faded and transcoded to AAC:
+[`bowl10.m4a` (4.5")](https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_4.5inch.flac)
+and [`bowl30.m4a` (11")](https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_11inch.flac).
 
 ## Known next step (not yet done)
 
