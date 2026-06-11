@@ -1,4 +1,4 @@
-import { Dumbbell, Wand2, Infinity, Star } from 'lucide-react';
+import { Dumbbell, Wand2, Infinity as InfinityIcon, Star } from 'lucide-react';
 
 /** Strip the equipment suffix; the equipment is shown as an icon badge instead. */
 export function formatExerciseName(name) {
@@ -31,7 +31,7 @@ export function getExerciseIcon(exerciseName, darkMode) {
   if (n.includes('resistance')) {
     return (
       <div className="flex items-center gap-1" title="Resistance Band">
-        <Infinity size={14} className={darkMode ? 'text-green-400' : 'text-green-500'} />
+        <InfinityIcon size={14} className={darkMode ? 'text-green-400' : 'text-green-500'} />
         <span className={`text-xs ${darkMode ? 'text-green-400' : 'text-green-500'}`}>RB</span>
       </div>
     );

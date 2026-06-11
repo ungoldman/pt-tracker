@@ -94,7 +94,7 @@ const App = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, []);
+  }, [setViewMode]);
 
   const showNextQuote = () => {
     if (!quotes || quotes.length === 0) return;

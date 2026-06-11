@@ -28,9 +28,21 @@ export const exercises = {
       { name: 'Pendulums (all)', sets: 3, reps: 15 },
       { name: 'Wall Slides (flex/scap/abd)', sets: 2, reps: 10 },
       // Priority work, front-loaded so it gets done
-      { name: 'Supine Flexion with Dumbbell (2.5)', sets: 3, reps: 15, priority: 'high', days: MWF },
+      {
+        name: 'Supine Flexion with Dumbbell (2.5)',
+        sets: 3,
+        reps: 15,
+        priority: 'high',
+        days: MWF,
+      },
       { name: 'Sidelying ER with Dumbbell (2.5)', sets: 3, reps: 10, priority: 'high', days: MWF },
-      { name: 'Sidelying Abduction with Dumbbell (2.5)', sets: 3, reps: 15, priority: 'high', days: MWF },
+      {
+        name: 'Sidelying Abduction with Dumbbell (2.5)',
+        sets: 3,
+        reps: 15,
+        priority: 'high',
+        days: MWF,
+      },
       { name: 'Shoulder IR Stretch', sets: 3, reps: '30s', priority: 'high' },
       { name: 'Cross Body Stretch with Towel', sets: 3, reps: '30s', priority: 'high' },
       // Remaining mobility

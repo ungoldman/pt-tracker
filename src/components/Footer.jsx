@@ -25,7 +25,9 @@ export default function Footer({ darkMode }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`text-sm transition-colors hover:underline ${
-                  darkMode ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'
+                  darkMode
+                    ? 'text-gray-300 hover:text-gray-100'
+                    : 'text-gray-700 hover:text-gray-900'
                 }`}
               >
                 {label}
