@@ -37,89 +37,88 @@ export default function Header({
         WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)',
       }}
     >
-      <div className="w-full flex flex-col gap-2">
-        {/* Row 1: title + controls */}
-        <div className="flex items-center gap-3">
-          <h1
-            className={`text-2xl sm:text-3xl font-bold flex-shrink-0 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}
-          >
-            <Timer size={26} className="flex-shrink-0 translate-y-0.5" />
-            pt-tracker
-          </h1>
+      {/* One row on lg+ (title, stats, controls); below that the stats drop to
+          their own full-width line via order/w-full, controls stay by the title. */}
+      <div className="w-full flex flex-wrap items-center gap-x-4 gap-y-2">
+        <h1
+          className={`order-1 text-2xl sm:text-3xl font-bold flex-shrink-0 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}
+        >
+          <Timer size={26} className="flex-shrink-0 translate-y-0.5" />
+          pt-tracker
+        </h1>
 
-          {/* Controls (min-w-0 so they wrap on narrow screens instead of overflowing) */}
-          <div className="ml-auto flex gap-2 min-w-0 flex-wrap justify-end">
+        {/* Controls (min-w-0 so they wrap on narrow screens instead of overflowing) */}
+        <div className="order-2 lg:order-3 ml-auto flex gap-2 min-w-0 flex-wrap justify-end">
+          <button
+            onClick={cycleViewMode}
+            className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-lg transition-all text-sm ${
+              darkMode
+                ? 'bg-blue-900/50 text-blue-100 hover:bg-blue-800'
+                : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+            } shadow-sm border ${darkMode ? 'border-blue-700' : 'border-blue-300'}`}
+            title="Cycle views: week → day → 3-day"
+          >
+            <CalendarRange size={16} />
+            <span className="hidden sm:inline">
+              {viewMode === 'week' && 'Week view'}
+              {viewMode === 'day' && 'Day view'}
+              {viewMode === 'three' && '3-day view'}
+            </span>
+          </button>
+          <button
+            onClick={toggleAllCategoriesCollapsed}
+            className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-lg transition-all text-sm ${
+              darkMode
+                ? 'bg-indigo-900/50 text-indigo-100 hover:bg-indigo-800'
+                : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+            } shadow-sm border ${darkMode ? 'border-indigo-700' : 'border-indigo-300'}`}
+            title="Collapse/uncollapse all categories"
+          >
+            <ChevronDown size={16} />
+          </button>
+          <button
+            onClick={toggleDarkMode}
+            className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-lg transition-all text-sm ${
+              darkMode
+                ? 'bg-gray-700 text-yellow-400 hover:bg-gray-600'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            } shadow-sm border ${darkMode ? 'border-gray-600' : 'border-gray-200'}`}
+            title={darkMode ? 'Light mode' : 'Dark mode'}
+          >
+            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+          <div className="inline-flex">
             <button
-              onClick={cycleViewMode}
-              className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-lg transition-all text-sm ${
+              onClick={() => resetDay(selectedDay)}
+              className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-l-lg transition-all text-sm ${
                 darkMode
-                  ? 'bg-blue-900/50 text-blue-100 hover:bg-blue-800'
-                  : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-              } shadow-sm border ${darkMode ? 'border-blue-700' : 'border-blue-300'}`}
-              title="Cycle views: week → day → 3-day"
+                  ? 'bg-orange-900/50 text-orange-200 hover:bg-orange-800'
+                  : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+              } shadow-sm border ${darkMode ? 'border-orange-700' : 'border-orange-300'}`}
+              title="Reset selected day's checkboxes"
             >
-              <CalendarRange size={16} />
-              <span className="hidden sm:inline">
-                {viewMode === 'week' && 'Week view'}
-                {viewMode === 'day' && 'Day view'}
-                {viewMode === 'three' && '3-day view'}
-              </span>
+              <RotateCcw size={16} />
+              Day
             </button>
             <button
-              onClick={toggleAllCategoriesCollapsed}
-              className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-lg transition-all text-sm ${
+              onClick={resetWeek}
+              className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-r-lg transition-all text-sm ${
                 darkMode
-                  ? 'bg-indigo-900/50 text-indigo-100 hover:bg-indigo-800'
-                  : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
-              } shadow-sm border ${darkMode ? 'border-indigo-700' : 'border-indigo-300'}`}
-              title="Collapse/uncollapse all categories"
+                  ? 'bg-red-900/50 text-red-200 hover:bg-red-800'
+                  : 'bg-red-100 text-red-700 hover:bg-red-200'
+              } shadow-sm border ${darkMode ? 'border-red-700' : 'border-red-300'}`}
+              title="Reset all checkboxes for the week"
             >
-              <ChevronDown size={16} />
+              <RotateCcw size={16} />
+              Week
             </button>
-            <button
-              onClick={toggleDarkMode}
-              className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-lg transition-all text-sm ${
-                darkMode
-                  ? 'bg-gray-700 text-yellow-400 hover:bg-gray-600'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              } shadow-sm border ${darkMode ? 'border-gray-600' : 'border-gray-200'}`}
-              title={darkMode ? 'Light mode' : 'Dark mode'}
-            >
-              {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-            <div className="inline-flex">
-              <button
-                onClick={() => resetDay(selectedDay)}
-                className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-l-lg transition-all text-sm ${
-                  darkMode
-                    ? 'bg-orange-900/50 text-orange-200 hover:bg-orange-800'
-                    : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
-                } shadow-sm border ${darkMode ? 'border-orange-700' : 'border-orange-300'}`}
-                title="Reset selected day's checkboxes"
-              >
-                <RotateCcw size={16} />
-                Day
-              </button>
-              <button
-                onClick={resetWeek}
-                className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-r-lg transition-all text-sm ${
-                  darkMode
-                    ? 'bg-red-900/50 text-red-200 hover:bg-red-800'
-                    : 'bg-red-100 text-red-700 hover:bg-red-200'
-                } shadow-sm border ${darkMode ? 'border-red-700' : 'border-red-300'}`}
-                title="Reset all checkboxes for the week"
-              >
-                <RotateCcw size={16} />
-                Week
-              </button>
-            </div>
           </div>
         </div>
 
-        {/* Row 2: today's stats */}
+        {/* Today's stats: own full-width line below lg, inline between title and controls at lg+ */}
         {stats.totalToday > 0 && (
           <div
-            className={`flex items-center gap-2 flex-wrap min-w-0 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}
+            className={`order-3 w-full lg:order-2 lg:w-auto lg:flex-1 flex items-center gap-2 flex-wrap min-w-0 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}
           >
             <span className="flex items-center gap-2 whitespace-nowrap">
               <Sparkles size={14} className={pct === 100 ? 'text-yellow-500' : ''} />
