@@ -7,29 +7,39 @@
    Light: white strokes straight onto warm gray.
    Dark: the tile is a mask over a blue→cyan→green gradient, so the strokes
    pick up a spatial color shift across the screen. */
-.app-bg-light {
-  background-color: #e9e9eb;
-  background-image: url('/doodles.svg');
-  background-size: 420px auto;
-}
+.app-bg-light,
 .app-bg-dark {
-  background-color: #0c1322;
   position: relative;
   isolation: isolate;
 }
+.app-bg-light {
+  background-color: #e9e9eb;
+}
+.app-bg-dark {
+  background-color: #0c1322;
+}
+/* The wallpaper layer: doodle tile as a mask over a paint layer, so each
+   mode's contrast is one opacity knob. Kept low — it's a background element
+   and must never compete with the cards. */
+.app-bg-light::before,
 .app-bg-dark::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  /* desaturated takes on the indigo→cyan→green ramp so the strokes stay
-     behind the foreground instead of competing with it */
-  background-image: linear-gradient(115deg, #4d5385 0%, #34707f 45%, #3f7a65 90%);
   -webkit-mask-image: url('/doodles.svg');
   mask-image: url('/doodles.svg');
   -webkit-mask-size: 420px auto;
   mask-size: 420px auto;
-  opacity: 0.5;
+}
+.app-bg-light::before {
+  background-color: #ffffff;
+  opacity: 0.65;
+}
+.app-bg-dark::before {
+  /* desaturated indigo→cyan→green ramp */
+  background-image: linear-gradient(115deg, #4d5385 0%, #34707f 45%, #3f7a65 90%);
+  opacity: 0.3;
 }
 
 body {

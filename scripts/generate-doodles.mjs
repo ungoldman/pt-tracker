@@ -128,6 +128,19 @@ const FILLERS = [
   '<circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/>',
 ];
 
+// ---- approximate ink radii (design px at scale 1) ----
+// Used by the collision pass: high density, but nothing touches — like a
+// notebook page filled with doodles.
+const INK = {
+  dumbbell: 15, mug: 14, bowl: 15, heart: 12, stopwatch: 14, shoe: 15,
+  band: 14, sparkle: 9, moon: 12, roller: 14, bottle: 11, bicep: 13,
+  sun: 13, stressball: 11, footprints: 12, dowel: 14, mat: 13, spiral: 11,
+  confetti: 13, towel: 13, kettlebell: 12, zzz: 11, trophy: 13, hourglass: 11,
+  target: 10, lightning: 10, banana: 11, check: 9, jumprope: 14, breath: 11,
+  reps: 12, fivek: 11, mwf: 13, smiley: 12, bubble: 12,
+};
+const FILLER_R = [2, 3.5, 5, 4, 8, 4, 3.5, 6, 7, 9, 5];
+
 // ---- parameters ----
 const COLS = 10;
 const ROWS = 14;
@@ -135,19 +148,17 @@ const CELL = 42;
 const W = COLS * CELL;
 const H = ROWS * CELL;
 const SEED = 42;
-const JITTER = 7;
+const JITTER = 6;
 const ROT = 18;
-// scale tiers: a few heroes, mostly mid, some small. Item radius is ~22*scale,
-// so the mid tier nearly fills its cell — WhatsApp-level item:gap ratio.
+const GAP = 3; // guaranteed clearance between any two items' ink
 const TIERS = [
   [1.38, 0.2],
   [1.15, 0.5],
   [0.82, 0.3],
 ];
-const FILLER_PROB = 0.8;
 const OPACITY = 1;
-// Max extent an item can reach beyond its center (hero radius + jitter).
-const EDGE = 22 * TIERS[0][0] + JITTER;
+// Max extent an item can reach beyond its center (for seam duplication).
+const EDGE = 16 * TIERS[0][0] + JITTER + GAP;
 
 // ---- deterministic prng ----
 function mulberry32(a) {
@@ -183,6 +194,23 @@ function* shapeQueue() {
 const queue = shapeQueue();
 
 let body = '';
+const placed = []; // { x, y, r } of every placed item's ink circle
+
+// Torus distance so collision checks work across tile seams too.
+function torusDist(x1, y1, x2, y2) {
+  const dx = Math.min(Math.abs(x1 - x2), W - Math.abs(x1 - x2));
+  const dy = Math.min(Math.abs(y1 - y2), H - Math.abs(y1 - y2));
+  return Math.hypot(dx, dy);
+}
+
+// Largest ink radius that fits at (x, y) without touching anything placed.
+function maxAllowedR(x, y) {
+  let max = Infinity;
+  for (const p of placed) {
+    max = Math.min(max, torusDist(x, y, p.x, p.y) - p.r - GAP);
+  }
+  return max;
+}
 
 // Emit an element at (x, y) on the torus: wrap the position into the tile,
 // then duplicate near edges (shifted by ±W/±H) so the pattern tiles
@@ -203,61 +231,62 @@ function emit(x, y, inner) {
   }
 }
 
-// Main doodles: jittered grid, alternate rows offset half a cell, no clamping
-// (the torus wrap keeps edge rows as dense as interior ones).
+// Main doodles: jittered half-offset grid; the collision pass shrinks any
+// item that would touch a neighbor (and skips it if it cannot fit legibly).
 for (let row = 0; row < ROWS; row++) {
   const offset = row % 2 === 1 ? CELL / 2 : 0;
   for (let col = 0; col < COLS; col++) {
-    const scale = pickTier();
-    const x = offset + col * CELL + CELL / 2 + between(-JITTER, JITTER);
-    const y = row * CELL + CELL / 2 + between(-JITTER, JITTER);
-    const rot = between(-ROT, ROT);
+    const x = (((offset + col * CELL + CELL / 2 + between(-JITTER, JITTER)) % W) + W) % W;
+    const y = (((row * CELL + CELL / 2 + between(-JITTER, JITTER)) % H) + H) % H;
     const [name, svg] = queue.next().value;
+    const ink = INK[name] ?? 13;
+    let scale = pickTier();
+    const allowed = maxAllowedR(x, y);
+    if (allowed < ink * 0.45) continue; // too cramped for a legible doodle
+    scale = Math.min(scale, allowed / ink);
+    const rot = between(-ROT, ROT);
+    placed.push({ x, y, r: ink * scale });
     emit(x, y, {
-      transform: ` rotate(${rot.toFixed(1)}) scale(${scale})`,
+      transform: ` rotate(${rot.toFixed(1)}) scale(${scale.toFixed(2)})`,
       svg: `<!-- ${name} -->${svg}`,
     });
   }
 }
 
-// Grid corners (the gaps between four neighbors): mostly micro fillers, but
-// ~30% get a nested small doodle — the reference packs small items into the
-// holes between big ones rather than leaving them to dots alone.
+// Fillers in the remaining holes: grid corners and cell-edge midpoints, only
+// where they genuinely fit with clearance.
+const fillerSpots = [];
 for (let row = 0; row < ROWS; row++) {
   for (let col = 0; col < COLS; col++) {
-    const r = rnd();
-    const x = col * CELL + between(-4, 4);
-    const y = row * CELL + between(-4, 4);
-    const rot = between(-ROT, ROT);
-    if (r < 0.3) {
-      const [name, svg] = queue.next().value;
-      emit(x, y, {
-        transform: ` rotate(${rot.toFixed(1)}) scale(0.55)`,
-        svg: `<!-- ${name} (nested) -->${svg}`,
-      });
-    } else if (r < FILLER_PROB) {
-      const f = FILLERS[Math.floor(rnd() * FILLERS.length)];
-      emit(x, y, { transform: ` rotate(${rot.toFixed(1)})`, svg: f });
-    }
+    fillerSpots.push([col * CELL, row * CELL]);
+    fillerSpots.push([col * CELL + CELL / 2, row * CELL]);
+    fillerSpots.push([col * CELL, row * CELL + CELL / 2]);
   }
 }
-
-// Cell-edge midpoints: a second filler layer in the gaps between horizontal
-// and vertical neighbors. This is what closes the remaining empty channels.
-for (let row = 0; row < ROWS; row++) {
-  for (let col = 0; col < COLS; col++) {
-    for (const [dx, dy] of [
-      [CELL / 2, 0],
-      [0, CELL / 2],
-    ]) {
-      if (rnd() > 0.7) continue;
-      const x = col * CELL + dx + between(-3, 3);
-      const y = row * CELL + dy + between(-3, 3);
-      const rot = between(-ROT, ROT);
-      const f = FILLERS[Math.floor(rnd() * FILLERS.length)];
-      emit(x, y, { transform: ` rotate(${rot.toFixed(1)})`, svg: f });
-    }
+for (const [fx, fy] of fillerSpots) {
+  if (rnd() > 0.8) continue;
+  const x = ((fx + between(-4, 4)) % W + W) % W;
+  const y = ((fy + between(-4, 4)) % H + H) % H;
+  const allowed = maxAllowedR(x, y);
+  if (allowed < 2.5) continue;
+  const rot = between(-ROT, ROT);
+  // a hole big enough for a small doodle gets one; smaller holes get fillers
+  const [name, svg] = queue.next().value;
+  const ink = INK[name] ?? 13;
+  if (allowed >= ink * 0.45) {
+    const scale = Math.min(0.62, allowed / ink);
+    placed.push({ x, y, r: ink * scale });
+    emit(x, y, {
+      transform: ` rotate(${rot.toFixed(1)}) scale(${scale.toFixed(2)})`,
+      svg: `<!-- ${name} (nested) -->${svg}`,
+    });
+    continue;
   }
+  const candidates = FILLERS.map((svg, i) => [FILLER_R[i], svg]).filter(([r]) => r <= allowed);
+  if (candidates.length === 0) continue;
+  const [r, f] = candidates[Math.floor(rnd() * candidates.length)];
+  placed.push({ x, y, r });
+  emit(x, y, { transform: ` rotate(${rot.toFixed(1)})`, svg: f });
 }
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">

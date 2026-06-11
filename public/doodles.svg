@@ -4,596 +4,405 @@
        (white-on-gray, ref image 1); dark mode uses it as a CSS mask over a
        color gradient (ref image 2). Opacity lives in src/index.css. -->
   <g fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1">
-    <g transform="translate(20.3 25.9) rotate(6.1) scale(1.15)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
-    <g transform="translate(20.3 613.9) rotate(6.1) scale(1.15)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
-    <g transform="translate(440.3 25.9) rotate(6.1) scale(1.15)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
-    <g transform="translate(440.3 613.9) rotate(6.1) scale(1.15)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
-    <g transform="translate(64.4 17.4) rotate(5.2) scale(1.15)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
-    <g transform="translate(64.4 605.4) rotate(5.2) scale(1.15)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
-    <g transform="translate(102.3 24.3) rotate(12.9) scale(1.15)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
-    <g transform="translate(102.3 612.3) rotate(12.9) scale(1.15)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
-    <g transform="translate(142.9 18.0) rotate(-7.5) scale(1.15)"><!-- mat --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
-    <g transform="translate(142.9 606.0) rotate(-7.5) scale(1.15)"><!-- mat --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
-    <g transform="translate(191.2 23.5) rotate(7.0) scale(1.38)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
-    <g transform="translate(191.2 611.5) rotate(7.0) scale(1.38)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
-    <g transform="translate(225.2 27.2) rotate(-2.5) scale(0.82)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
-    <g transform="translate(225.2 615.2) rotate(-2.5) scale(0.82)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
-    <g transform="translate(267.9 15.6) rotate(-17.4) scale(0.82)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
-    <g transform="translate(267.9 603.6) rotate(-17.4) scale(0.82)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
-    <g transform="translate(314.7 22.6) rotate(14.4) scale(1.15)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
-    <g transform="translate(314.7 610.6) rotate(14.4) scale(1.15)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
-    <g transform="translate(360.1 27.1) rotate(-8.0) scale(1.38)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
-    <g transform="translate(360.1 615.1) rotate(-8.0) scale(1.38)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
-    <g transform="translate(394.5 21.3) rotate(11.6) scale(0.82)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(394.5 609.3) rotate(11.6) scale(0.82)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(-25.5 21.3) rotate(11.6) scale(0.82)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(-25.5 609.3) rotate(11.6) scale(0.82)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(48.9 63.9) rotate(15.0) scale(1.38)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
-    <g transform="translate(85.1 60.7) rotate(3.5) scale(1.15)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
-    <g transform="translate(129.2 60.1) rotate(-1.8) scale(1.15)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
-    <g transform="translate(170.7 69.9) rotate(14.0) scale(0.82)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
-    <g transform="translate(210.6 60.1) rotate(-14.4) scale(1.15)"><!-- check --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
-    <g transform="translate(249.4 67.0) rotate(14.6) scale(1.15)"><!-- smiley --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
-    <g transform="translate(293.7 67.5) rotate(-13.3) scale(1.38)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
-    <g transform="translate(331.5 65.9) rotate(7.2) scale(0.82)"><!-- reps --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
-    <g transform="translate(376.8 58.3) rotate(5.6) scale(1.15)"><!-- trophy --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
-    <g transform="translate(415.9 64.8) rotate(13.9) scale(1.15)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
-    <g transform="translate(-4.1 64.8) rotate(13.9) scale(1.15)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
-    <g transform="translate(25.1 103.5) rotate(-13.3) scale(1.15)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
-    <g transform="translate(445.1 103.5) rotate(-13.3) scale(1.15)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
-    <g transform="translate(61.2 98.1) rotate(8.5) scale(0.82)"><!-- stressball --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
-    <g transform="translate(110.3 110.7) rotate(-10.5) scale(1.15)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
-    <g transform="translate(146.8 100.6) rotate(-16.3) scale(1.15)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
-    <g transform="translate(191.9 102.1) rotate(-8.1) scale(0.82)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
-    <g transform="translate(224.4 101.1) rotate(17.8) scale(1.15)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
-    <g transform="translate(279.8 100.3) rotate(-11.8) scale(1.15)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
-    <g transform="translate(312.1 103.5) rotate(-2.4) scale(1.15)"><!-- target --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
-    <g transform="translate(359.6 103.6) rotate(-5.9) scale(1.15)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
-    <g transform="translate(396.6 104.9) rotate(4.0) scale(0.82)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
-    <g transform="translate(-23.4 104.9) rotate(4.0) scale(0.82)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
-    <g transform="translate(43.3 143.3) rotate(-6.3) scale(1.15)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
-    <g transform="translate(81.5 149.4) rotate(-10.0) scale(1.15)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
-    <g transform="translate(128.7 144.4) rotate(-13.5) scale(1.38)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
-    <g transform="translate(161.6 148.1) rotate(-10.5) scale(1.15)"><!-- spiral --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
-    <g transform="translate(208.3 150.0) rotate(14.9) scale(1.15)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
-    <g transform="translate(251.2 142.2) rotate(13.2) scale(0.82)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
-    <g transform="translate(298.8 142.1) rotate(-4.8) scale(1.15)"><!-- reps --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
-    <g transform="translate(330.2 149.1) rotate(8.1) scale(1.38)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
-    <g transform="translate(383.3 146.5) rotate(7.5) scale(0.82)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(-36.7 146.5) rotate(7.5) scale(0.82)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(416.8 141.9) rotate(-16.3) scale(1.38)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
-    <g transform="translate(-3.2 141.9) rotate(-16.3) scale(1.38)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
-    <g transform="translate(20.2 190.0) rotate(7.8) scale(1.15)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
-    <g transform="translate(440.2 190.0) rotate(7.8) scale(1.15)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
-    <g transform="translate(67.0 184.7) rotate(6.0) scale(0.82)"><!-- spiral --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
-    <g transform="translate(104.2 188.6) rotate(-1.5) scale(1.15)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
-    <g transform="translate(144.6 186.3) rotate(-12.7) scale(1.15)"><!-- check --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
-    <g transform="translate(185.7 189.4) rotate(1.7) scale(1.15)"><!-- mat --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
-    <g transform="translate(230.1 183.9) rotate(-17.9) scale(1.15)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
-    <g transform="translate(279.2 183.0) rotate(13.3) scale(1.38)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
-    <g transform="translate(315.0 183.4) rotate(11.6) scale(1.15)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
-    <g transform="translate(355.2 185.2) rotate(7.3) scale(1.38)"><!-- stressball --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
-    <g transform="translate(393.3 195.5) rotate(9.0) scale(1.15)"><!-- smiley --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
-    <g transform="translate(-26.7 195.5) rotate(9.0) scale(1.15)"><!-- smiley --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
-    <g transform="translate(46.1 231.7) rotate(11.0) scale(1.15)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
-    <g transform="translate(79.5 225.1) rotate(-14.5) scale(1.15)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
-    <g transform="translate(122.7 233.4) rotate(6.1) scale(1.38)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
-    <g transform="translate(174.7 224.3) rotate(-3.7) scale(1.15)"><!-- trophy --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
-    <g transform="translate(207.0 235.7) rotate(1.3) scale(1.15)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
-    <g transform="translate(258.2 237.3) rotate(-8.4) scale(1.15)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
-    <g transform="translate(299.0 237.1) rotate(6.7) scale(1.15)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
-    <g transform="translate(340.3 228.4) rotate(-0.2) scale(1.15)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
-    <g transform="translate(378.7 233.6) rotate(2.0) scale(0.82)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
-    <g transform="translate(6.5 237.8) rotate(9.6) scale(1.15)"><!-- target --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
-    <g transform="translate(426.5 237.8) rotate(9.6) scale(1.15)"><!-- target --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
-    <g transform="translate(22.8 275.4) rotate(13.1) scale(1.15)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
-    <g transform="translate(442.8 275.4) rotate(13.1) scale(1.15)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
-    <g transform="translate(68.3 270.4) rotate(13.7) scale(1.15)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
-    <g transform="translate(102.8 273.5) rotate(12.1) scale(1.15)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
-    <g transform="translate(152.1 275.7) rotate(-12.6) scale(1.15)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
-    <g transform="translate(195.5 272.8) rotate(-8.1) scale(1.15)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
-    <g transform="translate(234.8 276.3) rotate(7.7) scale(1.15)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
-    <g transform="translate(277.9 278.6) rotate(1.6) scale(1.38)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
-    <g transform="translate(309.0 273.0) rotate(14.2) scale(1.15)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
-    <g transform="translate(355.9 272.2) rotate(4.2) scale(1.15)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
-    <g transform="translate(399.3 266.6) rotate(-12.0) scale(0.82)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
-    <g transform="translate(-20.7 266.6) rotate(-12.0) scale(0.82)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
-    <g transform="translate(36.7 313.3) rotate(11.8) scale(1.38)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
-    <g transform="translate(456.7 313.3) rotate(11.8) scale(1.38)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
-    <g transform="translate(81.8 317.1) rotate(-16.8) scale(0.82)"><!-- spiral --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
-    <g transform="translate(130.2 313.3) rotate(-10.6) scale(0.82)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
-    <g transform="translate(168.1 309.9) rotate(-15.0) scale(0.82)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
-    <g transform="translate(209.0 320.2) rotate(10.5) scale(0.82)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
-    <g transform="translate(258.3 310.5) rotate(-12.8) scale(1.15)"><!-- target --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
-    <g transform="translate(296.4 310.9) rotate(9.7) scale(1.15)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
-    <g transform="translate(330.9 317.2) rotate(3.7) scale(1.15)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
-    <g transform="translate(373.9 320.9) rotate(0.8) scale(1.15)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
-    <g transform="translate(413.7 321.4) rotate(2.9) scale(0.82)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
-    <g transform="translate(-6.3 321.4) rotate(2.9) scale(0.82)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
-    <g transform="translate(14.7 354.6) rotate(7.6) scale(1.15)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
-    <g transform="translate(434.7 354.6) rotate(7.6) scale(1.15)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
-    <g transform="translate(59.5 362.1) rotate(-1.6) scale(0.82)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
-    <g transform="translate(107.0 357.1) rotate(-11.2) scale(1.38)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
-    <g transform="translate(141.2 351.9) rotate(17.8) scale(0.82)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
-    <g transform="translate(188.6 357.1) rotate(4.3) scale(1.15)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
-    <g transform="translate(233.4 352.2) rotate(17.2) scale(1.15)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
-    <g transform="translate(270.8 352.9) rotate(0.7) scale(0.82)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
-    <g transform="translate(314.2 356.8) rotate(-8.9) scale(0.82)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
-    <g transform="translate(350.5 362.1) rotate(-4.9) scale(1.15)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
-    <g transform="translate(395.5 357.1) rotate(-16.5) scale(1.15)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
-    <g transform="translate(-24.5 357.1) rotate(-16.5) scale(1.15)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
-    <g transform="translate(35.9 404.6) rotate(9.5) scale(1.15)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
-    <g transform="translate(455.9 404.6) rotate(9.5) scale(1.15)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
-    <g transform="translate(88.3 392.8) rotate(3.1) scale(1.15)"><!-- stressball --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
-    <g transform="translate(125.7 399.2) rotate(-0.9) scale(1.15)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
-    <g transform="translate(169.1 392.2) rotate(7.5) scale(1.15)"><!-- reps --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
-    <g transform="translate(212.7 394.6) rotate(-4.7) scale(1.38)"><!-- trophy --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
-    <g transform="translate(258.0 395.9) rotate(4.3) scale(0.82)"><!-- check --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
-    <g transform="translate(293.5 392.6) rotate(2.4) scale(0.82)"><!-- mat --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
-    <g transform="translate(335.2 398.6) rotate(9.1) scale(1.15)"><!-- smiley --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
-    <g transform="translate(381.0 400.3) rotate(16.0) scale(1.38)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
-    <g transform="translate(419.7 392.1) rotate(14.8) scale(0.82)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(-0.3 392.1) rotate(14.8) scale(0.82)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(21.2 440.8) rotate(6.5) scale(1.38)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
-    <g transform="translate(441.2 440.8) rotate(6.5) scale(1.38)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
-    <g transform="translate(64.5 445.9) rotate(5.9) scale(1.15)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
-    <g transform="translate(111.7 447.5) rotate(11.2) scale(0.82)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
-    <g transform="translate(151.4 436.2) rotate(-14.8) scale(0.82)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
-    <g transform="translate(182.5 440.9) rotate(13.5) scale(0.82)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
-    <g transform="translate(234.9 438.6) rotate(12.3) scale(1.15)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
-    <g transform="translate(277.1 440.1) rotate(3.5) scale(1.15)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
-    <g transform="translate(313.5 442.2) rotate(-11.9) scale(0.82)"><!-- check --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
-    <g transform="translate(352.5 443.5) rotate(7.5) scale(0.82)"><!-- spiral --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
-    <g transform="translate(399.7 442.8) rotate(14.3) scale(1.15)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
-    <g transform="translate(-20.3 442.8) rotate(14.3) scale(1.15)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
-    <g transform="translate(35.0 476.8) rotate(-14.6) scale(0.82)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
-    <g transform="translate(455.0 476.8) rotate(-14.6) scale(0.82)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
-    <g transform="translate(77.0 476.5) rotate(0.9) scale(0.82)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
-    <g transform="translate(129.4 484.9) rotate(-17.9) scale(1.38)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
-    <g transform="translate(172.6 480.8) rotate(-10.9) scale(1.15)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
-    <g transform="translate(212.1 476.7) rotate(4.5) scale(0.82)"><!-- stressball --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
-    <g transform="translate(256.9 484.1) rotate(-3.1) scale(1.15)"><!-- reps --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
-    <g transform="translate(292.8 484.3) rotate(-11.0) scale(1.15)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
-    <g transform="translate(338.9 486.3) rotate(-7.9) scale(1.38)"><!-- mat --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
-    <g transform="translate(384.2 482.0) rotate(3.5) scale(0.82)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
-    <g transform="translate(-35.8 482.0) rotate(3.5) scale(0.82)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
-    <g transform="translate(2.3 489.7) rotate(14.1) scale(1.15)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
-    <g transform="translate(422.3 489.7) rotate(14.1) scale(1.15)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
-    <g transform="translate(18.8 530.7) rotate(0.3) scale(1.15)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
-    <g transform="translate(438.8 530.7) rotate(0.3) scale(1.15)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
-    <g transform="translate(59.3 520.1) rotate(-6.5) scale(0.82)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
-    <g transform="translate(105.1 531.7) rotate(-17.2) scale(0.82)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
-    <g transform="translate(148.4 531.8) rotate(-9.0) scale(1.15)"><!-- trophy --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
-    <g transform="translate(185.1 531.2) rotate(-7.0) scale(0.82)"><!-- target --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
-    <g transform="translate(229.5 521.0) rotate(-7.6) scale(1.15)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
-    <g transform="translate(274.8 522.4) rotate(0.4) scale(0.82)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
-    <g transform="translate(314.2 520.5) rotate(2.5) scale(1.15)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
-    <g transform="translate(359.2 525.6) rotate(14.0) scale(0.82)"><!-- smiley --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
-    <g transform="translate(404.0 524.2) rotate(4.7) scale(1.15)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
-    <g transform="translate(-16.0 524.2) rotate(4.7) scale(1.15)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
-    <g transform="translate(43.2 569.2) rotate(4.5) scale(1.15)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
-    <g transform="translate(43.2 -18.8) rotate(4.5) scale(1.15)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
-    <g transform="translate(79.4 560.1) rotate(7.6) scale(1.15)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
-    <g transform="translate(79.4 -27.9) rotate(7.6) scale(1.15)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
-    <g transform="translate(123.6 560.3) rotate(-13.5) scale(1.15)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
-    <g transform="translate(123.6 -27.7) rotate(-13.5) scale(1.15)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
-    <g transform="translate(164.9 560.6) rotate(-1.5) scale(1.15)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
-    <g transform="translate(164.9 -27.4) rotate(-1.5) scale(1.15)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
-    <g transform="translate(204.9 569.9) rotate(-10.3) scale(1.15)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
-    <g transform="translate(204.9 -18.1) rotate(-10.3) scale(1.15)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
-    <g transform="translate(253.7 564.8) rotate(-5.4) scale(1.15)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
-    <g transform="translate(253.7 -23.2) rotate(-5.4) scale(1.15)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
-    <g transform="translate(293.5 571.4) rotate(-15.0) scale(1.15)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
-    <g transform="translate(293.5 -16.6) rotate(-15.0) scale(1.15)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
-    <g transform="translate(333.8 572.4) rotate(12.9) scale(1.38)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(333.8 -15.6) rotate(12.9) scale(1.38)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(377.5 562.4) rotate(5.8) scale(0.82)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
-    <g transform="translate(377.5 -25.6) rotate(5.8) scale(0.82)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
-    <g transform="translate(3.5 573.2) rotate(-3.4) scale(1.15)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
-    <g transform="translate(3.5 -14.8) rotate(-3.4) scale(1.15)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
-    <g transform="translate(423.5 573.2) rotate(-3.4) scale(1.15)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
-    <g transform="translate(423.5 -14.8) rotate(-3.4) scale(1.15)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
+    <g transform="translate(22.2 20.4) rotate(-16.1) scale(1.38)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(22.2 608.4) rotate(-16.1) scale(1.38)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(442.2 20.4) rotate(-16.1) scale(1.38)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(442.2 608.4) rotate(-16.1) scale(1.38)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(63.7 22.2) rotate(5.2) scale(1.15)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
+    <g transform="translate(63.7 610.2) rotate(5.2) scale(1.15)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
+    <g transform="translate(101.5 18.6) rotate(12.9) scale(0.82)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
+    <g transform="translate(101.5 606.6) rotate(12.9) scale(0.82)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
+    <g transform="translate(147.1 17.5) rotate(-7.5) scale(1.15)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
+    <g transform="translate(147.1 605.5) rotate(-7.5) scale(1.15)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
+    <g transform="translate(183.9 22.9) rotate(7.0) scale(1.15)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(183.9 610.9) rotate(7.0) scale(1.15)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(236.1 16.1) rotate(-2.5) scale(0.82)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
+    <g transform="translate(236.1 604.1) rotate(-2.5) scale(0.82)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
+    <g transform="translate(278.3 16.6) rotate(-17.4) scale(1.38)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
+    <g transform="translate(278.3 604.6) rotate(-17.4) scale(1.38)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
+    <g transform="translate(313.3 20.8) rotate(14.4) scale(1.15)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
+    <g transform="translate(313.3 608.8) rotate(14.4) scale(1.15)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
+    <g transform="translate(351.9 23.6) rotate(-8.0) scale(0.82)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
+    <g transform="translate(351.9 611.6) rotate(-8.0) scale(0.82)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
+    <g transform="translate(401.5 17.2) rotate(11.6) scale(1.15)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(401.5 605.2) rotate(11.6) scale(1.15)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(-18.5 17.2) rotate(11.6) scale(1.15)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(-18.5 605.2) rotate(11.6) scale(1.15)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(37.4 68.9) rotate(15.0) scale(1.15)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
+    <g transform="translate(83.2 63.9) rotate(3.5) scale(1.15)"><!-- check --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(123.9 65.8) rotate(-1.8) scale(1.15)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
+    <g transform="translate(172.1 65.3) rotate(14.0) scale(0.82)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
+    <g transform="translate(209.2 63.5) rotate(-14.4) scale(1.15)"><!-- spiral --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(254.4 60.8) rotate(14.6) scale(0.82)"><!-- target --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
+    <g transform="translate(289.1 62.7) rotate(-13.3) scale(0.82)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
+    <g transform="translate(341.7 59.1) rotate(7.2) scale(0.82)"><!-- reps --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
+    <g transform="translate(374.7 62.0) rotate(5.6) scale(1.35)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
+    <g transform="translate(418.0 59.5) rotate(13.9) scale(1.15)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
+    <g transform="translate(-2.0 59.5) rotate(13.9) scale(1.15)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
+    <g transform="translate(18.9 108.5) rotate(-13.3) scale(1.15)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(438.9 108.5) rotate(-13.3) scale(1.15)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(67.4 103.4) rotate(8.5) scale(1.38)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
+    <g transform="translate(106.6 109.5) rotate(-10.5) scale(0.82)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
+    <g transform="translate(148.2 104.9) rotate(-16.3) scale(1.38)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(191.5 107.5) rotate(-8.1) scale(1.15)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
+    <g transform="translate(229.0 99.3) rotate(17.8) scale(1.15)"><!-- smiley --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
+    <g transform="translate(273.9 110.9) rotate(-11.8) scale(1.38)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
+    <g transform="translate(315.7 102.5) rotate(-2.4) scale(1.15)"><!-- stressball --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
+    <g transform="translate(356.0 107.2) rotate(-5.9) scale(1.15)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
+    <g transform="translate(403.7 102.9) rotate(4.0) scale(1.15)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
+    <g transform="translate(-16.3 102.9) rotate(4.0) scale(1.15)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
+    <g transform="translate(42.6 148.1) rotate(-6.3) scale(1.15)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
+    <g transform="translate(81.6 144.8) rotate(-10.0) scale(1.15)"><!-- mat --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
+    <g transform="translate(122.0 149.3) rotate(-13.5) scale(1.15)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
+    <g transform="translate(165.8 141.5) rotate(-10.5) scale(1.15)"><!-- trophy --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
+    <g transform="translate(209.8 145.6) rotate(14.9) scale(0.82)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
+    <g transform="translate(255.7 146.3) rotate(4.5) scale(0.82)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
+    <g transform="translate(292.0 151.1) rotate(-4.8) scale(1.38)"><!-- reps --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
+    <g transform="translate(330.2 142.0) rotate(8.1) scale(1.15)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
+    <g transform="translate(383.5 151.6) rotate(7.5) scale(1.15)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
+    <g transform="translate(415.7 144.3) rotate(-16.3) scale(1.38)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
+    <g transform="translate(-4.3 144.3) rotate(-16.3) scale(1.38)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
+    <g transform="translate(18.5 188.3) rotate(7.8) scale(1.15)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
+    <g transform="translate(438.5 188.3) rotate(7.8) scale(1.15)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
+    <g transform="translate(66.5 192.4) rotate(6.0) scale(1.38)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
+    <g transform="translate(105.2 188.3) rotate(-1.5) scale(1.15)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
+    <g transform="translate(146.1 187.0) rotate(-12.7) scale(1.15)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
+    <g transform="translate(189.1 186.2) rotate(1.7) scale(1.15)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
+    <g transform="translate(232.8 188.2) rotate(-17.9) scale(1.38)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
+    <g transform="translate(268.8 194.3) rotate(13.3) scale(1.30)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
+    <g transform="translate(314.2 189.0) rotate(11.6) scale(1.38)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(351.7 187.4) rotate(7.3) scale(1.15)"><!-- target --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
+    <g transform="translate(399.8 184.1) rotate(9.0) scale(0.82)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(-20.2 184.1) rotate(9.0) scale(0.82)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(43.9 234.6) rotate(11.0) scale(1.15)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
+    <g transform="translate(84.3 227.1) rotate(-14.5) scale(1.19)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
+    <g transform="translate(120.7 228.2) rotate(6.1) scale(1.11)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
+    <g transform="translate(168.7 236.7) rotate(-3.7) scale(1.38)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(208.1 228.4) rotate(1.3) scale(0.82)"><!-- mat --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
+    <g transform="translate(248.5 236.3) rotate(-8.4) scale(0.82)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
+    <g transform="translate(294.2 235.3) rotate(6.7) scale(0.82)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(336.8 234.7) rotate(-0.2) scale(1.15)"><!-- trophy --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
+    <g transform="translate(381.0 231.6) rotate(2.0) scale(1.15)"><!-- smiley --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
+    <g transform="translate(0.6 236.6) rotate(9.6) scale(0.82)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
+    <g transform="translate(420.6 236.6) rotate(9.6) scale(0.82)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
+    <g transform="translate(18.7 274.6) rotate(13.1) scale(1.15)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
+    <g transform="translate(438.7 274.6) rotate(13.1) scale(1.15)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
+    <g transform="translate(61.6 277.5) rotate(13.7) scale(1.15)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
+    <g transform="translate(104.0 271.1) rotate(12.1) scale(1.15)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
+    <g transform="translate(148.4 277.4) rotate(-12.6) scale(1.15)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
+    <g transform="translate(186.4 278.5) rotate(-8.1) scale(1.15)"><!-- stressball --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
+    <g transform="translate(232.6 276.3) rotate(7.7) scale(0.82)"><!-- check --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(269.2 277.2) rotate(1.6) scale(0.82)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(314.7 267.9) rotate(14.2) scale(1.15)"><!-- spiral --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(359.1 272.1) rotate(4.2) scale(1.15)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
+    <g transform="translate(401.6 273.2) rotate(-12.0) scale(1.35)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
+    <g transform="translate(-18.4 273.2) rotate(-12.0) scale(1.35)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
+    <g transform="translate(37.2 310.5) rotate(2.9) scale(0.82)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
+    <g transform="translate(88.1 313.1) rotate(-16.8) scale(1.15)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
+    <g transform="translate(128.8 318.6) rotate(-10.6) scale(1.15)"><!-- target --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
+    <g transform="translate(171.4 315.1) rotate(-15.0) scale(1.38)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(213.3 314.2) rotate(10.5) scale(0.82)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
+    <g transform="translate(251.9 320.4) rotate(-12.8) scale(1.38)"><!-- spiral --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(294.6 317.1) rotate(9.7) scale(1.15)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
+    <g transform="translate(332.9 310.6) rotate(3.7) scale(1.15)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
+    <g transform="translate(378.7 311.5) rotate(0.8) scale(0.82)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
+    <g transform="translate(2.9 309.6) rotate(2.9) scale(0.82)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
+    <g transform="translate(422.9 309.6) rotate(2.9) scale(0.82)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
+    <g transform="translate(18.4 351.6) rotate(7.6) scale(1.15)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
+    <g transform="translate(438.4 351.6) rotate(7.6) scale(1.15)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
+    <g transform="translate(66.1 354.0) rotate(-1.6) scale(0.82)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
+    <g transform="translate(101.2 358.7) rotate(-11.2) scale(1.15)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
+    <g transform="translate(151.2 352.0) rotate(17.8) scale(1.38)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(185.5 356.7) rotate(4.3) scale(1.15)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(230.8 359.1) rotate(17.2) scale(1.38)"><!-- mat --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
+    <g transform="translate(277.0 355.2) rotate(0.7) scale(1.15)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
+    <g transform="translate(318.1 356.4) rotate(-8.9) scale(1.15)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
+    <g transform="translate(357.0 351.4) rotate(-4.9) scale(0.82)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
+    <g transform="translate(398.1 354.0) rotate(-16.5) scale(1.15)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
+    <g transform="translate(-21.9 354.0) rotate(-16.5) scale(1.15)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
+    <g transform="translate(44.0 393.8) rotate(9.5) scale(0.82)"><!-- reps --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
+    <g transform="translate(85.9 402.7) rotate(3.1) scale(1.38)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(126.6 398.8) rotate(-0.9) scale(1.15)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
+    <g transform="translate(167.4 399.9) rotate(7.5) scale(1.38)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
+    <g transform="translate(204.0 401.3) rotate(-4.7) scale(1.32)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
+    <g transform="translate(254.7 404.2) rotate(4.3) scale(1.15)"><!-- trophy --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
+    <g transform="translate(298.8 398.5) rotate(2.4) scale(1.38)"><!-- smiley --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
+    <g transform="translate(335.9 398.3) rotate(9.1) scale(1.15)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
+    <g transform="translate(373.5 401.6) rotate(16.0) scale(1.15)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(4.0 398.8) rotate(14.8) scale(1.38)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
+    <g transform="translate(424.0 398.8) rotate(14.8) scale(1.38)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
+    <g transform="translate(15.7 441.2) rotate(6.5) scale(1.15)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
+    <g transform="translate(435.7 441.2) rotate(6.5) scale(1.15)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
+    <g transform="translate(63.7 442.3) rotate(5.9) scale(0.82)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
+    <g transform="translate(110.8 446.8) rotate(11.2) scale(0.82)"><!-- check --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(152.5 444.7) rotate(-14.8) scale(1.38)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
+    <g transform="translate(194.9 435.4) rotate(13.5) scale(1.15)"><!-- stressball --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
+    <g transform="translate(233.2 444.3) rotate(-15.3) scale(1.15)"><!-- hourglass --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(274.7 444.5) rotate(3.5) scale(1.15)"><!-- dowel --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
+    <g transform="translate(319.0 439.7) rotate(-11.9) scale(1.15)"><!-- zzz --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
+    <g transform="translate(362.7 437.2) rotate(7.5) scale(1.15)"><!-- bubble --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
+    <g transform="translate(399.8 441.6) rotate(14.3) scale(1.05)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
+    <g transform="translate(-20.2 441.6) rotate(14.3) scale(1.05)"><!-- bowl --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
+    <g transform="translate(45.3 477.0) rotate(-14.6) scale(1.38)"><!-- lightning --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
+    <g transform="translate(88.9 477.0) rotate(0.9) scale(1.38)"><!-- spiral --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(120.7 485.9) rotate(-17.9) scale(1.06)"><!-- band --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
+    <g transform="translate(166.9 486.9) rotate(-10.9) scale(1.15)"><!-- reps --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
+    <g transform="translate(212.9 484.8) rotate(4.5) scale(1.38)"><!-- smiley --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
+    <g transform="translate(253.1 487.2) rotate(-3.1) scale(1.15)"><!-- roller --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
+    <g transform="translate(295.1 481.9) rotate(-11.0) scale(1.15)"><!-- confetti --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
+    <g transform="translate(331.6 485.5) rotate(-7.9) scale(0.82)"><!-- target --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
+    <g transform="translate(383.1 488.3) rotate(3.5) scale(1.15)"><!-- mat --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
+    <g transform="translate(418.1 485.0) rotate(14.1) scale(0.82)"><!-- check --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(-1.9 485.0) rotate(14.1) scale(0.82)"><!-- check --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(23.3 523.1) rotate(0.3) scale(0.82)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
+    <g transform="translate(443.3 523.1) rotate(0.3) scale(0.82)"><!-- dumbbell --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
+    <g transform="translate(68.0 521.8) rotate(-6.5) scale(1.38)"><!-- sun --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
+    <g transform="translate(110.8 525.1) rotate(-17.2) scale(0.82)"><!-- trophy --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
+    <g transform="translate(148.8 526.2) rotate(-9.0) scale(0.82)"><!-- fivek --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
+    <g transform="translate(194.6 521.7) rotate(-7.0) scale(0.82)"><!-- banana --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(231.1 523.7) rotate(-7.6) scale(1.15)"><!-- stressball --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
+    <g transform="translate(278.3 526.5) rotate(0.4) scale(1.15)"><!-- moon --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
+    <g transform="translate(313.4 524.4) rotate(2.5) scale(1.38)"><!-- mwf --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
+    <g transform="translate(361.8 526.9) rotate(14.0) scale(1.15)"><!-- shoe --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
+    <g transform="translate(400.0 529.3) rotate(4.7) scale(1.15)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
+    <g transform="translate(-20.0 529.3) rotate(4.7) scale(1.15)"><!-- heart --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
+    <g transform="translate(41.5 568.1) rotate(4.5) scale(1.15)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
+    <g transform="translate(41.5 -19.9) rotate(4.5) scale(1.15)"><!-- mug --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
+    <g transform="translate(82.9 563.1) rotate(7.6) scale(1.38)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
+    <g transform="translate(82.9 -24.9) rotate(7.6) scale(1.38)"><!-- towel --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
+    <g transform="translate(124.6 564.9) rotate(-13.5) scale(1.38)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(124.6 -23.1) rotate(-13.5) scale(1.38)"><!-- bottle --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(169.8 564.4) rotate(-1.5) scale(1.38)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
+    <g transform="translate(169.8 -23.6) rotate(-1.5) scale(1.38)"><!-- stopwatch --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
+    <g transform="translate(212.4 562.6) rotate(-10.3) scale(0.82)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(212.4 -25.4) rotate(-10.3) scale(0.82)"><!-- sparkle --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(249.3 568.4) rotate(-5.4) scale(1.15)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
+    <g transform="translate(249.3 -19.6) rotate(-5.4) scale(1.15)"><!-- kettlebell --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
+    <g transform="translate(295.4 566.6) rotate(-15.0) scale(0.82)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
+    <g transform="translate(295.4 -21.4) rotate(-15.0) scale(0.82)"><!-- breath --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
+    <g transform="translate(332.4 565.1) rotate(12.9) scale(0.82)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(332.4 -22.9) rotate(12.9) scale(0.82)"><!-- footprints --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(383.4 566.6) rotate(5.8) scale(1.38)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
+    <g transform="translate(383.4 -21.4) rotate(5.8) scale(1.38)"><!-- jumprope --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
+    <g transform="translate(1.3 570.0) rotate(-3.4) scale(0.82)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
+    <g transform="translate(1.3 -18.0) rotate(-3.4) scale(0.82)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
+    <g transform="translate(421.3 570.0) rotate(-3.4) scale(0.82)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
+    <g transform="translate(421.3 -18.0) rotate(-3.4) scale(0.82)"><!-- bicep --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
     <g transform="translate(417.3 3.2) rotate(2.6)"><circle r="3.5"/></g>
     <g transform="translate(417.3 591.2) rotate(2.6)"><circle r="3.5"/></g>
     <g transform="translate(-2.7 3.2) rotate(2.6)"><circle r="3.5"/></g>
     <g transform="translate(-2.7 591.2) rotate(2.6)"><circle r="3.5"/></g>
-    <g transform="translate(44.9 584.8) rotate(1.2) scale(0.55)"><!-- moon (nested) --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
-    <g transform="translate(44.9 -3.2) rotate(1.2) scale(0.55)"><!-- moon (nested) --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
-    <g transform="translate(82.7 2.1) rotate(1.0) scale(0.55)"><!-- stopwatch (nested) --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
-    <g transform="translate(82.7 590.1) rotate(1.0) scale(0.55)"><!-- stopwatch (nested) --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
-    <g transform="translate(125.0 4.0) rotate(8.1)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(125.0 592.0) rotate(8.1)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(170.0 586.3) rotate(3.0)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(170.0 -1.7) rotate(3.0)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(212.8 587.0) rotate(-13.8) scale(0.55)"><!-- reps (nested) --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
-    <g transform="translate(212.8 -1.0) rotate(-13.8) scale(0.55)"><!-- reps (nested) --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
-    <g transform="translate(295.0 3.0) rotate(-11.2) scale(0.55)"><!-- dumbbell (nested) --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
-    <g transform="translate(295.0 591.0) rotate(-11.2) scale(0.55)"><!-- dumbbell (nested) --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
-    <g transform="translate(374.2 587.2) rotate(-16.1)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(374.2 -0.8) rotate(-16.1)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(419.2 38.1) rotate(16.6)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(-0.8 38.1) rotate(16.6)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(39.0 39.5) rotate(6.8) scale(0.55)"><!-- jumprope (nested) --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
-    <g transform="translate(87.8 44.8) rotate(13.9)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(126.1 44.6) rotate(-10.4)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(206.1 45.6) rotate(6.2) scale(0.55)"><!-- mug (nested) --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
-    <g transform="translate(248.7 43.1) rotate(6.8)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(296.8 39.8) rotate(0.9) scale(0.55)"><!-- spiral (nested) --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
-    <g transform="translate(332.6 40.2) rotate(14.4)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(375.6 38.3) rotate(11.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(39.2 82.9) rotate(-7.8)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(84.4 84.8) rotate(5.7)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(129.1 85.5) rotate(4.5) scale(0.55)"><!-- footprints (nested) --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
-    <g transform="translate(170.5 81.8) rotate(-2.7)"><circle r="3.5"/></g>
-    <g transform="translate(252.5 83.4) rotate(-3.4)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(295.8 80.6) rotate(4.4)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(339.0 86.8) rotate(-0.5)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(377.7 85.2) rotate(-3.6) scale(0.55)"><!-- trophy (nested) --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
-    <g transform="translate(3.8 129.4) rotate(-2.4) scale(0.55)"><!-- sun (nested) --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
-    <g transform="translate(423.8 129.4) rotate(-2.4) scale(0.55)"><!-- sun (nested) --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
-    <g transform="translate(127.8 124.8) rotate(16.5)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(208.9 124.2) rotate(-10.5) scale(0.55)"><!-- zzz (nested) --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
-    <g transform="translate(253.7 123.2) rotate(-8.7) scale(0.55)"><!-- lightning (nested) --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
-    <g transform="translate(296.4 122.7) rotate(8.4) scale(0.55)"><!-- bubble (nested) --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
-    <g transform="translate(335.6 124.7) rotate(5.1)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(380.3 129.0) rotate(8.6)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(418.9 168.8) rotate(17.3)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(-1.1 168.8) rotate(17.3)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(41.3 166.3) rotate(6.5)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(85.2 170.3) rotate(2.2) scale(0.55)"><!-- heart (nested) --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
-    <g transform="translate(167.1 170.8) rotate(-8.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(206.2 165.0) rotate(8.2)"><circle r="3.5"/></g>
-    <g transform="translate(249.4 167.1) rotate(16.9) scale(0.55)"><!-- breath (nested) --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
-    <g transform="translate(295.7 170.9) rotate(11.2)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(380.0 171.1) rotate(-0.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(1.1 208.2) rotate(14.1)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(421.1 208.2) rotate(14.1)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(43.0 210.1) rotate(14.9)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(128.7 207.9) rotate(-13.7)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(168.5 212.9) rotate(-3.3)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(206.4 208.3) rotate(16.8)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(252.3 207.6) rotate(-14.9)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(292.3 214.0) rotate(5.8) scale(0.55)"><!-- stressball (nested) --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
-    <g transform="translate(334.4 207.7) rotate(-9.9) scale(0.55)"><!-- bottle (nested) --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
-    <g transform="translate(417.4 252.6) rotate(-1.4)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(-2.6 252.6) rotate(-1.4)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(41.9 251.8) rotate(-0.4)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(85.5 254.5) rotate(4.2) scale(0.55)"><!-- towel (nested) --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
-    <g transform="translate(124.6 249.4) rotate(13.4) scale(0.55)"><!-- sparkle (nested) --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
-    <g transform="translate(168.2 254.0) rotate(-8.0) scale(0.55)"><!-- band (nested) --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
-    <g transform="translate(210.0 248.6) rotate(10.5) scale(0.55)"><!-- check (nested) --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
-    <g transform="translate(249.9 253.0) rotate(2.2)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(375.9 254.5) rotate(-1.3) scale(0.55)"><!-- bicep (nested) --><path d="M-11 11 q-1 -13 7 -15 l1 -5 q0 -2 2 -2 l4 1 q2 1 1 3 l-1 5 q8 3 7 13"/><circle cx="3" cy="-9" r="2.2"/></g>
-    <g transform="translate(418.3 295.0) rotate(8.3) scale(0.55)"><!-- fivek (nested) --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
-    <g transform="translate(-1.7 295.0) rotate(8.3) scale(0.55)"><!-- fivek (nested) --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
-    <g transform="translate(45.7 293.9) rotate(12.9)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(86.8 292.9) rotate(-11.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(127.0 292.2) rotate(16.9)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(171.8 291.9) rotate(10.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(210.1 295.1) rotate(18.0)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(254.5 298.0) rotate(10.9)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(297.2 293.0) rotate(2.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(333.6 295.9) rotate(-10.4)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(380.2 292.4) rotate(-17.3) scale(0.55)"><!-- roller (nested) --><ellipse cx="-10" cy="0" rx="4" ry="8"/><path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/></g>
-    <g transform="translate(417.5 339.5) rotate(16.9) scale(0.55)"><!-- hourglass (nested) --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
-    <g transform="translate(-2.5 339.5) rotate(16.9) scale(0.55)"><!-- hourglass (nested) --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
-    <g transform="translate(40.6 339.2) rotate(8.8)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(81.4 336.6) rotate(14.3)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(166.1 335.3) rotate(-9.8) scale(0.55)"><!-- shoe (nested) --><path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/><path d="M-5 -2 l3 3 M-1 -4 l3 3"/></g>
-    <g transform="translate(255.3 339.6) rotate(7.7)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(294.1 339.1) rotate(-3.6) scale(0.55)"><!-- bowl (nested) --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
-    <g transform="translate(375.0 337.0) rotate(13.5)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(416.3 375.6) rotate(-9.3) scale(0.55)"><!-- target (nested) --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
-    <g transform="translate(-3.7 375.6) rotate(-9.3) scale(0.55)"><!-- target (nested) --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
-    <g transform="translate(84.0 375.8) rotate(-8.5)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(125.8 381.8) rotate(1.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(210.4 381.8) rotate(-6.3) scale(0.55)"><!-- banana (nested) --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
-    <g transform="translate(249.8 377.8) rotate(-3.5) scale(0.55)"><!-- dowel (nested) --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
-    <g transform="translate(294.2 377.6) rotate(-15.5)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(333.1 374.2) rotate(-7.8)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(381.4 381.0) rotate(4.7)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(417.8 423.3) rotate(-10.8)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(-2.2 423.3) rotate(-10.8)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(84.6 418.0) rotate(-0.3)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(125.7 417.1) rotate(-0.2)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(166.9 418.6) rotate(-9.3) scale(0.55)"><!-- smiley (nested) --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
-    <g transform="translate(206.3 419.5) rotate(11.7)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(248.7 420.5) rotate(-13.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(336.6 420.0) rotate(11.7)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(375.9 421.5) rotate(15.4)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(2.4 463.1) rotate(-11.3)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(422.4 463.1) rotate(-11.3)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(45.3 463.7) rotate(-0.6) scale(0.55)"><!-- mat (nested) --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
-    <g transform="translate(82.3 462.8) rotate(13.5)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(130.0 465.0) rotate(8.4)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(171.4 459.9) rotate(-14.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(208.2 464.7) rotate(12.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(255.5 460.7) rotate(3.9) scale(0.55)"><!-- mwf (nested) --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
-    <g transform="translate(293.9 464.4) rotate(8.3)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(333.4 458.8) rotate(-0.3)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(378.4 462.8) rotate(15.4)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(418.3 501.3) rotate(-16.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(-1.7 501.3) rotate(-16.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(38.5 500.4) rotate(-15.2)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(83.6 500.8) rotate(8.6)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(125.8 503.0) rotate(-14.9)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(164.7 501.3) rotate(-15.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(211.8 505.7) rotate(-4.2) scale(0.55)"><!-- kettlebell (nested) --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
-    <g transform="translate(251.2 506.0) rotate(-13.8) scale(0.55)"><!-- confetti (nested) --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
-    <g transform="translate(293.5 507.6) rotate(-3.4) scale(0.55)"><!-- bottle (nested) --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
-    <g transform="translate(333.2 500.8) rotate(10.8) scale(0.55)"><!-- dumbbell (nested) --><path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/></g>
-    <g transform="translate(374.2 506.1) rotate(8.9)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(1.2 547.8) rotate(13.7)"><circle r="3.5"/></g>
-    <g transform="translate(421.2 547.8) rotate(13.7)"><circle r="3.5"/></g>
-    <g transform="translate(41.4 546.1) rotate(16.9)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(81.5 545.6) rotate(-12.3)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(169.8 546.5) rotate(-14.4) scale(0.55)"><!-- breath (nested) --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
-    <g transform="translate(210.3 543.2) rotate(17.8) scale(0.55)"><!-- sparkle (nested) --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
-    <g transform="translate(292.0 544.2) rotate(-7.4)"><circle r="3.5"/></g>
-    <g transform="translate(381.4 545.4) rotate(1.3) scale(0.55)"><!-- mwf (nested) --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
-    <g transform="translate(23.6 587.4) rotate(8.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(23.6 -0.6) rotate(8.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(443.6 587.4) rotate(8.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(443.6 -0.6) rotate(8.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(417.3 19.8) rotate(-13.8)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(417.3 607.8) rotate(-13.8)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(-2.7 19.8) rotate(-13.8)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(-2.7 607.8) rotate(-13.8)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(103.6 586.8) rotate(2.6)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(103.6 -1.2) rotate(2.6)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(86.7 23.6) rotate(-16.3)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(86.7 611.6) rotate(-16.3)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(124.4 18.2) rotate(11.2)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(124.4 606.2) rotate(11.2)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(166.8 19.9) rotate(-10.5)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(166.8 607.9) rotate(-10.5)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(209.2 18.8) rotate(-11.2)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(209.2 606.8) rotate(-11.2)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(275.8 586.6) rotate(-6.5)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(275.8 -1.4) rotate(-6.5)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(254.4 21.2) rotate(7.1)"><circle r="3.5"/></g>
-    <g transform="translate(254.4 609.2) rotate(7.1)"><circle r="3.5"/></g>
-    <g transform="translate(291.9 22.8) rotate(5.5)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(291.9 610.8) rotate(5.5)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(354.5 3.0) rotate(7.0)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(354.5 591.0) rotate(7.0)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(397.9 585.7) rotate(12.0)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(397.9 -2.3) rotate(12.0)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(-22.1 585.7) rotate(12.0)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(-22.1 -2.3) rotate(12.0)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(379.2 20.8) rotate(-5.5)"><circle r="3.5"/></g>
-    <g transform="translate(379.2 608.8) rotate(-5.5)"><circle r="3.5"/></g>
-    <g transform="translate(21.6 43.3) rotate(7.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(441.6 43.3) rotate(7.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(419.9 64.2) rotate(-14.7)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(-0.1 64.2) rotate(-14.7)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(64.6 42.6) rotate(1.4)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(39.0 64.4) rotate(-13.9)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(81.0 65.4) rotate(12.8)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(149.6 41.5) rotate(-12.4)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(125.0 61.1) rotate(15.0)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(191.3 41.1) rotate(-7.2)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(233.5 40.1) rotate(12.1)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(274.9 44.3) rotate(0.2)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(249.6 65.0) rotate(16.7)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(294.1 64.1) rotate(-13.0)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(357.8 40.0) rotate(-14.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(333.9 62.1) rotate(11.2)"><circle r="3.5"/></g>
-    <g transform="translate(396.2 39.7) rotate(15.4)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(-23.8 39.7) rotate(15.4)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(19.5 82.5) rotate(1.9)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(439.5 82.5) rotate(1.9)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(64.1 83.3) rotate(4.3)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(42.8 107.7) rotate(-11.8)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(144.3 84.3) rotate(6.1)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(191.0 83.6) rotate(-13.1)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(232.3 84.8) rotate(-2.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(211.9 103.5) rotate(6.5)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(271.0 86.4) rotate(0.1)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(317.2 84.5) rotate(-16.8)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(296.4 103.6) rotate(2.1)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(354.4 82.7) rotate(1.2)"><circle r="3.5"/></g>
-    <g transform="translate(334.1 107.0) rotate(-12.3)"><circle r="3.5"/></g>
-    <g transform="translate(376.9 102.3) rotate(3.7)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(0.7 148.8) rotate(-13.2)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(420.7 148.8) rotate(-13.2)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(62.5 125.2) rotate(3.6)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(41.9 146.5) rotate(8.1)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(85.8 147.2) rotate(15.4)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(149.3 128.4) rotate(-16.7)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(189.3 125.7) rotate(-8.1)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(170.4 145.7) rotate(-8.5)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(229.1 127.3) rotate(-6.3)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(212.5 146.5) rotate(-10.5)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(274.5 127.8) rotate(-0.3)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(249.3 147.4) rotate(14.5)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(316.9 126.9) rotate(6.9)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(292.6 149.2) rotate(-13.9)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(337.5 148.0) rotate(-3.4)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(398.4 124.9) rotate(15.7)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(-21.6 124.9) rotate(15.7)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(379.9 144.2) rotate(14.2)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(18.1 170.8) rotate(-11.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(438.1 170.8) rotate(-11.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(418.2 191.8) rotate(12.8)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(-1.8 191.8) rotate(12.8)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(60.1 170.9) rotate(8.6)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(107.2 170.7) rotate(6.1)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(147.3 168.3) rotate(-7.0)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(125.5 187.0) rotate(8.7)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(190.1 168.2) rotate(4.5)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(165.6 187.2) rotate(-13.5)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(229.4 165.6) rotate(14.4)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(211.2 188.8) rotate(12.6)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(275.6 170.7) rotate(12.5)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(251.0 188.9) rotate(6.0)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(316.0 167.3) rotate(-1.9)"><circle r="3.5"/></g>
-    <g transform="translate(292.1 188.6) rotate(-13.8)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(355.4 168.5) rotate(-16.2)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(333.8 187.5) rotate(8.0)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(377.2 189.0) rotate(-13.1)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(18.6 207.8) rotate(-7.5)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(438.6 207.8) rotate(-7.5)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(1.3 229.3) rotate(-9.9)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(421.3 229.3) rotate(-9.9)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(65.5 209.2) rotate(-11.4)"><circle r="3.5"/></g>
-    <g transform="translate(43.5 229.8) rotate(17.6)"><circle r="3.5"/></g>
-    <g transform="translate(107.0 211.1) rotate(4.8)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(147.9 210.7) rotate(6.9)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(170.9 230.0) rotate(-8.0)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(233.9 209.9) rotate(-13.1)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(208.2 233.0) rotate(3.8)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(315.4 209.6) rotate(-12.4)"><circle r="3.5"/></g>
-    <g transform="translate(291.5 231.6) rotate(2.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(355.9 207.8) rotate(15.5)"><circle r="3.5"/></g>
-    <g transform="translate(333.8 229.6) rotate(9.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(401.6 212.7) rotate(2.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(-18.4 212.7) rotate(2.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(376.4 231.3) rotate(-17.6)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(22.5 254.8) rotate(-16.3)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(442.5 254.8) rotate(-16.3)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(417.6 273.9) rotate(-14.3)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(-2.4 273.9) rotate(-14.3)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(64.2 251.8) rotate(-0.6)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(82.1 275.3) rotate(10.9)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(147.3 250.9) rotate(-8.4)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(168.2 274.4) rotate(-17.8)"><circle r="3.5"/></g>
-    <g transform="translate(228.9 254.3) rotate(0.9)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(208.4 274.6) rotate(-17.5)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(274.9 251.9) rotate(-17.2)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(250.6 270.8) rotate(11.3)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(317.9 251.1) rotate(11.8)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(359.5 250.8) rotate(-12.5)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(335.0 275.3) rotate(15.5)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(378.8 273.7) rotate(-11.9)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(18.5 295.1) rotate(16.8)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(438.5 295.1) rotate(16.8)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(1.6 312.8) rotate(15.5)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(421.6 312.8) rotate(15.5)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(61.5 296.9) rotate(-4.4)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(41.0 313.1) rotate(4.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(84.1 314.0) rotate(5.2)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(126.8 314.9) rotate(-3.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(190.3 294.3) rotate(17.0)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(170.4 316.4) rotate(12.4)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(231.9 294.2) rotate(6.9)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(271.1 293.6) rotate(-11.1)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(252.8 316.1) rotate(6.7)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(313.7 292.3) rotate(-15.9)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(291.2 317.1) rotate(4.0)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(354.9 291.6) rotate(4.7)"><circle r="3.5"/></g>
-    <g transform="translate(333.2 312.7) rotate(-9.8)"><circle r="3.5"/></g>
-    <g transform="translate(380.2 314.3) rotate(13.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(21.4 335.5) rotate(15.2)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(441.4 335.5) rotate(15.2)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(39.3 356.9) rotate(-13.1)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(103.7 336.6) rotate(1.3)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(147.2 333.3) rotate(15.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(127.8 357.6) rotate(16.0)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(190.9 336.4) rotate(-15.9)"><circle r="3.5"/></g>
-    <g transform="translate(166.2 356.3) rotate(-0.2)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(229.9 333.9) rotate(-6.8)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(211.5 358.7) rotate(14.1)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(271.2 336.5) rotate(-10.1)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(315.7 336.6) rotate(16.8)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(296.6 359.2) rotate(2.4)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(357.4 336.3) rotate(-10.8)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(338.8 359.3) rotate(10.5)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(398.9 334.2) rotate(10.9)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(-21.1 334.2) rotate(10.9)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(380.0 355.8) rotate(4.0)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(43.2 400.0) rotate(-10.7)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(107.5 375.6) rotate(-7.1)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(83.3 400.2) rotate(10.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(149.9 376.9) rotate(-13.9)"><circle r="3.5"/></g>
-    <g transform="translate(128.5 399.2) rotate(-5.4)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(190.1 379.2) rotate(13.1)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(228.8 378.4) rotate(11.0)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(211.9 398.2) rotate(-0.7)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(249.4 400.1) rotate(3.4)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(316.8 379.4) rotate(5.5)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(292.5 398.0) rotate(-11.5)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(354.8 380.9) rotate(-2.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(333.5 398.4) rotate(-12.5)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(400.8 375.5) rotate(16.1)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(-19.2 375.5) rotate(16.1)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(375.5 396.2) rotate(-7.4)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(418.9 441.6) rotate(7.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(-1.1 441.6) rotate(7.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(43.2 439.9) rotate(17.5)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(87.0 438.6) rotate(-16.9)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(126.6 438.9) rotate(16.7)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(187.8 421.0) rotate(13.1)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(230.4 418.6) rotate(10.6)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(270.6 421.6) rotate(12.5)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(312.9 419.0) rotate(5.3)"><circle r="3.5"/></g>
-    <g transform="translate(291.5 443.9) rotate(1.8)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(354.0 422.2) rotate(1.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(333.4 443.2) rotate(5.9)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(397.8 419.5) rotate(3.0)"><circle r="3.5"/></g>
-    <g transform="translate(-22.2 419.5) rotate(3.0)"><circle r="3.5"/></g>
-    <g transform="translate(375.8 438.8) rotate(-9.5)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(20.3 463.6) rotate(-11.7)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(440.3 463.6) rotate(-11.7)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(418.8 485.9) rotate(-14.4)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(-1.2 485.9) rotate(-14.4)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(62.9 460.5) rotate(-8.3)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
-    <g transform="translate(43.9 483.5) rotate(13.8)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(106.9 463.3) rotate(7.8)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(86.3 482.4) rotate(13.2)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(148.2 462.2) rotate(-15.7)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(168.6 485.7) rotate(-4.6)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(231.4 464.0) rotate(10.7)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(207.3 484.4) rotate(9.0)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(271.0 460.4) rotate(11.0)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(314.3 461.9) rotate(-15.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(358.0 459.3) rotate(6.6)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(333.5 483.0) rotate(-9.3)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(396.7 463.5) rotate(-6.5)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(-23.3 463.5) rotate(-6.5)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(20.2 504.9) rotate(-16.0)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(440.2 504.9) rotate(-16.0)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(61.4 506.8) rotate(-13.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(39.4 526.0) rotate(-9.1)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(105.2 502.0) rotate(11.5)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(187.7 504.2) rotate(0.7)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(167.7 527.0) rotate(2.6)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(233.0 504.6) rotate(-12.1)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(208.8 525.4) rotate(4.7)"><circle r="3.5"/></g>
-    <g transform="translate(250.8 522.0) rotate(7.0)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(314.2 505.4) rotate(-15.8)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(293.3 522.5) rotate(1.8)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(359.5 502.8) rotate(1.9)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(400.7 504.5) rotate(14.7)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(-19.3 504.5) rotate(14.7)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(19.4 548.2) rotate(-5.2)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(439.4 548.2) rotate(-5.2)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(3.0 565.6) rotate(-3.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(3.0 -22.4) rotate(-3.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(423.0 565.6) rotate(-3.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(423.0 -22.4) rotate(-3.4)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(61.7 547.0) rotate(5.6)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(42.7 569.2) rotate(6.5)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(42.7 -18.8) rotate(6.5)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(107.0 546.1) rotate(-8.7)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(144.2 544.5) rotate(6.7)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
-    <g transform="translate(128.7 566.8) rotate(-0.2)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(128.7 -21.2) rotate(-0.2)"><path d="M-8 2 q4 -8 8 0 q2 4 8 -2"/></g>
-    <g transform="translate(188.4 546.1) rotate(-7.8)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(165.5 567.1) rotate(12.0)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(165.5 -20.9) rotate(12.0)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(232.8 543.5) rotate(-0.4)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(208.7 565.2) rotate(-9.7)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(208.7 -22.8) rotate(-9.7)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(316.6 543.4) rotate(-14.4)"><path d="M-7 0 q2 -4 4 0 t4 0 t4 0"/></g>
-    <g transform="translate(296.3 568.3) rotate(-17.7)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(296.3 -19.7) rotate(-17.7)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
-    <g transform="translate(355.5 544.1) rotate(-11.0)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(335.3 569.9) rotate(-16.6)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(335.3 -18.1) rotate(-16.6)"><path d="M0 -5 v10 M-5 0 h10"/></g>
-    <g transform="translate(396.9 547.9) rotate(13.5)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(-23.1 547.9) rotate(13.5)"><path d="M-6 -3 h9 M-3 3 h9"/></g>
-    <g transform="translate(375.4 567.9) rotate(12.1)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
-    <g transform="translate(375.4 -20.1) rotate(12.1)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(17.3 585.2) rotate(-16.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(17.3 -2.8) rotate(-16.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(437.3 585.2) rotate(-16.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(437.3 -2.8) rotate(-16.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(41.0 4.0) rotate(8.1)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
+    <g transform="translate(41.0 592.0) rotate(8.1)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
+    <g transform="translate(65.0 586.3) rotate(3.0) scale(0.62)"><!-- bottle (nested) --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(65.0 -1.7) rotate(3.0) scale(0.62)"><!-- bottle (nested) --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(80.9 3.6) rotate(-16.4) scale(0.62)"><!-- target (nested) --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
+    <g transform="translate(80.9 591.6) rotate(-16.4) scale(0.62)"><!-- target (nested) --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
+    <g transform="translate(105.6 584.5) rotate(4.3) scale(0.62)"><!-- bubble (nested) --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
+    <g transform="translate(105.6 -3.5) rotate(4.3) scale(0.62)"><!-- bubble (nested) --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
+    <g transform="translate(128.7 585.8) rotate(17.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(128.7 -2.2) rotate(17.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(125.1 20.9) rotate(-3.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(125.1 608.9) rotate(-3.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(186.8 585.0) rotate(-11.2)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
+    <g transform="translate(186.8 -3.0) rotate(-11.2)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
+    <g transform="translate(232.7 0.1) rotate(11.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(232.7 588.1) rotate(11.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(212.7 24.3) rotate(15.6) scale(0.62)"><!-- reps (nested) --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
+    <g transform="translate(212.7 612.3) rotate(15.6) scale(0.62)"><!-- reps (nested) --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
+    <g transform="translate(253.1 17.7) rotate(4.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(253.1 605.7) rotate(4.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(315.2 587.0) rotate(-15.2) scale(0.57)"><!-- banana (nested) --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(315.2 -1.0) rotate(-15.2) scale(0.57)"><!-- banana (nested) --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(333.6 584.3) rotate(11.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(333.6 -3.7) rotate(11.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(378.8 22.3) rotate(3.3) scale(0.58)"><!-- trophy (nested) --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
+    <g transform="translate(378.8 610.3) rotate(3.3) scale(0.58)"><!-- trophy (nested) --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
+    <g transform="translate(20.3 44.5) rotate(-9.9) scale(0.46)"><!-- towel (nested) --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
+    <g transform="translate(440.3 44.5) rotate(-9.9) scale(0.46)"><!-- towel (nested) --><path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/></g>
+    <g transform="translate(39.8 42.9) rotate(3.9)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
+    <g transform="translate(62.2 40.8) rotate(-2.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(87.0 44.8) rotate(-0.5) scale(0.62)"><!-- sparkle (nested) --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(102.2 41.7) rotate(5.5) scale(0.53)"><!-- confetti (nested) --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
+    <g transform="translate(150.4 45.2) rotate(-14.5) scale(0.62)"><!-- stopwatch (nested) --><circle cx="0" cy="2" r="11"/><path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/></g>
+    <g transform="translate(170.4 40.8) rotate(8.1) scale(0.56)"><!-- smiley (nested) --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
+    <g transform="translate(209.7 40.4) rotate(-8.4) scale(0.50)"><!-- kettlebell (nested) --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
+    <g transform="translate(229.2 39.7) rotate(-16.9) scale(0.62)"><!-- zzz (nested) --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
+    <g transform="translate(254.4 38.7) rotate(8.4) scale(0.62)"><!-- stressball (nested) --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
+    <g transform="translate(297.0 43.9) rotate(6.0) scale(0.58)"><!-- mwf (nested) --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
+    <g transform="translate(313.9 42.8) rotate(17.3) scale(0.53)"><!-- footprints (nested) --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(337.4 40.8) rotate(-11.2) scale(0.62)"><!-- check (nested) --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(17.5 84.8) rotate(-17.3) scale(0.48)"><!-- spiral (nested) --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(437.5 84.8) rotate(-17.3) scale(0.48)"><!-- spiral (nested) --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(43.7 107.9) rotate(11.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(103.0 80.5) rotate(8.0) scale(0.62)"><!-- mat (nested) --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
+    <g transform="translate(126.9 85.1) rotate(-8.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(148.0 85.0) rotate(0.4)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(129.7 107.6) rotate(-14.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(191.7 83.1) rotate(2.4) scale(0.54)"><!-- band (nested) --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
+    <g transform="translate(208.9 84.3) rotate(-16.4)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(248.2 84.0) rotate(-15.5) scale(0.62)"><!-- moon (nested) --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
+    <g transform="translate(272.8 81.9) rotate(4.3) scale(0.56)"><!-- footprints (nested) --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(333.9 86.5) rotate(-1.3) scale(0.62)"><!-- stressball (nested) --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
+    <g transform="translate(355.3 85.0) rotate(8.3) scale(0.49)"><!-- mug (nested) --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
+    <g transform="translate(380.8 103.9) rotate(-11.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(1.0 124.2) rotate(16.9)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(421.0 124.2) rotate(16.9)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(65.0 128.5) rotate(17.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(87.2 125.0) rotate(2.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(102.6 127.9) rotate(-10.4)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
+    <g transform="translate(123.2 123.5) rotate(16.0) scale(0.51)"><!-- hourglass (nested) --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(189.6 129.2) rotate(7.3)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(211.8 124.0) rotate(-8.6) scale(0.62)"><!-- lightning (nested) --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
+    <g transform="translate(228.8 129.7) rotate(-12.3) scale(0.62)"><!-- jumprope (nested) --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
+    <g transform="translate(297.1 125.2) rotate(11.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(315.9 125.1) rotate(-13.3) scale(0.59)"><!-- zzz (nested) --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
+    <g transform="translate(332.3 123.6) rotate(-9.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(375.8 124.1) rotate(6.8) scale(0.62)"><!-- smiley (nested) --><circle r="9"/><path d="M-3.5 -3 v1.5 M3.5 -3 v1.5"/><path d="M-4 2.5 q4 4 8 0"/><path d="M11 -8 q3 4 0 6 q-3 -2 0 -6"/></g>
+    <g transform="translate(398.8 129.8) rotate(1.3) scale(0.50)"><!-- spiral (nested) --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(-21.2 129.8) rotate(1.3) scale(0.50)"><!-- spiral (nested) --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(416.9 165.2) rotate(1.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(-3.1 165.2) rotate(1.8)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(18.9 165.8) rotate(-0.7)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(438.9 165.8) rotate(-0.7)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(42.0 169.9) rotate(-13.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(60.8 167.5) rotate(15.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(41.3 190.1) rotate(-10.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(85.6 170.6) rotate(0.5) scale(0.62)"><!-- check (nested) --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(147.0 166.7) rotate(-9.4)"><circle r="3.5"/></g>
+    <g transform="translate(167.5 170.6) rotate(5.8) scale(0.62)"><!-- sparkle (nested) --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(165.5 191.6) rotate(-10.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(212.2 168.6) rotate(-0.2) scale(0.60)"><!-- bowl (nested) --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
+    <g transform="translate(255.4 171.5) rotate(9.7)"><circle r="1.4" fill="#ffffff" stroke="none"/><circle cx="6" cy="3" r="1.4" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(270.5 165.5) rotate(-13.6) scale(0.48)"><!-- mat (nested) --><circle r="7"/><path d="M0 0 q4 0 4 -4"/><path d="M-13 10 h26"/></g>
+    <g transform="translate(293.3 193.0) rotate(13.5)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(336.2 171.4) rotate(-9.6) scale(0.62)"><!-- fivek (nested) --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
+    <g transform="translate(353.4 167.4) rotate(-7.9)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(374.4 171.5) rotate(-5.9) scale(0.46)"><!-- bottle (nested) --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(397.7 167.9) rotate(10.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(-22.3 167.9) rotate(10.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(374.3 186.5) rotate(8.2) scale(0.54)"><!-- trophy (nested) --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
+    <g transform="translate(419.1 207.7) rotate(-3.4) scale(0.62)"><!-- mwf (nested) --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
+    <g transform="translate(-0.9 207.7) rotate(-3.4) scale(0.62)"><!-- mwf (nested) --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
+    <g transform="translate(144.7 207.5) rotate(5.9)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(188.2 209.2) rotate(-4.9)"><circle r="3.5"/></g>
+    <g transform="translate(209.6 206.3) rotate(-12.6) scale(0.56)"><!-- bowl (nested) --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
+    <g transform="translate(251.8 211.2) rotate(8.3)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(291.5 209.6) rotate(-12.3) scale(0.62)"><!-- kettlebell (nested) --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
+    <g transform="translate(339.6 208.2) rotate(-11.7) scale(0.62)"><!-- moon (nested) --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
+    <g transform="translate(357.5 206.8) rotate(-12.3) scale(0.62)"><!-- sparkle (nested) --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(397.4 209.7) rotate(-1.7) scale(0.62)"><!-- banana (nested) --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(-22.6 209.7) rotate(-1.7) scale(0.62)"><!-- banana (nested) --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(17.6 249.3) rotate(15.4) scale(0.62)"><!-- fivek (nested) --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
+    <g transform="translate(437.6 249.3) rotate(15.4) scale(0.62)"><!-- fivek (nested) --><rect x="-11" y="-8" width="22" height="16" rx="4"/><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">5K</text></g>
+    <g transform="translate(65.0 252.4) rotate(-2.0) scale(0.62)"><!-- check (nested) --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(40.4 269.9) rotate(15.2)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(84.1 250.1) rotate(-7.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(124.7 255.0) rotate(1.5) scale(0.57)"><!-- confetti (nested) --><path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/><circle cx="0" cy="-2" r="1.7"/><circle cx="10" cy="0" r="1.7"/><circle cx="-6" cy="-13" r="1.7"/></g>
+    <g transform="translate(143.3 254.5) rotate(16.4)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
+    <g transform="translate(124.4 271.6) rotate(-10.5)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(187.9 249.0) rotate(-11.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(211.8 249.7) rotate(14.1) scale(0.57)"><!-- mug (nested) --><rect x="-10" y="-4" width="15" height="13" rx="3"/><path d="M5 -2 a4.5 4.5 0 0 1 0 9"/><path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/></g>
+    <g transform="translate(232.6 249.1) rotate(14.1) scale(0.56)"><!-- reps (nested) --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
+    <g transform="translate(207.2 275.3) rotate(5.5)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(248.7 256.0) rotate(7.0) scale(0.54)"><!-- spiral (nested) --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(275.0 249.4) rotate(-6.7) scale(0.62)"><!-- bubble (nested) --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
+    <g transform="translate(254.7 271.6) rotate(-7.0)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(290.2 271.6) rotate(-0.8) scale(0.62)"><!-- dowel (nested) --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
+    <g transform="translate(332.7 255.0) rotate(3.8)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(332.1 274.8) rotate(-13.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(18.2 295.3) rotate(-3.9)"><circle r="3.5"/></g>
+    <g transform="translate(438.2 295.3) rotate(-3.9)"><circle r="3.5"/></g>
+    <g transform="translate(45.0 292.8) rotate(-7.2) scale(0.54)"><!-- footprints (nested) --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(102.9 296.5) rotate(14.0) scale(0.62)"><!-- heart (nested) --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
+    <g transform="translate(128.7 297.7) rotate(-16.9)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(165.4 290.8) rotate(-14.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(213.4 290.4) rotate(10.3) scale(0.61)"><!-- jumprope (nested) --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
+    <g transform="translate(229.0 292.0) rotate(1.9)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
+    <g transform="translate(253.5 293.1) rotate(4.3) scale(0.62)"><!-- check (nested) --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(290.3 291.6) rotate(5.0) scale(0.62)"><!-- sun (nested) --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
+    <g transform="translate(353.8 291.0) rotate(-11.2)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(376.6 290.5) rotate(3.7) scale(0.62)"><!-- target (nested) --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
+    <g transform="translate(416.4 335.3) rotate(-4.9) scale(0.62)"><!-- heart (nested) --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
+    <g transform="translate(-3.6 335.3) rotate(-4.9) scale(0.62)"><!-- heart (nested) --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
+    <g transform="translate(45.9 336.8) rotate(10.6) scale(0.62)"><!-- jumprope (nested) --><path d="M-12 -6 q-5 14 9 16 q14 2 16 -12"/><path d="M-12 -6 l-2 -6 M13 -2 l3 -6"/></g>
+    <g transform="translate(66.4 337.0) rotate(-12.6)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(83.2 339.6) rotate(-2.2) scale(0.55)"><!-- mwf (nested) --><text y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">M/W/F</text></g>
+    <g transform="translate(104.6 334.2) rotate(0.4) scale(0.62)"><!-- sparkle (nested) --><path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/></g>
+    <g transform="translate(128.5 336.3) rotate(-11.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(191.0 338.4) rotate(-0.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(338.5 332.3) rotate(14.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(381.7 338.8) rotate(-9.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(23.9 381.6) rotate(6.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(443.9 381.6) rotate(6.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(40.4 378.4) rotate(-8.6)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(64.9 380.6) rotate(6.1) scale(0.62)"><!-- dowel (nested) --><path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/></g>
+    <g transform="translate(84.4 374.8) rotate(-10.5)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(127.6 377.8) rotate(12.6)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(150.5 381.6) rotate(12.5) scale(0.56)"><!-- moon (nested) --><path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/><path d="M11 -4 v6 M8 -1 h6"/></g>
+    <g transform="translate(169.3 378.1) rotate(-8.0)"><path d="M0 2.5 C -3.5 0 -3 -3 -1 -3 C 0 -3 0 -2 0 -2 C 0 -2 0 -3 1 -3 C 3 -3 3.5 0 0 2.5 Z"/></g>
+    <g transform="translate(188.6 375.1) rotate(-15.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(255.8 376.8) rotate(-5.1) scale(0.62)"><!-- spiral (nested) --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(270.1 380.6) rotate(-9.7)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(295.7 375.8) rotate(-9.9)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(318.3 376.9) rotate(-11.4)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(356.5 380.7) rotate(6.5) scale(0.62)"><!-- breath (nested) --><path d="M-10 -6 q4 -3 8 0 t8 0 M-10 0 q4 -3 8 0 t8 0 M-10 6 q4 -3 8 0 t8 0"/></g>
+    <g transform="translate(379.2 378.9) rotate(6.9) scale(0.62)"><!-- band (nested) --><circle cx="-14" cy="-7" r="3.5"/><circle cx="14" cy="7" r="3.5"/><path d="M-11 -5 C -4 1 4 -1 11 5"/></g>
+    <g transform="translate(24.8 418.7) rotate(-8.0)"><circle r="3.5"/></g>
+    <g transform="translate(444.8 418.7) rotate(-8.0)"><circle r="3.5"/></g>
+    <g transform="translate(43.5 419.6) rotate(-10.7) scale(0.62)"><!-- banana (nested) --><path d="M-10 -4 q0 12 13 12 q5 0 7 -3 q-4 1 -8 0 q-10 -2 -9 -9 z"/><path d="M-10 -4 l-1.5 -3.5"/></g>
+    <g transform="translate(39.5 443.6) rotate(13.6)"><circle r="3.5"/></g>
+    <g transform="translate(104.6 416.7) rotate(3.5)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
+    <g transform="translate(85.5 439.5) rotate(-13.5) scale(0.62)"><!-- reps (nested) --><text y="4" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">3x15</text></g>
+    <g transform="translate(144.9 417.0) rotate(-8.4) scale(0.53)"><!-- kettlebell (nested) --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
+    <g transform="translate(230.2 422.0) rotate(16.5) scale(0.46)"><!-- bowl (nested) --><path d="M-12 -2 h24"/><path d="M-12 -2 a12 11 0 0 0 24 0"/><path d="M5 -14 l7 7"/><circle cx="3.5" cy="-15.5" r="2.5"/><path d="M17 -8 q3 4 0 8"/></g>
+    <g transform="translate(269.0 421.6) rotate(-1.4)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
+    <g transform="translate(315.5 417.5) rotate(13.6) scale(0.57)"><!-- target (nested) --><circle r="10"/><circle r="5.5"/><circle r="1.4"/></g>
+    <g transform="translate(297.9 439.8) rotate(11.8)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(332.5 423.4) rotate(-7.2)"><circle r="3.5"/></g>
+    <g transform="translate(357.4 418.6) rotate(13.8)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(338.2 441.1) rotate(4.8)"><circle r="3.5"/></g>
+    <g transform="translate(377.8 418.5) rotate(-15.2)"><path d="M-3 -3 l6 6 M3 -3 l-6 6"/></g>
+    <g transform="translate(3.4 464.6) rotate(-4.3) scale(0.56)"><!-- hourglass (nested) --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(423.4 464.6) rotate(-4.3) scale(0.56)"><!-- hourglass (nested) --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
+    <g transform="translate(106.1 461.8) rotate(-3.6) scale(0.47)"><!-- lightning (nested) --><path d="M2 -11 l-9 12 h6 l-3 10 l10 -13 h-6 z"/></g>
+    <g transform="translate(129.8 464.7) rotate(1.7)"><circle cx="-4" cy="0" r="1.4" fill="#ffffff" stroke="none"/><circle cx="2" cy="-4" r="1.4" fill="#ffffff" stroke="none"/><circle cx="3" cy="4" r="1.4" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(167.7 464.8) rotate(-1.7)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(186.5 465.8) rotate(-16.4) scale(0.62)"><!-- bubble (nested) --><rect x="-11" y="-9" width="22" height="14" rx="4"/><path d="M-4 5 l-3 5 l7 -5"/><text y="1.5" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff" stroke="none" font-family="-apple-system, Helvetica, sans-serif">HI</text></g>
+    <g transform="translate(254.9 462.9) rotate(-4.7)"><path d="M0 -4 L1.5 0 L0 4 L-1.5 0 Z"/></g>
+    <g transform="translate(291.8 459.2) rotate(8.1)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(336.5 461.4) rotate(15.2) scale(0.62)"><!-- bottle (nested) --><rect x="-5" y="-7" width="10" height="19" rx="3"/><path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/></g>
+    <g transform="translate(360.0 465.1) rotate(-9.7) scale(0.62)"><!-- heart (nested) --><path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/><path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/></g>
+    <g transform="translate(397.2 462.8) rotate(1.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(-22.8 462.8) rotate(1.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(0.3 500.3) rotate(15.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(420.3 500.3) rotate(15.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(23.3 504.8) rotate(16.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(443.3 504.8) rotate(16.0)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(2.5 525.6) rotate(-15.9)"><circle r="3.5"/></g>
+    <g transform="translate(422.5 525.6) rotate(-15.9)"><circle r="3.5"/></g>
+    <g transform="translate(39.6 503.1) rotate(-0.2) scale(0.62)"><!-- zzz (nested) --><path d="M-9 -9 h8 l-8 8 h8"/><path d="M3 -2 h6 l-6 6 h6"/></g>
+    <g transform="translate(40.5 527.9) rotate(-1.7)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(87.1 503.7) rotate(4.7)"><circle r="3.5"/></g>
+    <g transform="translate(102.7 501.5) rotate(11.8)"><path d="M0 -5 v10 M-5 0 h10"/></g>
+    <g transform="translate(122.1 507.5) rotate(13.2)"><circle r="3.5"/></g>
+    <g transform="translate(208.3 527.6) rotate(-7.3)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(253.5 526.3) rotate(-10.7) scale(0.53)"><!-- sun (nested) --><circle r="6"/><path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/></g>
+    <g transform="translate(295.5 507.3) rotate(-14.5)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(339.9 502.5) rotate(-13.9) scale(0.62)"><!-- check (nested) --><circle r="9"/><path d="M-4 0 l3 3 l6 -7"/></g>
+    <g transform="translate(18.0 546.5) rotate(11.0) scale(0.62)"><!-- footprints (nested) --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(438.0 546.5) rotate(11.0) scale(0.62)"><!-- footprints (nested) --><ellipse cx="-6" cy="-2" rx="3.5" ry="6"/><circle cx="-6" cy="-10.5" r="1.7"/><ellipse cx="6" cy="7" rx="3.5" ry="6"/><circle cx="6" cy="-1.5" r="1.7"/></g>
+    <g transform="translate(41.8 544.1) rotate(7.2)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(64.5 546.8) rotate(-3.7)"><circle r="2" fill="#ffffff" stroke="none"/></g>
+    <g transform="translate(103.0 544.6) rotate(-11.5) scale(0.58)"><!-- spiral (nested) --><path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/></g>
+    <g transform="translate(143.2 544.8) rotate(-14.9) scale(0.57)"><!-- trophy (nested) --><path d="M-7 -11 h14 v6 a7 7 0 0 1 -14 0 z"/><path d="M-7 -9 q-5 0 -4 5 q1 4 4 3 M7 -9 q5 0 4 5 q-1 4 -4 3"/><path d="M0 2 v5 M-5 11 h10 M-3 7.5 h6"/></g>
+    <g transform="translate(206.7 542.2) rotate(-7.4) scale(0.62)"><!-- stressball (nested) --><circle r="8"/><path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/></g>
+    <g transform="translate(253.7 546.6) rotate(12.1)"><path d="M0 -5 v10 M-5 0 h10"/></g>
+    <g transform="translate(271.5 549.9) rotate(6.4) scale(0.62)"><!-- kettlebell (nested) --><circle cy="4" r="9.5"/><path d="M-5.5 -3 a 7 7 0 0 1 11 0"/></g>
+    <g transform="translate(332.3 542.6) rotate(12.9) scale(0.48)"><!-- hourglass (nested) --><path d="M-6 -10 h12 M-6 10 h12 M-5 -10 q0 7 5 10 q-5 3 -5 10 M5 -10 q0 7 -5 10 q5 3 5 10"/></g>
   </g>
 </svg>
