@@ -105,20 +105,23 @@ const FILLERS = [
 // ---- parameters ----
 const COLS = 9;
 const ROWS = 13;
-const CELL = 58;
+const CELL = 56;
 const W = COLS * CELL;
 const H = ROWS * CELL;
 const SEED = 42;
-const JITTER = 6;
+const JITTER = 5;
 const ROT = 18;
-// scale tiers: a few heroes, mostly mid, some small
+// scale tiers: a few heroes, mostly mid, some small. Item radius is ~22*scale,
+// so the mid tier nearly fills its cell — WhatsApp-level item:gap ratio.
 const TIERS = [
-  [1.1, 0.18],
-  [0.85, 0.52],
-  [0.6, 0.3],
+  [1.2, 0.2],
+  [0.95, 0.5],
+  [0.7, 0.3],
 ];
-const FILLER_PROB = 0.5;
+const FILLER_PROB = 0.85;
 const OPACITY = 0.16;
+// Max extent an item can reach beyond its center (hero radius + jitter).
+const EDGE = 22 * TIERS[0][0] + JITTER;
 
 // ---- deterministic prng ----
 function mulberry32(a) {
@@ -155,30 +158,51 @@ const queue = shapeQueue();
 
 let body = '';
 
-// Main doodles: jittered grid, alternate rows offset half a cell.
-for (let row = 0; row < ROWS; row++) {
-  const offset = row % 2 === 1 ? CELL / 2 : 0;
-  const cols = offset ? COLS - 1 : COLS;
-  for (let col = 0; col < cols; col++) {
-    const scale = pickTier();
-    const margin = 22 * scale + 2;
-    const x = Math.min(W - margin, Math.max(margin, offset + col * CELL + CELL / 2 + between(-JITTER, JITTER)));
-    const y = Math.min(H - margin, Math.max(margin, row * CELL + CELL / 2 + between(-JITTER, JITTER)));
-    const rot = between(-ROT, ROT);
-    const [name, svg] = queue.next().value;
-    body += `    <g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${scale})"><!-- ${name} -->${svg}</g>\n`;
+// Emit an element at (x, y) on the torus: wrap the position into the tile,
+// then duplicate near edges (shifted by ±W/±H) so the pattern tiles
+// seamlessly with no thin/empty bands at repeat boundaries.
+function emit(x, y, inner) {
+  x = ((x % W) + W) % W;
+  y = ((y % H) + H) % H;
+  const xs = [x];
+  const ys = [y];
+  if (x < EDGE) xs.push(x + W);
+  if (x > W - EDGE) xs.push(x - W);
+  if (y < EDGE) ys.push(y + H);
+  if (y > H - EDGE) ys.push(y - H);
+  for (const cx of xs) {
+    for (const cy of ys) {
+      body += `    <g transform="translate(${cx.toFixed(1)} ${cy.toFixed(1)})${inner.transform}">${inner.svg}</g>\n`;
+    }
   }
 }
 
-// Micro fillers at grid corners (safely between the doodles).
-for (let row = 1; row < ROWS; row++) {
-  for (let col = 1; col < COLS; col++) {
+// Main doodles: jittered grid, alternate rows offset half a cell, no clamping
+// (the torus wrap keeps edge rows as dense as interior ones).
+for (let row = 0; row < ROWS; row++) {
+  const offset = row % 2 === 1 ? CELL / 2 : 0;
+  for (let col = 0; col < COLS; col++) {
+    const scale = pickTier();
+    const x = offset + col * CELL + CELL / 2 + between(-JITTER, JITTER);
+    const y = row * CELL + CELL / 2 + between(-JITTER, JITTER);
+    const rot = between(-ROT, ROT);
+    const [name, svg] = queue.next().value;
+    emit(x, y, {
+      transform: ` rotate(${rot.toFixed(1)}) scale(${scale})`,
+      svg: `<!-- ${name} -->${svg}`,
+    });
+  }
+}
+
+// Micro fillers at every grid corner (the gaps between four neighbors).
+for (let row = 0; row < ROWS; row++) {
+  for (let col = 0; col < COLS; col++) {
     if (rnd() > FILLER_PROB) continue;
     const x = col * CELL + between(-4, 4);
     const y = row * CELL + between(-4, 4);
     const rot = between(-ROT, ROT);
     const f = FILLERS[Math.floor(rnd() * FILLERS.length)];
-    body += `    <g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)})">${f}</g>\n`;
+    emit(x, y, { transform: ` rotate(${rot.toFixed(1)})`, svg: f });
   }
 }
 
