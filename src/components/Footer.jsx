@@ -1,18 +1,48 @@
 import { useEffect, useRef, useState } from 'react';
 import { TimerReset, Square } from 'lucide-react';
 
-/** Short beep via WebAudio; ctx is created on first user gesture. */
-function beep(ctx) {
+const TIMER_LINKS = [
+  { href: 'https://www.youtube.com/watch?v=_wi7j1_-O3Q', label: '10s video' },
+  { href: 'https://www.youtube.com/watch?v=kD6FCbmAORY', label: '30s video' },
+];
+
+/**
+ * Singing-bowl strike via WebAudio; ctx is created on first user gesture.
+ * A struck bowl is a set of inharmonic partials that decay at different
+ * rates; pairing each partial with a slightly detuned twin produces the
+ * slow beating shimmer of the real thing.
+ */
+function bowl(ctx) {
   if (!ctx) return;
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.frequency.value = 880;
-  gain.gain.setValueAtTime(0.2, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-  osc.start();
-  osc.stop(ctx.currentTime + 0.3);
+  const now = ctx.currentTime;
+  const master = ctx.createGain();
+  master.gain.value = 0.7;
+  master.connect(ctx.destination);
+
+  const f0 = 196; // ~G3: warm, low, gong-like
+  const partials = [
+    { ratio: 1, gain: 1.0, decay: 5 },
+    { ratio: 2.005, gain: 0.55, decay: 4 },
+    { ratio: 3.42, gain: 0.3, decay: 2.8 },
+    { ratio: 5.43, gain: 0.18, decay: 1.8 },
+    { ratio: 8.21, gain: 0.08, decay: 1.1 },
+  ];
+
+  partials.forEach(({ ratio, gain, decay }) => {
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(gain * 0.5, now + 0.025); // soft mallet attack
+    g.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+    g.connect(master);
+    [1, 1.003].forEach((detune) => {
+      const osc = ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = f0 * ratio * detune;
+      osc.connect(g);
+      osc.start(now);
+      osc.stop(now + decay + 0.1);
+    });
+  });
 }
 
 /**
@@ -34,7 +64,7 @@ export default function Footer({ darkMode }) {
     const tick = setInterval(() => {
       const left = Math.ceil((endsAt - Date.now()) / 1000);
       if (left <= 0) {
-        beep(audioRef.current);
+        bowl(audioRef.current);
         navigator.vibrate?.(200);
         setReps((r) => r + 1);
         endsAt += duration * 1000;
@@ -117,6 +147,25 @@ export default function Footer({ darkMode }) {
               </button>
             </div>
           )}
+
+          {/* The original interval videos, kept as a fallback */}
+          <div className="ml-auto flex items-center gap-4">
+            {TIMER_LINKS.map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`text-xs transition-colors hover:underline ${
+                  darkMode
+                    ? 'text-gray-500 hover:text-gray-300'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
