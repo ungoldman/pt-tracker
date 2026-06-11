@@ -29,7 +29,9 @@ export default function Header({
 }) {
   return (
     <div
-      className="sticky top-0 z-50 backdrop-blur-sm p-3 sm:p-6"
+      className={`sticky top-0 z-50 backdrop-blur-md p-3 sm:p-6 ${
+        darkMode ? 'bg-gray-900/60' : 'bg-white/50'
+      }`}
       style={{
         maskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)',

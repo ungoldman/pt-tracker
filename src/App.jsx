@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { exercises } from './data';
 import { usePersistentState } from './hooks/usePersistentState';
@@ -66,6 +66,13 @@ const App = () => {
   const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'long' });
   const [selectedDay, setSelectedDay] = useState(todayLabel);
   const [expandedNotes, setExpandedNotes] = useState(new Set());
+  const selectedPillRef = useRef(null);
+
+  // Keep the selected pill visible in the horizontally scrolling strip on
+  // small screens (no-op when the strip wraps instead of scrolling).
+  useEffect(() => {
+    selectedPillRef.current?.scrollIntoView({ inline: 'center', block: 'nearest' });
+  }, [selectedDay, viewMode]);
 
   const toggleDarkMode = () => {
     const next = !darkMode;
@@ -465,6 +472,7 @@ const App = () => {
               return (
                 <button
                   key={day}
+                  ref={isSelectedDay ? selectedPillRef : null}
                   onClick={() => setSelectedDay(day)}
                   className={`flex-shrink-0 px-3 py-2 rounded-lg text-sm font-medium border transition-all ${
                     selectedDay === day

@@ -98,11 +98,7 @@ export default function Footer({ darkMode }) {
             <div className="flex items-center gap-3">
               <span
                 className={`text-2xl font-bold tabular-nums ${
-                  remaining <= 3
-                    ? 'text-orange-400'
-                    : darkMode
-                      ? 'text-gray-100'
-                      : 'text-gray-800'
+                  remaining <= 3 ? 'text-orange-400' : darkMode ? 'text-gray-100' : 'text-gray-800'
                 }`}
               >
                 {remaining}s
