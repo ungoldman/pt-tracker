@@ -43,12 +43,17 @@ const SCHEDULE_BY_DAY = Object.fromEntries(
   days.map((day) => [day, scheduleForDay(exercises, day)])
 );
 
+// First-run defaults (localStorage wins once the user has a saved value):
+// follow the OS theme, and start phones in day view rather than a 7-up week.
+const PREFERS_DARK = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+const DEFAULT_VIEW = window.innerWidth < 640 ? 'day' : 'week';
+
 const App = () => {
   // localStorage-backed state (init from storage, persist on change via the hook)
-  const [darkMode, setDarkMode] = usePersistentState('ptTrackerDarkMode', false);
+  const [darkMode, setDarkMode] = usePersistentState('ptTrackerDarkMode', PREFERS_DARK);
   const [completed, setCompleted] = usePersistentState('ptTrackerCompleted', {});
   const [notes, setNotes] = usePersistentState('ptTrackerNotes', {});
-  const [viewMode, setViewMode] = usePersistentState('ptTrackerViewMode', 'week');
+  const [viewMode, setViewMode] = usePersistentState('ptTrackerViewMode', DEFAULT_VIEW);
   const [collapsedCategories, setCollapsedCategories] = usePersistentState(
     'ptTrackerCollapsedCategories',
     {}
