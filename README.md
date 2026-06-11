@@ -15,7 +15,7 @@ Build for production: `npm run build` (outputs to `dist/`).
 ```
 src/
   App.jsx                  top-level component: state, handlers, day-card render
-  data.js                  exercise blocks + motivational quotes (content)
+  data.js                  exercise blocks (content)
   components/
     Header.jsx             sticky top bar: stats chips, day-type badge, quote, controls
     ExerciseRow.jsx        one exercise row: toggle, badges, note editor (memoized)

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { exercises, quotes } from './data';
+import { exercises } from './data';
 import { usePersistentState } from './hooks/usePersistentState';
 import {
   DAYS as days,
@@ -54,8 +54,7 @@ const App = () => {
     {}
   );
 
-  // Lazy initializers so the first paint already has a quote and gradient.
-  const [quote, setQuote] = useState(() => pickRandom(quotes));
+  // Lazy initializer so the first paint already has a gradient.
   const [bgGradient, setBgGradient] = useState(() => pickGradient(darkMode));
   const [confettiKey, setConfettiKey] = useState(null);
   const [justCompleted, setJustCompleted] = useState(new Set());
@@ -95,17 +94,6 @@ const App = () => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [setViewMode]);
-
-  const showNextQuote = () => {
-    if (!quotes || quotes.length === 0) return;
-    setQuote((prev) => {
-      const remaining = quotes.filter(
-        (q) => !prev || q.text !== prev.text || q.author !== prev.author
-      );
-      const pool = remaining.length > 0 ? remaining : quotes;
-      return pool[Math.floor(Math.random() * pool.length)];
-    });
-  };
 
   const toggleComplete = useCallback(
     (day, category, exerciseIndex) => {
@@ -440,8 +428,6 @@ const App = () => {
         pct={pct}
         priorityStats={priorityStats}
         isStrengthDay={isStrengthDay}
-        quote={quote}
-        showNextQuote={showNextQuote}
         viewMode={viewMode}
         cycleViewMode={cycleViewMode}
         toggleAllCategoriesCollapsed={toggleAllCategoriesCollapsed}

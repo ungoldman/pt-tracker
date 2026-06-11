@@ -17,8 +17,6 @@ export default function Header({
   pct,
   priorityStats,
   isStrengthDay,
-  quote,
-  showNextQuote,
   viewMode,
   cycleViewMode,
   toggleAllCategoriesCollapsed,
@@ -105,33 +103,8 @@ export default function Header({
             )}
           </div>
 
-          {/* Left-align Quote with larger gap */}
-          <div className="flex-1 min-w-0 ml-8">
-            {quote && (
-              <div className="flex items-center gap-2 min-w-0 group">
-                <div
-                  className={`italic text-sm truncate ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}
-                >
-                  "{quote.text}" — {quote.author}
-                </div>
-                <button
-                  type="button"
-                  onClick={showNextQuote}
-                  className={`shrink-0 inline-flex items-center justify-center rounded-full border text-[10px] px-2 py-1 opacity-0 group-hover:opacity-70 hover:opacity-100 transition ${
-                    darkMode
-                      ? 'border-gray-600 text-gray-300 hover:border-blue-500 hover:text-blue-300 bg-gray-900/60'
-                      : 'border-gray-300 text-gray-500 hover:border-blue-400 hover:text-blue-600 bg-white/70'
-                  }`}
-                  title="Show another quote"
-                >
-                  Next
-                </button>
-              </div>
-            )}
-          </div>
-
           {/* Right: Controls */}
-          <div className="flex gap-2 flex-shrink-0 flex-wrap">
+          <div className="ml-auto flex gap-2 flex-shrink-0 flex-wrap">
             <button
               onClick={cycleViewMode}
               className={`flex items-center gap-1 px-3 py-2 rounded-lg transition-all text-sm ${
