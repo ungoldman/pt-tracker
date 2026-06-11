@@ -12,7 +12,6 @@ import ExerciseRow from './components/ExerciseRow';
 import Header from './components/Header';
 import { categoryStats, completionKey, dayStats, isCompleted as isDone } from './lib/stats';
 import { getBlockStyle } from './lib/blockStyle';
-import { gradientForHour } from './lib/timeGradient';
 
 // The exercise data never changes at runtime, so resolve each day's schedule
 // once at module load instead of re-filtering on every render.
@@ -38,11 +37,7 @@ const App = () => {
 
   const [confettiKey, setConfettiKey] = useState(null);
   const [justCompleted, setJustCompleted] = useState(new Set());
-  const now = new Date();
-  const todayLabel = now.toLocaleDateString('en-US', { weekday: 'long' });
-  // Background follows the actual time of day (refreshes on any re-render;
-  // a stale phase after long idle corrects on the next interaction).
-  const bgGradient = gradientForHour(now.getHours(), darkMode);
+  const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'long' });
   const [selectedDay, setSelectedDay] = useState(todayLabel);
   const [expandedNotes, setExpandedNotes] = useState(new Set());
 
@@ -419,7 +414,7 @@ const App = () => {
   };
 
   return (
-    <div className={`flex flex-col min-h-screen bg-gradient-to-br ${bgGradient}`}>
+    <div className={`flex flex-col min-h-screen ${darkMode ? 'app-bg-dark' : 'app-bg-light'}`}>
       <Header
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
