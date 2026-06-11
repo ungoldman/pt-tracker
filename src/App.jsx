@@ -271,25 +271,27 @@ const App = () => {
     });
   };
 
-  const toggleAllCategoriesCollapsed = () => {
-    // Get all possible category keys from all days and exercises
-    const allKeys = new Set();
-    days.forEach((day) => {
-      getExercisesForDay(day).forEach(({ category }) => {
-        allKeys.add(`${day}-${category}`);
+  // Global section visibility cycles through three modes:
+  //   done (default) — only fully-completed blocks collapse, via the
+  //     per-block default, so the override map is simply cleared;
+  //   all  — every block on every day collapsed (explicit overrides);
+  //   none — every block expanded (explicit overrides beat the done-default).
+  const [collapseMode, setCollapseMode] = useState('done');
+
+  const cycleCollapseMode = () => {
+    const next = { done: 'all', all: 'none', none: 'done' }[collapseMode];
+    setCollapseMode(next);
+    if (next === 'done') {
+      setCollapsedCategories({});
+    } else {
+      const overrides = {};
+      days.forEach((day) => {
+        getExercisesForDay(day).forEach(({ category }) => {
+          overrides[`${day}-${category}`] = next === 'all';
+        });
       });
-    });
-
-    // Check if all are collapsed
-    const allCollapsed = Array.from(allKeys).every((key) => collapsedCategories[key]);
-
-    // Toggle all
-    const newCollapsedCategories = {};
-    allKeys.forEach((key) => {
-      newCollapsedCategories[key] = !allCollapsed;
-    });
-
-    setCollapsedCategories(newCollapsedCategories);
+      setCollapsedCategories(overrides);
+    }
   };
 
   const getThreeDayWindow = () => {
@@ -460,7 +462,8 @@ const App = () => {
         onSelectDay={jumpToDay}
         viewMode={viewMode}
         cycleViewMode={cycleViewMode}
-        toggleAllCategoriesCollapsed={toggleAllCategoriesCollapsed}
+        collapseMode={collapseMode}
+        cycleCollapseMode={cycleCollapseMode}
         resetDay={resetDay}
         resetWeek={resetWeek}
         selectedDay={selectedDay}

@@ -4,11 +4,20 @@ import {
   Sparkles,
   Star,
   CalendarRange,
-  ChevronDown,
+  ChevronsDownUp,
+  ChevronsUpDown,
+  ListChecks,
   Sun,
   Moon,
   RotateCcw,
 } from 'lucide-react';
+
+// Section-visibility cycle: what each mode shows and what a click does next.
+const COLLAPSE_MODES = {
+  done: { Icon: ListChecks, label: 'Done sections collapsed', next: 'collapse all' },
+  all: { Icon: ChevronsDownUp, label: 'All sections collapsed', next: 'expand all' },
+  none: { Icon: ChevronsUpDown, label: 'All sections expanded', next: 'collapse done' },
+};
 
 /**
  * Sticky top bar: title, today's stats chips, and controls. On small screens
@@ -28,7 +37,8 @@ export default function Header({
   onSelectDay,
   viewMode,
   cycleViewMode,
-  toggleAllCategoriesCollapsed,
+  collapseMode,
+  cycleCollapseMode,
   resetDay,
   resetWeek,
   selectedDay,
@@ -89,15 +99,18 @@ export default function Header({
             </span>
           </button>
           <button
-            onClick={toggleAllCategoriesCollapsed}
+            onClick={cycleCollapseMode}
             className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-lg transition-all text-sm ${
               darkMode
                 ? 'bg-indigo-900/50 text-indigo-100 hover:bg-indigo-800'
                 : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
             } shadow-sm border ${darkMode ? 'border-indigo-700' : 'border-indigo-300'}`}
-            title="Collapse/uncollapse all categories"
+            title={`${COLLAPSE_MODES[collapseMode].label} — click to ${COLLAPSE_MODES[collapseMode].next}`}
           >
-            <ChevronDown size={16} />
+            {(() => {
+              const ModeIcon = COLLAPSE_MODES[collapseMode].Icon;
+              return <ModeIcon size={16} />;
+            })()}
           </button>
           <button
             onClick={toggleDarkMode}
