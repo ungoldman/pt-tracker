@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import ExerciseRow from './components/ExerciseRow';
 import Header from './components/Header';
 import { categoryStats, completionKey, dayStats, isCompleted as isDone } from './lib/stats';
+import { getBlockStyle } from './lib/blockStyle';
 
 const LIGHT_GRADIENTS = [
   'from-blue-100 via-purple-100 to-pink-100',
@@ -320,9 +321,89 @@ const App = () => {
     [setViewMode]
   );
 
+  // One block: accent-colored header with phase icon, progress bar, rows.
+  // Shared by the day-view block cards and the week/3-day day cards.
+  const renderBlock = (day, category, exList) => {
+    const stats = getCategoryStats(day, category, exList);
+    const isComplete = stats.total > 0 && stats.completedCount === stats.total;
+    const isCollapsed = isCategoryCollapsed(day, category, isComplete);
+    const blockStyle = getBlockStyle(category);
+    const BlockIcon = blockStyle.Icon;
+    return (
+      <div key={category}>
+        <button
+          onClick={() => toggleCategoryCollapse(day, category, isCollapsed)}
+          className={`w-full flex items-center gap-2 font-semibold text-xs uppercase tracking-wide mb-1 px-2 py-1 rounded transition-colors ${
+            darkMode
+              ? `${blockStyle.textDark} hover:bg-gray-700/50`
+              : `${blockStyle.textLight} hover:bg-black/5`
+          }`}
+        >
+          <ChevronDown
+            size={16}
+            className={`flex-shrink-0 transition-transform ${isCollapsed ? '-rotate-90' : ''}`}
+          />
+          <BlockIcon size={14} className="flex-shrink-0" />
+          {category}
+          <span
+            className={`ml-auto text-xs font-normal ${
+              isComplete ? 'text-green-500' : darkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}
+          >
+            {stats.completedCount}/{stats.total}
+          </span>
+        </button>
+        <div
+          className={`h-1 mx-2 mb-1.5 rounded-full overflow-hidden ${darkMode ? 'bg-gray-700/60' : 'bg-gray-200'}`}
+        >
+          <div
+            className={`h-full rounded-full transition-all duration-300 ${
+              isComplete ? 'bg-green-500' : blockStyle.bar
+            }`}
+            style={{
+              width: `${stats.total > 0 ? (stats.completedCount / stats.total) * 100 : 0}%`,
+            }}
+          />
+        </div>
+        {!isCollapsed && (
+          <div className={`divide-y ${darkMode ? 'divide-gray-700/60' : 'divide-gray-200'}`}>
+            {exList.map(({ ex, index: exIndex }) => {
+              const exerciseKey = `${day}-${category}-${exIndex}`;
+              const noteText = getNote(day, category, exIndex);
+              return (
+                <ExerciseRow
+                  key={exIndex}
+                  ex={ex}
+                  exIndex={exIndex}
+                  day={day}
+                  category={category}
+                  exerciseKey={exerciseKey}
+                  completed={isCompleted(day, category, exIndex)}
+                  justCompleted={wasJustCompleted(day, category, exIndex)}
+                  noteText={noteText}
+                  isExpanded={expandedNotes.has(exerciseKey)}
+                  hasNote={!!noteText}
+                  darkMode={darkMode}
+                  viewMode={viewMode}
+                  showConfetti={confettiKey === exerciseKey}
+                  onConfettiComplete={clearConfetti}
+                  toggleComplete={toggleComplete}
+                  openNotes={openNotes}
+                  closeNotes={closeNotes}
+                  discardNote={discardNote}
+                  handleNoteChange={handleNoteChange}
+                />
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Whole-day card used by the week and 3-day views.
   const renderDayCard = (day, highlightToday = false) => {
     const isToday = highlightToday && day === todayLabel;
-    const isSelectedDay = viewMode === 'day' && day === selectedDay;
     const dayExercises = getExercisesForDay(day);
 
     return (
@@ -338,111 +419,26 @@ const App = () => {
             : ''
         }`}
       >
-        {viewMode !== 'day' ? (
-          <div
-            className={`mb-2 -mx-2 px-4 pb-2 border-b flex items-baseline justify-between ${
-              isToday
-                ? darkMode
-                  ? 'border-blue-500/70'
-                  : 'border-blue-300'
-                : darkMode
-                  ? 'border-gray-700'
-                  : 'border-gray-200'
-            }`}
-          >
-            <h2 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-              {renderDayLabel(day, isSelectedDay)}
-            </h2>
-          </div>
-        ) : (
-          ''
-        )}
-
         <div
-          className={`flex-1 overflow-auto min-h-0 ${
-            viewMode === 'day' ? 'columns-1 lg:columns-2 xl:columns-3 gap-x-8' : 'space-y-3'
+          className={`mb-2 -mx-2 px-4 pb-2 border-b flex items-baseline justify-between ${
+            isToday
+              ? darkMode
+                ? 'border-blue-500/70'
+                : 'border-blue-300'
+              : darkMode
+                ? 'border-gray-700'
+                : 'border-gray-200'
           }`}
         >
-          {dayExercises.map(({ category, exercises: exList }) => {
-            const stats = getCategoryStats(day, category, exList);
-            const isComplete = stats.total > 0 && stats.completedCount === stats.total;
-            const isCollapsed = isCategoryCollapsed(day, category, isComplete);
-            return (
-              <div key={category} className={viewMode === 'day' ? 'break-inside-avoid mb-4' : ''}>
-                <button
-                  onClick={() => toggleCategoryCollapse(day, category, isCollapsed)}
-                  className={`w-full flex items-center gap-2 font-semibold text-xs uppercase tracking-wide mb-1 px-2 py-1 rounded transition-colors ${
-                    darkMode
-                      ? 'text-blue-400 hover:bg-gray-700/50'
-                      : 'text-blue-600 hover:bg-blue-50'
-                  }`}
-                >
-                  <ChevronDown
-                    size={16}
-                    className={`flex-shrink-0 transition-transform ${isCollapsed ? '-rotate-90' : ''}`}
-                  />
-                  {category}
-                  <span
-                    className={`ml-auto text-xs font-normal ${
-                      stats.completedCount === stats.total
-                        ? 'text-green-500'
-                        : darkMode
-                          ? 'text-gray-400'
-                          : 'text-gray-500'
-                    }`}
-                  >
-                    {stats.completedCount}/{stats.total}
-                  </span>
-                </button>
-                <div
-                  className={`h-1 mx-2 mb-1.5 rounded-full overflow-hidden ${darkMode ? 'bg-gray-700/60' : 'bg-gray-200'}`}
-                >
-                  <div
-                    className={`h-full rounded-full transition-all duration-300 ${
-                      stats.completedCount === stats.total ? 'bg-green-500' : 'bg-blue-500/70'
-                    }`}
-                    style={{
-                      width: `${stats.total > 0 ? (stats.completedCount / stats.total) * 100 : 0}%`,
-                    }}
-                  />
-                </div>
-                {!isCollapsed && (
-                  <div
-                    className={`divide-y ${darkMode ? 'divide-gray-700/60' : 'divide-gray-200'}`}
-                  >
-                    {exList.map(({ ex, index: exIndex }) => {
-                      const exerciseKey = `${day}-${category}-${exIndex}`;
-                      const noteText = getNote(day, category, exIndex);
-                      return (
-                        <ExerciseRow
-                          key={exIndex}
-                          ex={ex}
-                          exIndex={exIndex}
-                          day={day}
-                          category={category}
-                          exerciseKey={exerciseKey}
-                          completed={isCompleted(day, category, exIndex)}
-                          justCompleted={wasJustCompleted(day, category, exIndex)}
-                          noteText={noteText}
-                          isExpanded={expandedNotes.has(exerciseKey)}
-                          hasNote={!!noteText}
-                          darkMode={darkMode}
-                          viewMode={viewMode}
-                          showConfetti={confettiKey === exerciseKey}
-                          onConfettiComplete={clearConfetti}
-                          toggleComplete={toggleComplete}
-                          openNotes={openNotes}
-                          closeNotes={closeNotes}
-                          discardNote={discardNote}
-                          handleNoteChange={handleNoteChange}
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          <h2 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+            {renderDayLabel(day)}
+          </h2>
+        </div>
+
+        <div className="flex-1 overflow-auto min-h-0 space-y-3">
+          {dayExercises.map(({ category, exercises: exList }) =>
+            renderBlock(day, category, exList)
+          )}
         </div>
       </div>
     );
@@ -533,9 +529,48 @@ const App = () => {
             {days.map((day) => renderDayCard(day, true))}
           </div>
         ) : viewMode === 'day' ? (
-          <div className="flex justify-center flex-1 min-h-0 items-stretch">
-            <div className="w-full max-w-2xl lg:max-w-5xl xl:max-w-7xl flex-1 h-full min-h-0">
-              {renderDayCard(selectedDay)}
+          <div className="w-full max-w-2xl lg:max-w-5xl xl:max-w-7xl mx-auto flex-1 min-h-0 flex flex-col">
+            {/* Day headline */}
+            <div className="mb-3 px-1 flex items-baseline gap-3 flex-wrap">
+              <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                {selectedDay === todayLabel ? 'Today' : selectedDay}
+              </h2>
+              <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                {selectedDay === todayLabel ? `${selectedDay}, ` : ''}
+                {getDateForDay(selectedDay).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </span>
+              <span
+                className={`text-[11px] px-2 py-0.5 rounded-full border self-center ${
+                  computeIsStrengthDay(getExercisesForDay(selectedDay))
+                    ? darkMode
+                      ? 'border-purple-700/60 text-purple-300 bg-purple-900/20'
+                      : 'border-purple-300 text-purple-700 bg-purple-50'
+                    : darkMode
+                      ? 'border-gray-600 text-gray-400 bg-gray-800'
+                      : 'border-gray-300 text-gray-500 bg-gray-50'
+                }`}
+              >
+                {computeIsStrengthDay(getExercisesForDay(selectedDay))
+                  ? 'Strength day'
+                  : 'Rest day'}
+              </span>
+            </div>
+
+            {/* Blocks as individual phase cards, masonry-packed */}
+            <div className="flex-1 overflow-auto min-h-0 columns-1 lg:columns-2 xl:columns-3 gap-x-4">
+              {getExercisesForDay(selectedDay).map(({ category, exercises: exList }) => (
+                <div
+                  key={category}
+                  className={`break-inside-avoid mb-4 rounded-xl shadow-sm border border-t-2 p-2 ${
+                    getBlockStyle(category).top
+                  } ${darkMode ? 'bg-gray-800 border-x-gray-700 border-b-gray-700' : 'bg-white border-x-gray-200 border-b-gray-200'}`}
+                >
+                  {renderBlock(selectedDay, category, exList)}
+                </div>
+              ))}
             </div>
           </div>
         ) : (
