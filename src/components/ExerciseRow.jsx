@@ -119,7 +119,9 @@ export default memo(function ExerciseRow({
           ) : (
             <FileText
               size={14}
-              className={darkMode ? 'text-gray-600 hover:text-gray-300' : 'text-gray-300 hover:text-gray-600'}
+              className={
+                darkMode ? 'text-gray-600 hover:text-gray-300' : 'text-gray-300 hover:text-gray-600'
+              }
             />
           )}
         </button>
@@ -148,7 +150,9 @@ export default memo(function ExerciseRow({
                     discardNote(exerciseKey);
                   }}
                   className={`text-[11px] rounded-md transition-colors hover:underline opacity-75 ${
-                    darkMode ? 'text-gray-400 hover:text-red-500' : 'text-gray-600 hover:text-red-500'
+                    darkMode
+                      ? 'text-gray-400 hover:text-red-500'
+                      : 'text-gray-600 hover:text-red-500'
                   }`}
                   title="Discard note"
                 >
@@ -161,7 +165,9 @@ export default memo(function ExerciseRow({
                   closeNotes(exerciseKey);
                 }}
                 className={`text-[11px] rounded-md transition-colors hover:underline opacity-75 ${
-                  darkMode ? 'text-gray-400 hover:text-blue-500' : 'text-gray-600 hover:text-blue-500'
+                  darkMode
+                    ? 'text-gray-400 hover:text-blue-500'
+                    : 'text-gray-600 hover:text-blue-500'
                 }`}
                 title="Close notes"
               >

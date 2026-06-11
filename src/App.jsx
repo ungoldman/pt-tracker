@@ -166,17 +166,20 @@ const App = () => {
     });
   }, []);
 
-  const toggleCategoryCollapse = (day, category) => {
+  // A fully-completed block defaults to collapsed (done work stops costing
+  // space); an explicit user toggle always wins over the default, so the
+  // toggle flips the *effective* state rather than the stored one.
+  const toggleCategoryCollapse = (day, category, currentlyCollapsed) => {
     const key = `${day}-${category}`;
     setCollapsedCategories((prev) => ({
       ...prev,
-      [key]: !prev[key],
+      [key]: !currentlyCollapsed,
     }));
   };
 
-  const isCategoryCollapsed = (day, category) => {
+  const isCategoryCollapsed = (day, category, defaultCollapsed = false) => {
     const key = `${day}-${category}`;
-    return collapsedCategories[key] || false;
+    return collapsedCategories[key] ?? defaultCollapsed;
   };
 
   const getCategoryStats = (day, category, scheduled) =>
@@ -359,15 +362,13 @@ const App = () => {
           }`}
         >
           {dayExercises.map(({ category, exercises: exList }) => {
-            const isCollapsed = isCategoryCollapsed(day, category);
             const stats = getCategoryStats(day, category, exList);
+            const isComplete = stats.total > 0 && stats.completedCount === stats.total;
+            const isCollapsed = isCategoryCollapsed(day, category, isComplete);
             return (
-              <div
-                key={category}
-                className={viewMode === 'day' ? 'break-inside-avoid mb-4' : ''}
-              >
+              <div key={category} className={viewMode === 'day' ? 'break-inside-avoid mb-4' : ''}>
                 <button
-                  onClick={() => toggleCategoryCollapse(day, category)}
+                  onClick={() => toggleCategoryCollapse(day, category, isCollapsed)}
                   className={`w-full flex items-center gap-2 font-semibold text-xs uppercase tracking-wide mb-1 px-2 py-1 rounded transition-colors ${
                     darkMode
                       ? 'text-blue-400 hover:bg-gray-700/50'
@@ -404,7 +405,9 @@ const App = () => {
                   />
                 </div>
                 {!isCollapsed && (
-                  <div className={`divide-y ${darkMode ? 'divide-gray-700/60' : 'divide-gray-200'}`}>
+                  <div
+                    className={`divide-y ${darkMode ? 'divide-gray-700/60' : 'divide-gray-200'}`}
+                  >
                     {exList.map(({ ex, index: exIndex }) => {
                       const exerciseKey = `${day}-${category}-${exIndex}`;
                       const noteText = getNote(day, category, exIndex);

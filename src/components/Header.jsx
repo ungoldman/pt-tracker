@@ -38,7 +38,8 @@ export default function Header({
   useEffect(() => {
     // Hysteresis (collapse past 96px, expand under 24px) so the header's own
     // height change can't flutter the state around the threshold.
-    const onScroll = () => setScrolled((prev) => (prev ? window.scrollY > 24 : window.scrollY > 96));
+    const onScroll = () =>
+      setScrolled((prev) => (prev ? window.scrollY > 24 : window.scrollY > 96));
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
