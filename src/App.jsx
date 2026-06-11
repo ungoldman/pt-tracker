@@ -437,16 +437,16 @@ const App = () => {
       />
 
       {/* Main Content */}
-      <div className="w-full p-6 flex-1 min-h-0 flex flex-col overflow-hidden">
+      <div className="w-full p-3 sm:p-6 flex-1 min-h-0 flex flex-col lg:overflow-hidden">
         {viewMode === 'day' && (
-          <div className="mb-4 flex gap-2 flex-wrap justify-center">
+          <div className="mb-4 flex gap-2 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap sm:justify-center sm:overflow-x-visible">
             {days.map((day) => {
               const isSelectedDay = selectedDay === day;
               return (
                 <button
                   key={day}
                   onClick={() => setSelectedDay(day)}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium border transition-all ${
+                  className={`flex-shrink-0 px-3 py-2 rounded-lg text-sm font-medium border transition-all ${
                     selectedDay === day
                       ? darkMode
                         ? 'bg-blue-700 text-white border-blue-600'
@@ -464,7 +464,7 @@ const App = () => {
         )}
 
         {viewMode === 'week' ? (
-          <div className="grid grid-cols-7 gap-1 flex-1 min-h-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 lg:gap-1 flex-1 min-h-0">
             {days.map((day) => renderDayCard(day, true))}
           </div>
         ) : viewMode === 'day' ? (
