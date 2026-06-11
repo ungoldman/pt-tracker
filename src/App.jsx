@@ -353,12 +353,19 @@ const App = () => {
           ''
         )}
 
-        <div className="space-y-4 flex-1 overflow-auto min-h-0">
+        <div
+          className={`flex-1 overflow-auto min-h-0 ${
+            viewMode === 'day' ? 'columns-1 lg:columns-2 xl:columns-3 gap-x-8' : 'space-y-3'
+          }`}
+        >
           {dayExercises.map(({ category, exercises: exList }) => {
             const isCollapsed = isCategoryCollapsed(day, category);
             const stats = getCategoryStats(day, category, exList);
             return (
-              <div key={category}>
+              <div
+                key={category}
+                className={viewMode === 'day' ? 'break-inside-avoid mb-4' : ''}
+              >
                 <button
                   onClick={() => toggleCategoryCollapse(day, category)}
                   className={`w-full flex items-center gap-2 font-semibold text-xs uppercase tracking-wide mb-1 px-2 py-1 rounded transition-colors ${
@@ -521,7 +528,7 @@ const App = () => {
           </div>
         ) : viewMode === 'day' ? (
           <div className="flex justify-center flex-1 min-h-0 items-stretch">
-            <div className="w-full max-w-2xl flex-1 h-full min-h-0">
+            <div className="w-full max-w-2xl lg:max-w-5xl xl:max-w-7xl flex-1 h-full min-h-0">
               {renderDayCard(selectedDay)}
             </div>
           </div>
