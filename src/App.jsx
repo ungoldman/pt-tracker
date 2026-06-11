@@ -361,7 +361,7 @@ const App = () => {
               <div key={category}>
                 <button
                   onClick={() => toggleCategoryCollapse(day, category)}
-                  className={`w-full flex items-center gap-2 font-semibold text-xs uppercase tracking-wide mb-2 px-2 py-1 rounded transition-colors ${
+                  className={`w-full flex items-center gap-2 font-semibold text-xs uppercase tracking-wide mb-1 px-2 py-1 rounded transition-colors ${
                     darkMode
                       ? 'text-blue-400 hover:bg-gray-700/50'
                       : 'text-blue-600 hover:bg-blue-50'
@@ -385,7 +385,7 @@ const App = () => {
                   </span>
                 </button>
                 <div
-                  className={`h-1 mx-2 mb-2 rounded-full overflow-hidden ${darkMode ? 'bg-gray-700/60' : 'bg-gray-200'}`}
+                  className={`h-1 mx-2 mb-1.5 rounded-full overflow-hidden ${darkMode ? 'bg-gray-700/60' : 'bg-gray-200'}`}
                 >
                   <div
                     className={`h-full rounded-full transition-all duration-300 ${
@@ -397,7 +397,7 @@ const App = () => {
                   />
                 </div>
                 {!isCollapsed && (
-                  <div className="space-y-2">
+                  <div className={`divide-y ${darkMode ? 'divide-gray-700/60' : 'divide-gray-200'}`}>
                     {exList.map(({ ex, index: exIndex }) => {
                       const exerciseKey = `${day}-${category}-${exIndex}`;
                       const noteText = getNote(day, category, exIndex);
