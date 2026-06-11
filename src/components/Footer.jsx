@@ -7,9 +7,46 @@ const TIMER_LINKS = [
 ];
 
 /**
- * Singing-bowl strike via WebAudio; ctx is created on first user gesture.
- * A struck bowl is a set of inharmonic partials that decay at different
- * rates; pairing each partial with a slightly detuned twin produces the
+ * Load the real bowl recording into a WebAudio buffer on first user gesture.
+ * /bowl.m4a is "Tibetan Singing Bowl hit 11inch" from Wikimedia Commons
+ * (CC BY-SA 4.0): https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_11inch.flac
+ */
+async function ensureAudio(ref) {
+  if (!ref.current) {
+    const ctx = new AudioContext();
+    ref.current = { ctx, buffer: null };
+    try {
+      const res = await fetch('/bowl.m4a');
+      const data = await res.arrayBuffer();
+      ref.current.buffer = await ctx.decodeAudioData(data);
+    } catch {
+      // Recording unavailable; chime() falls back to the synthesized bowl.
+    }
+  }
+  ref.current.ctx.resume?.();
+  return ref.current;
+}
+
+/** Play the recorded bowl strike, or the synthesized one if loading failed. */
+function chime(audio) {
+  if (!audio) return;
+  const { ctx, buffer } = audio;
+  if (buffer) {
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+    const gain = ctx.createGain();
+    gain.gain.value = 1.0;
+    src.connect(gain);
+    gain.connect(ctx.destination);
+    src.start();
+  } else {
+    bowl(ctx);
+  }
+}
+
+/**
+ * Synthesized singing-bowl fallback: inharmonic partials decaying at
+ * different rates, each paired with a slightly detuned twin for the
  * slow beating shimmer of the real thing.
  */
 function bowl(ctx) {
@@ -64,7 +101,7 @@ export default function Footer({ darkMode }) {
     const tick = setInterval(() => {
       const left = Math.ceil((endsAt - Date.now()) / 1000);
       if (left <= 0) {
-        bowl(audioRef.current);
+        chime(audioRef.current);
         navigator.vibrate?.(200);
         setReps((r) => r + 1);
         endsAt += duration * 1000;
@@ -77,10 +114,10 @@ export default function Footer({ darkMode }) {
   }, [duration, run]);
 
   const start = (secs) => {
-    if (!audioRef.current && window.AudioContext) {
-      audioRef.current = new AudioContext();
+    // Strike the bowl immediately: confirms volume and marks the first rep.
+    if (window.AudioContext) {
+      ensureAudio(audioRef).then(chime);
     }
-    audioRef.current?.resume?.();
     setReps(0);
     setRemaining(secs);
     setDuration(secs);

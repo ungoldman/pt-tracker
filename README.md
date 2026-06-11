@@ -60,6 +60,11 @@ double-loading strength days; mobility and stretches are daily. Completion is
 stored in localStorage keyed by `${day}-${block}-${originalIndex}`; the
 original index is preserved through day-filtering so keys stay stable.
 
+## Credits
+
+`public/bowl.m4a` is ["Tibetan Singing Bowl hit 11inch"](https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_11inch.flac)
+from Wikimedia Commons, CC BY-SA 4.0, transcoded to AAC.
+
 ## Known next step (not yet done)
 
 `Header` and `ExerciseRow` are extracted; the remaining candidates are
