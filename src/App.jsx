@@ -12,31 +12,7 @@ import ExerciseRow from './components/ExerciseRow';
 import Header from './components/Header';
 import { categoryStats, completionKey, dayStats, isCompleted as isDone } from './lib/stats';
 import { getBlockStyle } from './lib/blockStyle';
-
-const LIGHT_GRADIENTS = [
-  'from-blue-100 via-purple-100 to-pink-100',
-  'from-green-100 via-emerald-100 to-teal-100',
-  'from-orange-100 via-red-100 to-rose-100',
-  'from-violet-100 via-fuchsia-100 to-pink-100',
-  'from-cyan-100 via-sky-100 to-blue-100',
-  'from-amber-100 via-yellow-100 to-lime-100',
-  'from-indigo-100 via-blue-100 to-cyan-100',
-  'from-rose-100 via-orange-100 to-amber-100',
-];
-
-const DARK_GRADIENTS = [
-  'from-slate-900 via-purple-900 to-slate-900',
-  'from-gray-900 via-emerald-900 to-gray-900',
-  'from-gray-900 via-blue-900 to-gray-900',
-  'from-slate-900 via-cyan-900 to-slate-900',
-  'from-gray-900 via-indigo-900 to-gray-900',
-  'from-slate-900 via-teal-900 to-slate-900',
-  'from-gray-900 via-violet-900 to-gray-900',
-  'from-slate-900 via-rose-900 to-slate-900',
-];
-
-const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-const pickGradient = (dark) => pickRandom(dark ? DARK_GRADIENTS : LIGHT_GRADIENTS);
+import { gradientForHour } from './lib/timeGradient';
 
 // The exercise data never changes at runtime, so resolve each day's schedule
 // once at module load instead of re-filtering on every render.
@@ -60,19 +36,17 @@ const App = () => {
     {}
   );
 
-  // Lazy initializer so the first paint already has a gradient.
-  const [bgGradient, setBgGradient] = useState(() => pickGradient(darkMode));
   const [confettiKey, setConfettiKey] = useState(null);
   const [justCompleted, setJustCompleted] = useState(new Set());
-  const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const now = new Date();
+  const todayLabel = now.toLocaleDateString('en-US', { weekday: 'long' });
+  // Background follows the actual time of day (refreshes on any re-render;
+  // a stale phase after long idle corrects on the next interaction).
+  const bgGradient = gradientForHour(now.getHours(), darkMode);
   const [selectedDay, setSelectedDay] = useState(todayLabel);
   const [expandedNotes, setExpandedNotes] = useState(new Set());
 
-  const toggleDarkMode = () => {
-    const next = !darkMode;
-    setDarkMode(next);
-    setBgGradient(pickGradient(next));
-  };
+  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   useEffect(() => {
     // Keyboard shortcuts for view switching
