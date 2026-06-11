@@ -2,20 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Near-flat app background: neutral base with two faint radial glows for
-   depth (anchored to the page, not the viewport — background-attachment:
-   fixed repaints badly on mobile Safari). */
+/* App background: neutral base + exercise doodle wallpaper (WhatsApp/Signal
+   chat-background style; tile lives in public/doodles.svg with tone-on-tone
+   strokes that read against both bases). */
 .app-bg-dark {
   background-color: #09090b;
-  background-image:
-    radial-gradient(50rem 36rem at 85% -5%, rgb(79 70 229 / 0.14), transparent),
-    radial-gradient(40rem 30rem at -10% 60%, rgb(14 116 144 / 0.08), transparent);
+  background-image: url('/doodles.svg');
+  background-size: 330px auto;
 }
 .app-bg-light {
   background-color: #f4f4f5;
-  background-image:
-    radial-gradient(50rem 36rem at 85% -5%, rgb(147 197 253 / 0.35), transparent),
-    radial-gradient(40rem 30rem at -10% 60%, rgb(252 211 77 / 0.2), transparent);
+  background-image: url('/doodles.svg');
+  background-size: 330px auto;
 }
 
 body {

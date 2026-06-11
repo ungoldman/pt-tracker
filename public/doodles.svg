@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 550" width="440" height="550">
+  <!-- Exercise doodle wallpaper tile (WhatsApp/Signal chat-background style).
+       Mid-gray strokes at low group opacity read tone-on-tone against both the
+       dark (#09090b) and light (#f4f4f5) app backgrounds. Inventory is this
+       app's actual program: dumbbell, band, bowl + mallet, morning tea,
+       stopwatch, jog shoe, footprints, foam roller, stress ball, dowel... -->
+  <g fill="none" stroke="#828282" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.18">
+
+    <!-- row 1 -->
+    <g transform="translate(55 55) rotate(-12)">
+      <!-- dumbbell -->
+      <path d="M-14 -7 v14 M-9 -10 v20 M9 -10 v20 M14 -7 v14 M-9 0 h18"/>
+    </g>
+    <g transform="translate(165 50) rotate(8)">
+      <!-- tea mug, steam -->
+      <rect x="-10" y="-4" width="15" height="13" rx="3"/>
+      <path d="M5 -2 a4.5 4.5 0 0 1 0 9"/>
+      <path d="M-6 -9 q2 -3 0 -6 M1 -9 q2 -3 0 -6"/>
+    </g>
+    <g transform="translate(275 60) rotate(-6)">
+      <!-- singing bowl + mallet + ring -->
+      <path d="M-12 -2 h24"/>
+      <path d="M-12 -2 a12 11 0 0 0 24 0"/>
+      <path d="M5 -14 l7 7"/>
+      <circle cx="3.5" cy="-15.5" r="2.5"/>
+      <path d="M17 -8 q3 4 0 8"/>
+    </g>
+    <g transform="translate(385 52) rotate(10)">
+      <!-- heart + pulse -->
+      <path d="M0 9 C -11 2 -10 -8 -4 -8 C -1 -8 0 -5 0 -5 C 0 -5 1 -8 4 -8 C 10 -8 11 2 0 9 Z"/>
+      <path d="M-8 -1 h4 l2 -4 l3 7 l2 -3 h4"/>
+    </g>
+
+    <!-- row 2 (offset) -->
+    <g transform="translate(110 165) rotate(6)">
+      <!-- stopwatch -->
+      <circle cx="0" cy="2" r="11"/>
+      <path d="M0 2 v-6 M0 -13 v4 M-4 -13 h8 M9 -9 l3 -3"/>
+    </g>
+    <g transform="translate(220 158) rotate(-9)">
+      <!-- jog shoe -->
+      <path d="M-15 5 q-1 -9 6 -9 q5 0 8 5 q3 4 8 4 h7 q2 5 -3 5 h-24 q-2 0 -2 -5"/>
+      <path d="M-5 -2 l3 3 M-1 -4 l3 3"/>
+    </g>
+    <g transform="translate(330 168) rotate(12)">
+      <!-- resistance band -->
+      <circle cx="-14" cy="-7" r="3.5"/>
+      <circle cx="14" cy="7" r="3.5"/>
+      <path d="M-11 -5 C -4 1 4 -1 11 5"/>
+    </g>
+    <g transform="translate(420 160) rotate(-5)">
+      <!-- sparkle star -->
+      <path d="M0 -9 L2 -2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2 -2 Z"/>
+    </g>
+
+    <!-- row 3 -->
+    <g transform="translate(50 275) rotate(7)">
+      <!-- crescent moon + sparkle -->
+      <path d="M3 -11 a11 11 0 1 0 7 17 a9 9 0 0 1 -7 -17"/>
+      <path d="M11 -4 v6 M8 -1 h6"/>
+    </g>
+    <g transform="translate(160 268) rotate(-10)">
+      <!-- foam roller -->
+      <ellipse cx="-10" cy="0" rx="4" ry="8"/>
+      <path d="M-10 -8 h20 a4 8 0 0 1 0 16 h-20"/>
+    </g>
+    <g transform="translate(270 278) rotate(5)">
+      <!-- water bottle -->
+      <rect x="-5" y="-7" width="10" height="19" rx="3"/>
+      <path d="M-3 -7 v-4 h6 v4 M-5 1 h10"/>
+    </g>
+    <g transform="translate(380 270) rotate(-8)">
+      <!-- flexed bicep -->
+      <path d="M-10 12 q-2 -14 7 -16 l2 -6 l6 2 l-2 6 q9 2 7 14"/>
+    </g>
+
+    <!-- row 4 (offset) -->
+    <g transform="translate(105 385) rotate(-7)">
+      <!-- sun -->
+      <circle r="6"/>
+      <path d="M0 -13 v4 M0 9 v4 M-13 0 h4 M9 0 h4 M-9 -9 l2.5 2.5 M6.5 6.5 l2.5 2.5 M-9 9 l2.5 -2.5 M6.5 -6.5 l2.5 -2.5"/>
+    </g>
+    <g transform="translate(215 392) rotate(9)">
+      <!-- stress ball, squeezed -->
+      <circle r="8"/>
+      <path d="M-12 -3 q-2 3 0 6 M12 -3 q2 3 0 6"/>
+    </g>
+    <g transform="translate(325 382) rotate(-11)">
+      <!-- footprints -->
+      <ellipse cx="-6" cy="-2" rx="3.5" ry="6"/>
+      <circle cx="-6" cy="-10.5" r="1.7"/>
+      <ellipse cx="6" cy="7" rx="3.5" ry="6"/>
+      <circle cx="6" cy="-1.5" r="1.7"/>
+    </g>
+    <g transform="translate(425 390) rotate(6)">
+      <!-- dowel with grip marks -->
+      <path d="M-13 13 L13 -13 M-11 6 l5 5 M6 -11 l5 5"/>
+    </g>
+
+    <!-- row 5 -->
+    <g transform="translate(55 495) rotate(10)">
+      <!-- rolled yoga mat -->
+      <circle r="7"/>
+      <path d="M0 0 q4 0 4 -4"/>
+      <path d="M-13 10 h26"/>
+    </g>
+    <g transform="translate(165 488) rotate(-6)">
+      <!-- pendulum spiral -->
+      <path d="M1 1 q5 -1 4 -6 q-1 -7 -9 -6 q-10 1 -9 11 q1 12 14 11"/>
+    </g>
+    <g transform="translate(275 498) rotate(8)">
+      <!-- confetti sprinkle -->
+      <path d="M-8 -8 l3 3 M7 -10 l2 4 M-10 5 l4 2 M8 8 l-3 -3"/>
+      <circle cx="0" cy="-2" r="1.7"/>
+      <circle cx="10" cy="0" r="1.7"/>
+      <circle cx="-6" cy="-13" r="1.7"/>
+    </g>
+    <g transform="translate(385 490) rotate(-9)">
+      <!-- hanging towel -->
+      <path d="M-10 -12 h14 q4 0 4 4 v16 M-10 -12 v20 q0 4 4 4 h13"/>
+    </g>
+  </g>
+</svg>
