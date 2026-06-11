@@ -7,9 +7,10 @@
 //   - A per-exercise `days` wins; otherwise the block's `days` applies.
 //
 // Design intent:
-//   - Wake-Up rides the reliable morning tea ritual and now carries ALL priority
-//     work (the 3 priority dumbbells M/W/F + the 2 priority stretches daily),
-//     ordered after a quick warm-up so the must-do work happens first.
+//   - Wake-Up rides the reliable morning tea ritual: quick warm-up + mobility.
+//   - Priority is its own block right after Wake-Up (the 3 priority dumbbells
+//     M/W/F + the 2 priority stretches daily), so the must-do work is visually
+//     separate and hard to lose in the mobility list.
 //   - Strength is the M/W/F ~5pm workout: the non-priority loaded bulk only.
 //   - Isometrics get their own planned end-of-workday block (~5pm clock-out),
 //     harder to skip than the floaty evening. They alternate with Strength
@@ -27,7 +28,16 @@ export const exercises = {
       // Quick warm-up first
       { name: 'Pendulums (all)', sets: 3, reps: 15 },
       { name: 'Wall Slides (flex/scap/abd)', sets: 2, reps: 10 },
-      // Priority work, front-loaded so it gets done
+      // Remaining mobility
+      { name: 'Stress Ball Squeezes', sets: 3, reps: 15 },
+      { name: 'Wall Ball Circles', sets: 3, reps: 15 },
+      { name: 'Abduction with Dowel', sets: 3, reps: 8 },
+      { name: 'Flexion Extension with Dowel', sets: 2, reps: 10 },
+      { name: 'External Rotation with Dowel', sets: 3, reps: 10 },
+    ],
+  },
+  Priority: {
+    exercises: [
       {
         name: 'Supine Flexion with Dumbbell (2.5)',
         sets: 3,
@@ -45,12 +55,6 @@ export const exercises = {
       },
       { name: 'Shoulder IR Stretch', sets: 3, reps: '30s', priority: 'high' },
       { name: 'Cross Body Stretch with Towel', sets: 3, reps: '30s', priority: 'high' },
-      // Remaining mobility
-      { name: 'Stress Ball Squeezes', sets: 3, reps: 15 },
-      { name: 'Wall Ball Circles', sets: 3, reps: 15 },
-      { name: 'Abduction with Dowel', sets: 3, reps: 8 },
-      { name: 'Flexion Extension with Dowel', sets: 2, reps: 10 },
-      { name: 'External Rotation with Dowel', sets: 3, reps: 10 },
     ],
   },
   'Strength (M/W/F)': {
