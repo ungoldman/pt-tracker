@@ -4,8 +4,8 @@
   "description": "Daily shoulder PT tracker",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#09090b",
-  "theme_color": "#09090b",
+  "background_color": "#0c1322",
+  "theme_color": "#0c1322",
   "icons": [
     {
       "src": "/icon.svg",

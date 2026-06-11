@@ -6,7 +6,7 @@
     <title>PT Exercise Tracker</title>
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#09090b" />
+    <meta name="theme-color" content="#0c1322" />
     <meta name="mobile-web-app-capable" content="yes" />
     <script>
       // Prevent flash of light mode (stored preference wins, else OS theme)
@@ -17,7 +17,7 @@
             ? stored === 'true'
             : window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (dark) {
-          document.documentElement.style.backgroundColor = '#09090b';
+          document.documentElement.style.backgroundColor = '#0c1322';
         }
       })();
     </script>
