@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   Timer,
   Sparkles,
@@ -9,7 +10,12 @@ import {
   RotateCcw,
 } from 'lucide-react';
 
-/** Sticky top bar: title, today's stats chips, and controls. */
+/**
+ * Sticky top bar: title, today's stats chips, and controls. On small screens
+ * (where the page itself scrolls) it collapses to just the stats line once
+ * scrolled, iOS large-title style; on lg+ the content area scrolls internally
+ * so the listener never fires and the full bar stays.
+ */
 export default function Header({
   darkMode,
   toggleDarkMode,
@@ -27,11 +33,21 @@ export default function Header({
   resetWeek,
   selectedDay,
 }) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    // Hysteresis (collapse past 96px, expand under 24px) so the header's own
+    // height change can't flutter the state around the threshold.
+    const onScroll = () => setScrolled((prev) => (prev ? window.scrollY > 24 : window.scrollY > 96));
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <div
-      className={`sticky top-0 z-50 backdrop-blur-md p-3 sm:p-6 ${
-        darkMode ? 'bg-gray-900/60' : 'bg-white/50'
-      }`}
+      className={`sticky top-0 z-50 backdrop-blur-md ${
+        scrolled ? 'px-3 py-2 sm:px-6 lg:py-6' : 'p-3 sm:p-6'
+      } ${darkMode ? 'bg-gray-900/60' : 'bg-white/50'}`}
       style={{
         maskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 90%, transparent 100%)',
@@ -41,14 +57,20 @@ export default function Header({
           their own full-width line via order/w-full, controls stay by the title. */}
       <div className="w-full flex flex-wrap items-center gap-x-4 gap-y-2">
         <h1
-          className={`order-1 text-2xl sm:text-3xl font-bold flex-shrink-0 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}
+          className={`order-1 text-2xl sm:text-3xl font-bold flex-shrink-0 items-center gap-2 ${
+            scrolled ? 'hidden lg:flex' : 'flex'
+          } ${darkMode ? 'text-white' : 'text-gray-800'}`}
         >
           <Timer size={26} className="flex-shrink-0 translate-y-0.5" />
           pt-tracker
         </h1>
 
         {/* Controls (min-w-0 so they wrap on narrow screens instead of overflowing) */}
-        <div className="order-2 lg:order-3 ml-auto flex gap-2 min-w-0 flex-wrap justify-end">
+        <div
+          className={`order-2 lg:order-3 ml-auto gap-2 min-w-0 flex-wrap justify-end ${
+            scrolled ? 'hidden lg:flex' : 'flex'
+          }`}
+        >
           <button
             onClick={cycleViewMode}
             className={`flex items-center gap-1 px-2.5 sm:px-3 py-2 rounded-lg transition-all text-sm ${
