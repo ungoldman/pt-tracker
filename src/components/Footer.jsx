@@ -14,7 +14,7 @@ const TIMER_LINKS = [
 async function ensureAudio(ref) {
   if (!ref.current) {
     const ctx = new AudioContext();
-    ref.current = { ctx, buffer: null };
+    ref.current = { ctx, buffer: null, playing: new Set() };
     try {
       const res = await fetch('/bowl.m4a');
       const data = await res.arrayBuffer();
@@ -27,10 +27,14 @@ async function ensureAudio(ref) {
   return ref.current;
 }
 
-/** Play the recorded bowl strike, or the synthesized one if loading failed. */
+/**
+ * Play the recorded bowl strike, or the synthesized one if loading failed.
+ * Every strike is tracked in audio.playing so silence() can fade it out.
+ */
 function chime(audio) {
   if (!audio) return;
   const { ctx, buffer } = audio;
+  let entry;
   if (buffer) {
     const src = ctx.createBufferSource();
     src.buffer = buffer;
@@ -39,9 +43,32 @@ function chime(audio) {
     src.connect(gain);
     gain.connect(ctx.destination);
     src.start();
+    entry = {
+      stop: (t) => {
+        try {
+          src.stop(t);
+        } catch {
+          // already ended
+        }
+      },
+      gain,
+    };
+    src.onended = () => audio.playing.delete(entry);
   } else {
-    bowl(ctx);
+    entry = bowl(ctx);
   }
+  audio.playing.add(entry);
+}
+
+/** Fade out and stop any still-ringing strikes (Stop shouldn't leave a 16s tail). */
+function silence(audio) {
+  if (!audio) return;
+  const { ctx } = audio;
+  audio.playing.forEach(({ stop, gain }) => {
+    gain.gain.setTargetAtTime(0, ctx.currentTime, 0.08);
+    stop(ctx.currentTime + 0.3);
+  });
+  audio.playing.clear();
 }
 
 /**
@@ -50,11 +77,12 @@ function chime(audio) {
  * slow beating shimmer of the real thing.
  */
 function bowl(ctx) {
-  if (!ctx) return;
+  if (!ctx) return { stop: () => {}, gain: { gain: { setTargetAtTime: () => {} } } };
   const now = ctx.currentTime;
   const master = ctx.createGain();
   master.gain.value = 0.7;
   master.connect(ctx.destination);
+  const oscillators = [];
 
   const f0 = 196; // ~G3: warm, low, gong-like
   const partials = [
@@ -78,8 +106,21 @@ function bowl(ctx) {
       osc.connect(g);
       osc.start(now);
       osc.stop(now + decay + 0.1);
+      oscillators.push(osc);
     });
   });
+
+  return {
+    stop: (t) =>
+      oscillators.forEach((o) => {
+        try {
+          o.stop(t);
+        } catch {
+          // already ended
+        }
+      }),
+    gain: master,
+  };
 }
 
 /**
@@ -124,7 +165,10 @@ export default function Footer({ darkMode }) {
     setRun((r) => r + 1);
   };
 
-  const stop = () => setDuration(null);
+  const stop = () => {
+    setDuration(null);
+    silence(audioRef.current);
+  };
 
   const idleButton = darkMode
     ? 'border-gray-700 text-gray-300 hover:border-blue-500 hover:text-blue-300'
