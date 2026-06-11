@@ -4,11 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PT Exercise Tracker</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#111827" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <script>
-      // Prevent flash of light mode
-      (function() {
-        const darkMode = localStorage.getItem('ptTrackerDarkMode');
-        if (darkMode === 'true') {
+      // Prevent flash of light mode (stored preference wins, else OS theme)
+      (function () {
+        const stored = localStorage.getItem('ptTrackerDarkMode');
+        const dark =
+          stored !== null
+            ? stored === 'true'
+            : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) {
           document.documentElement.style.backgroundColor = '#111827';
         }
       })();
