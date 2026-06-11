@@ -8,6 +8,8 @@ blocks with a per-exercise / per-block weekly schedule.
 1. `npm install`
 2. `npm start` — opens `http://localhost:5173`
 
+Optional: `pnpm link --global` once, then `pt` launches it from anywhere.
+
 Build for production: `npm run build` (outputs to `dist/`).
 
 ## Project structure
