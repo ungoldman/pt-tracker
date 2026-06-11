@@ -17,6 +17,9 @@ export default function Header({
   pct,
   priorityStats,
   isStrengthDay,
+  weekSummary,
+  todayLabel,
+  onSelectDay,
   viewMode,
   cycleViewMode,
   toggleAllCategoriesCollapsed,
@@ -96,6 +99,26 @@ export default function Header({
               }`}
             >
               {isStrengthDay ? 'Strength day' : 'Rest day'}
+            </span>
+            {/* Week progress dots: one per day, tap to jump there in day view */}
+            <span className="flex items-center gap-1.5 ml-1" aria-label="Week progress">
+              {weekSummary.map(({ day, pct: dayPct }) => (
+                <button
+                  key={day}
+                  onClick={() => onSelectDay(day)}
+                  title={`${day}: ${dayPct}% done`}
+                  aria-label={`${day}: ${dayPct}% done`}
+                  className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                    dayPct === 100
+                      ? 'bg-green-500'
+                      : dayPct > 0
+                        ? 'bg-blue-500'
+                        : darkMode
+                          ? 'bg-gray-600'
+                          : 'bg-gray-300'
+                  } ${day === todayLabel ? 'ring-2 ring-blue-400/70' : ''}`}
+                />
+              ))}
             </span>
           </div>
         )}

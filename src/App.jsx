@@ -297,6 +297,18 @@ const App = () => {
   const isStrengthDay = computeIsStrengthDay(todayBlocks);
   const priorityStats = { done: stats.priorityDone, total: stats.priorityTotal };
   const threeDayWindow = getThreeDayWindow();
+  const weekSummary = days.map((day) => ({
+    day,
+    pct: dayStats(completed, SCHEDULE_BY_DAY[day], day).pct,
+  }));
+
+  const jumpToDay = useCallback(
+    (day) => {
+      setSelectedDay(day);
+      setViewMode('day');
+    },
+    [setViewMode]
+  );
 
   const renderDayCard = (day, highlightToday = false) => {
     const isToday = highlightToday && day === todayLabel;
@@ -428,6 +440,9 @@ const App = () => {
         pct={pct}
         priorityStats={priorityStats}
         isStrengthDay={isStrengthDay}
+        weekSummary={weekSummary}
+        todayLabel={todayLabel}
+        onSelectDay={jumpToDay}
         viewMode={viewMode}
         cycleViewMode={cycleViewMode}
         toggleAllCategoriesCollapsed={toggleAllCategoriesCollapsed}
@@ -454,7 +469,7 @@ const App = () => {
                       : darkMode
                         ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-blue-500'
                         : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
-                  }`}
+                  } ${day === todayLabel && !isSelectedDay ? 'ring-1 ring-blue-400/70' : ''}`}
                 >
                   {renderDayLabel(day, isSelectedDay)}
                 </button>
