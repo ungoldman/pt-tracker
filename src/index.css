@@ -40,7 +40,7 @@
   /* indigo→cyan→green ramp: saturation carries the color story, while low
      opacity keeps it firmly behind the foreground */
   background-image: linear-gradient(115deg, #5b62b8 0%, #2a98ad 45%, #3aa07f 90%);
-  opacity: 0.24;
+  opacity: 0.1;
 }
 
 body {
