@@ -83,7 +83,6 @@ export const exercises = {
       { name: 'Tricep Extensions with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder IR (rotate) with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder ER (step) with Resistance', sets: 3, reps: 12 },
-      { name: 'Prone Shoulder Extension (facedown)', sets: 3, reps: 12 },
     ],
   },
   'Isometrics (End of Day)': {
@@ -101,6 +100,8 @@ export const exercises = {
     exercises: [
       { name: 'Corner Pec Minor Stretch', sets: 3, hold: '30s' },
       { name: 'Serratus Activation with Foam Roll', sets: 2, hold: '30s' },
+      // More stretch than strength, so daily here rather than M/W/F loading
+      { name: 'Prone Shoulder Extension (facedown)', sets: 3, reps: 12 },
     ],
   },
   'Personal Goals (non-PT)': {
