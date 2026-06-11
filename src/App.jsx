@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { exercises, quotes } from './data';
 import { usePersistentState } from './hooks/usePersistentState';
@@ -10,7 +10,38 @@ import {
 import Footer from './components/Footer';
 import ExerciseRow from './components/ExerciseRow';
 import Header from './components/Header';
-import { categoryStats, dayStats, isCompleted as isDone } from './lib/stats';
+import { categoryStats, completionKey, dayStats, isCompleted as isDone } from './lib/stats';
+
+const LIGHT_GRADIENTS = [
+  'from-blue-100 via-purple-100 to-pink-100',
+  'from-green-100 via-emerald-100 to-teal-100',
+  'from-orange-100 via-red-100 to-rose-100',
+  'from-violet-100 via-fuchsia-100 to-pink-100',
+  'from-cyan-100 via-sky-100 to-blue-100',
+  'from-amber-100 via-yellow-100 to-lime-100',
+  'from-indigo-100 via-blue-100 to-cyan-100',
+  'from-rose-100 via-orange-100 to-amber-100',
+];
+
+const DARK_GRADIENTS = [
+  'from-slate-900 via-purple-900 to-slate-900',
+  'from-gray-900 via-emerald-900 to-gray-900',
+  'from-gray-900 via-blue-900 to-gray-900',
+  'from-slate-900 via-cyan-900 to-slate-900',
+  'from-gray-900 via-indigo-900 to-gray-900',
+  'from-slate-900 via-teal-900 to-slate-900',
+  'from-gray-900 via-violet-900 to-gray-900',
+  'from-slate-900 via-rose-900 to-slate-900',
+];
+
+const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const pickGradient = (dark) => pickRandom(dark ? DARK_GRADIENTS : LIGHT_GRADIENTS);
+
+// The exercise data never changes at runtime, so resolve each day's schedule
+// once at module load instead of re-filtering on every render.
+const SCHEDULE_BY_DAY = Object.fromEntries(
+  days.map((day) => [day, scheduleForDay(exercises, day)])
+);
 
 const App = () => {
   // localStorage-backed state (init from storage, persist on change via the hook)
@@ -23,48 +54,20 @@ const App = () => {
     {}
   );
 
-  const [quote, setQuote] = useState(null);
-  const [bgGradient, setBgGradient] = useState('');
+  // Lazy initializers so the first paint already has a quote and gradient.
+  const [quote, setQuote] = useState(() => pickRandom(quotes));
+  const [bgGradient, setBgGradient] = useState(() => pickGradient(darkMode));
   const [confettiKey, setConfettiKey] = useState(null);
   const [justCompleted, setJustCompleted] = useState(new Set());
   const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'long' });
   const [selectedDay, setSelectedDay] = useState(todayLabel);
   const [expandedNotes, setExpandedNotes] = useState(new Set());
 
-  useEffect(() => {
-    // More interesting gradient backgrounds
-    const lightGradients = [
-      'from-blue-100 via-purple-100 to-pink-100',
-      'from-green-100 via-emerald-100 to-teal-100',
-      'from-orange-100 via-red-100 to-rose-100',
-      'from-violet-100 via-fuchsia-100 to-pink-100',
-      'from-cyan-100 via-sky-100 to-blue-100',
-      'from-amber-100 via-yellow-100 to-lime-100',
-      'from-indigo-100 via-blue-100 to-cyan-100',
-      'from-rose-100 via-orange-100 to-amber-100',
-    ];
-
-    const darkGradients = [
-      'from-slate-900 via-purple-900 to-slate-900',
-      'from-gray-900 via-emerald-900 to-gray-900',
-      'from-gray-900 via-blue-900 to-gray-900',
-      'from-slate-900 via-cyan-900 to-slate-900',
-      'from-gray-900 via-indigo-900 to-gray-900',
-      'from-slate-900 via-teal-900 to-slate-900',
-      'from-gray-900 via-violet-900 to-gray-900',
-      'from-slate-900 via-rose-900 to-slate-900',
-    ];
-
-    const gradients = darkMode ? darkGradients : lightGradients;
-    const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
-    setBgGradient(randomGradient);
-  }, [darkMode]);
-
-  useEffect(() => {
-    // Select random quote on mount only
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    setQuote(randomQuote);
-  }, []);
+  const toggleDarkMode = () => {
+    const next = !darkMode;
+    setDarkMode(next);
+    setBgGradient(pickGradient(next));
+  };
 
   useEffect(() => {
     // Keyboard shortcuts for view switching
@@ -104,30 +107,35 @@ const App = () => {
     });
   };
 
-  const toggleComplete = (day, category, exerciseIndex) => {
-    const key = `${day}-${category}-${exerciseIndex}`;
-    const isCurrentlyCompleted = completed[key];
+  const toggleComplete = useCallback(
+    (day, category, exerciseIndex) => {
+      const key = completionKey(day, category, exerciseIndex);
+      const isCurrentlyCompleted = completed[key];
 
-    setCompleted((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+      setCompleted((prev) => ({
+        ...prev,
+        [key]: !prev[key],
+      }));
 
-    // Trigger confetti only when completing (not uncompleting)
-    if (!isCurrentlyCompleted) {
-      setConfettiKey(key);
-      setJustCompleted((prev) => new Set(prev).add(key));
+      // Trigger confetti only when completing (not uncompleting)
+      if (!isCurrentlyCompleted) {
+        setConfettiKey(key);
+        setJustCompleted((prev) => new Set(prev).add(key));
 
-      // Remove the "just completed" state after animation
-      setTimeout(() => {
-        setJustCompleted((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(key);
-          return newSet;
-        });
-      }, 1000);
-    }
-  };
+        // Remove the "just completed" state after animation
+        setTimeout(() => {
+          setJustCompleted((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(key);
+            return newSet;
+          });
+        }, 1000);
+      }
+    },
+    [completed, setCompleted]
+  );
+
+  const clearConfetti = useCallback(() => setConfettiKey(null), []);
 
   const isCompleted = (day, category, exerciseIndex) =>
     isDone(completed, day, category, exerciseIndex);
@@ -142,25 +150,28 @@ const App = () => {
     return notes[key] || '';
   };
 
-  const handleNoteChange = (day, category, exerciseIndex, value) => {
-    const key = `${day}-${category}-${exerciseIndex}`;
-    setNotes((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
+  const handleNoteChange = useCallback(
+    (day, category, exerciseIndex, value) => {
+      const key = completionKey(day, category, exerciseIndex);
+      setNotes((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+    },
+    [setNotes]
+  );
 
-  const openNotes = (key) => {
+  const openNotes = useCallback((key) => {
     setExpandedNotes((prev) => new Set(prev).add(key));
-  };
+  }, []);
 
-  const closeNotes = (key) => {
+  const closeNotes = useCallback((key) => {
     setExpandedNotes((prev) => {
       const next = new Set(prev);
       next.delete(key);
       return next;
     });
-  };
+  }, []);
 
   const toggleCategoryCollapse = (day, category) => {
     const key = `${day}-${category}`;
@@ -178,14 +189,17 @@ const App = () => {
   const getCategoryStats = (day, category, scheduled) =>
     categoryStats(completed, day, category, scheduled);
 
-  const discardNote = (key) => {
-    setNotes((prev) => {
-      const next = { ...prev };
-      delete next[key];
-      return next;
-    });
-    closeNotes(key);
-  };
+  const discardNote = useCallback(
+    (key) => {
+      setNotes((prev) => {
+        const next = { ...prev };
+        delete next[key];
+        return next;
+      });
+      closeNotes(key);
+    },
+    [setNotes, closeNotes]
+  );
 
   const resetWeek = () => {
     if (window.confirm('Are you sure you want to reset all checkboxes for the week?')) {
@@ -219,8 +233,7 @@ const App = () => {
     }
   };
 
-  const getExercisesForDay = (day) => scheduleForDay(exercises, day);
-
+  const getExercisesForDay = (day) => SCHEDULE_BY_DAY[day];
 
   const getDateForDay = (day) => {
     const today = new Date();
@@ -398,8 +411,8 @@ const App = () => {
                           hasNote={!!noteText}
                           darkMode={darkMode}
                           viewMode={viewMode}
-                          confettiKey={confettiKey}
-                          setConfettiKey={setConfettiKey}
+                          showConfetti={confettiKey === exerciseKey}
+                          onConfettiComplete={clearConfetti}
                           toggleComplete={toggleComplete}
                           openNotes={openNotes}
                           closeNotes={closeNotes}
@@ -420,10 +433,9 @@ const App = () => {
 
   return (
     <div className={`flex flex-col min-h-screen bg-gradient-to-br ${bgGradient}`}>
-
       <Header
         darkMode={darkMode}
-        setDarkMode={setDarkMode}
+        toggleDarkMode={toggleDarkMode}
         stats={stats}
         pct={pct}
         priorityStats={priorityStats}

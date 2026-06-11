@@ -12,7 +12,7 @@ import {
 /** Sticky top bar: title, today's stats chips, rotating quote, and controls. */
 export default function Header({
   darkMode,
-  setDarkMode,
+  toggleDarkMode,
   stats,
   pct,
   priorityStats,
@@ -158,7 +158,7 @@ export default function Header({
               <ChevronDown size={16} />
             </button>
             <button
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={toggleDarkMode}
               className={`flex items-center gap-1 px-3 py-2 rounded-lg transition-all text-sm ${
                 darkMode
                   ? 'bg-gray-700 text-yellow-400 hover:bg-gray-600'

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Check, BellRing, FileText } from 'lucide-react';
 import Confetti from './Confetti';
 import { formatExerciseName, getExerciseIcon, getPriorityIcon } from '../lib/exerciseDisplay';
@@ -5,9 +6,10 @@ import { formatExerciseName, getExerciseIcon, getPriorityIcon } from '../lib/exe
 /**
  * One exercise: completion toggle, equipment/priority badges, sets/reps, and
  * (in day/3-day view) an expandable note editor. Presentational — all state
- * reads and mutations come in as props.
+ * reads and mutations come in as props. Memoized so note keystrokes and
+ * confetti only re-render the affected row, not every row on screen.
  */
-export default function ExerciseRow({
+export default memo(function ExerciseRow({
   ex,
   exIndex,
   day,
@@ -20,8 +22,8 @@ export default function ExerciseRow({
   hasNote,
   darkMode,
   viewMode,
-  confettiKey,
-  setConfettiKey,
+  showConfetti,
+  onConfettiComplete,
   toggleComplete,
   openNotes,
   closeNotes,
@@ -44,7 +46,7 @@ export default function ExerciseRow({
         onClick={() => toggleComplete(day, category, exIndex)}
         className="w-full flex items-center gap-3 p-3 text-left transition-all duration-200"
       >
-        {confettiKey === exerciseKey && <Confetti onComplete={() => setConfettiKey(null)} />}
+        {showConfetti && <Confetti onComplete={onConfettiComplete} />}
 
         <div
           className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
@@ -146,7 +148,9 @@ export default function ExerciseRow({
                         discardNote(exerciseKey);
                       }}
                       className={`text-[11px] rounded-md transition-colors hover:underline opacity-75 ${
-                        darkMode ? 'text-gray-400 hover:text-red-500' : 'text-gray-600 hover:text-red-500'
+                        darkMode
+                          ? 'text-gray-400 hover:text-red-500'
+                          : 'text-gray-600 hover:text-red-500'
                       }`}
                       title="Discard note"
                     >
@@ -159,7 +163,9 @@ export default function ExerciseRow({
                       closeNotes(exerciseKey);
                     }}
                     className={`text-[11px] rounded-md transition-colors hover:underline opacity-75 ${
-                      darkMode ? 'text-gray-400 hover:text-blue-500' : 'text-gray-600 hover:text-blue-500'
+                      darkMode
+                        ? 'text-gray-400 hover:text-blue-500'
+                        : 'text-gray-600 hover:text-blue-500'
                     }`}
                     title="Close notes"
                   >
@@ -180,7 +186,7 @@ export default function ExerciseRow({
                     ? 'bg-gray-800 text-gray-100 border border-gray-700 focus:ring-blue-500'
                     : 'bg-white text-gray-800 border border-gray-200 focus:ring-blue-400'
                 }`}
-                rows={noteText ? Math.max(2, Math.ceil(noteText.split('\n').length)) : 2}
+                rows={noteText ? Math.max(2, noteText.split('\n').length) : 2}
                 placeholder="Add a quick note for this exercise"
               />
             </div>
@@ -192,4 +198,4 @@ export default function ExerciseRow({
       )}
     </div>
   );
-}
+});

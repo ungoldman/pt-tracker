@@ -14,9 +14,11 @@ Build for production: `npm run build` (outputs to `dist/`).
 
 ```
 src/
-  App.jsx                  top-level component: state, handlers, render
+  App.jsx                  top-level component: state, handlers, day-card render
   data.js                  exercise blocks + motivational quotes (content)
   components/
+    Header.jsx             sticky top bar: stats chips, day-type badge, quote, controls
+    ExerciseRow.jsx        one exercise row: toggle, badges, note editor (memoized)
     Confetti.jsx           completion confetti burst (self-contained, owns its keyframes)
     Footer.jsx             helpful-links footer
   hooks/
@@ -24,11 +26,15 @@ src/
   lib/
     schedule.js            DAYS, getExercisesForDay(exercises, day), isStrengthDay(blocks) — pure
     stats.js               completionKey, isCompleted, categoryStats, dayStats — pure
+    exerciseDisplay.jsx    name formatting + equipment/priority icon badges
 ```
 
 `App.jsx` imports the pure helpers under local aliases (`scheduleForDay`,
 `computeIsStrengthDay`, `categoryStats`, `dayStats`, `isDone`) and keeps thin
-wrappers, so render-side call sites stay unchanged.
+wrappers, so render-side call sites stay unchanged. The schedule is static, so
+each day's blocks are resolved once at module load (`SCHEDULE_BY_DAY`).
+`ExerciseRow` is wrapped in `React.memo` and the handlers passed to it are
+`useCallback`-stable, so note keystrokes re-render only the edited row.
 
 ## Exercise data model (`data.js`)
 
@@ -56,8 +62,8 @@ original index is preserved through day-filtering so keys stay stable.
 
 ## Known next step (not yet done)
 
-`App.jsx` still holds the full render (~600 lines). The next refactor is to
-extract presentational components — `Header`, `DayCard`, `CategoryBlock`,
-`ExerciseRow` — each taking explicit props. This was deliberately deferred to a
-session where the running app can be visually verified, since those components
-are render-critical and a missed prop won't be caught by `npm run build`.
+`Header` and `ExerciseRow` are extracted; the remaining candidates are
+`DayCard` and `CategoryBlock`, still inline in `App.jsx` as `renderDayCard`
+(~120 lines). Same caveat as before: do it in a session where the running app
+can be visually verified, since a missed prop won't be caught by
+`npm run build`.

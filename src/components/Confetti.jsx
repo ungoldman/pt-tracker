@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const COLORS = [
   'bg-yellow-400',
@@ -17,14 +17,18 @@ export default function Confetti({ onComplete }) {
     return () => clearTimeout(timer);
   }, [onComplete]);
 
-  const pieces = Array.from({ length: 30 }, (_, i) => ({
-    id: i,
-    left: 2 + Math.random() * 92,
-    delay: Math.random() * 0.2,
-    rotation: Math.random() * 360,
-    duration: 1.5 + Math.random() * 0.5,
-    color: COLORS[Math.floor(Math.random() * COLORS.length)],
-  }));
+  // Generate the pieces once per mount; regenerating on re-render would
+  // visibly reshuffle them mid-animation.
+  const [pieces] = useState(() =>
+    Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      left: 2 + Math.random() * 92,
+      delay: Math.random() * 0.2,
+      rotation: Math.random() * 360,
+      duration: 1.5 + Math.random() * 0.5,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    }))
+  );
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
