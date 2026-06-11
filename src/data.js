@@ -106,7 +106,14 @@ export const exercises = {
   'Personal Goals (non-PT)': {
     exercises: [
       { name: 'Daily Steps Goal', target: 5000 },
-      { name: 'Light Jog (every other day)', target: '0.5 miles' },
+      // Tue/Thu/Sat: 3x/week with 48h spacing per return-to-running guidance
+      // (~10mo layoff: tissue adapts slower than heart/lungs; conversational
+      // pace, add duration before intensity, +10%/week max once comfortable).
+      {
+        name: 'Light Jog',
+        target: '0.5 miles',
+        days: ['Tuesday', 'Thursday', 'Saturday'],
+      },
       { name: 'Sit ups', sets: 3, reps: 15 },
     ],
   },
