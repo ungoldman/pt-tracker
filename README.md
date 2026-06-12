@@ -44,16 +44,20 @@ each day's blocks are resolved once at module load (`SCHEDULE_BY_DAY`).
 export const exercises = {
   'Block Name': {
     days: ['Monday', 'Wednesday', 'Friday'], // optional: whole block runs only these days
+    minutes: 10,                             // optional: override the computed time estimate
+    noEstimate: true,                        // optional: hide the time estimate entirely
     exercises: [
       { name, sets, reps },                   // omit days → daily
       { name, sets, reps, days: MWF },         // per-exercise schedule wins over block
       { name, sets, hold: '10s' },             // holds instead of reps
       { name, target: 5000 },                  // goal-style item
-      { name, ..., priority: 'high' },         // flagged with a star + accent
     ],
   },
 };
 ```
+
+Priority is a block, not a flag: exercises in the `Priority` block get the
+star icon and feed the header priority chip, keyed off block membership.
 
 Scheduling: a per-exercise `days` wins; else the block's `days`; else daily.
 Loaded strength/resistance is gated to **Mon/Wed/Fri** (48h recovery between

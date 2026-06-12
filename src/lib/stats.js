@@ -25,11 +25,12 @@ export function dayStats(completed, blocks, day) {
   let priorityTotal = 0;
   let priorityDone = 0;
   blocks.forEach(({ category, exercises }) => {
-    exercises.forEach(({ ex, index }) => {
+    exercises.forEach(({ index }) => {
       totalToday += 1;
       const done = isCompleted(completed, day, category, index);
       if (done) completedToday += 1;
-      if (ex.priority === 'high') {
+      // Priority is now defined by block membership, not a per-exercise prop.
+      if (category === 'Priority') {
         priorityTotal += 1;
         if (done) priorityDone += 1;
       }

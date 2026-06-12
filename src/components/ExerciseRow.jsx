@@ -56,11 +56,7 @@ export default memo(function ExerciseRow({
       : 'text-gray-500';
 
   return (
-    <div
-      className={`relative ${completed ? (darkMode ? 'bg-green-900/25' : 'bg-green-50') : ''} ${
-        ex.priority === 'high' && !completed ? 'border-l-2 border-l-yellow-400' : ''
-      }`}
-    >
+    <div className={`relative ${completed ? (darkMode ? 'bg-green-900/25' : 'bg-green-50') : ''}`}>
       <button
         onClick={() => toggleComplete(day, category, exIndex)}
         className={`w-full flex items-center gap-2.5 pl-2 py-2 min-h-[44px] text-left ${
@@ -80,7 +76,7 @@ export default memo(function ExerciseRow({
         >
           {completed && <Check size={12} strokeWidth={3} />}
         </span>
-        {getPriorityIcon(ex.priority, darkMode)}
+        {getPriorityIcon(category === 'Priority', darkMode)}
         {getExerciseIcon(ex.name, darkMode)}
         {viewMode === 'week' ? (
           <span className="flex-1 min-w-0">

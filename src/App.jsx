@@ -31,13 +31,15 @@ const DEFAULT_VIEW = window.innerWidth < 640 ? 'day' : 'week';
 const columnCountForWidth = (w) => (w >= 1280 ? 3 : w >= 1024 ? 2 : 1);
 
 // Fixed semantic lane per section for the 3-column day view:
-//   0 = Wake-Up + Priority, 1 = the day's focus (Strength or Isometrics —
-//   they never both run on a day), 2 = Wind-Down + Personal Goals.
-// At narrower widths, lanes beyond the last column collapse into it.
+//   0 = Wake-Up + Priority, 1 = the day's strength session (Strength +
+//   Resistance, or Isometrics — never both on a day), 2 = Wind-Down +
+//   Personal Goals. At narrower widths, lanes beyond the last column
+//   collapse into it.
 const CATEGORY_LANE = {
   'Wake-Up': 0,
   Priority: 0,
   'Strength (M/W/F)': 1,
+  'Resistance (M/W/F)': 1,
   'Isometrics (End of Day)': 1,
   'Wind-Down': 2,
   'Personal Goals (non-PT)': 2,

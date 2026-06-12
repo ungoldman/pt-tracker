@@ -1,4 +1,13 @@
-import { Sunrise, Star, Dumbbell, Timer, Moon, Target, CircleDot } from 'lucide-react';
+import {
+  Sunrise,
+  Star,
+  Dumbbell,
+  Infinity as InfinityIcon,
+  Timer,
+  Moon,
+  Target,
+  CircleDot,
+} from 'lucide-react';
 
 /**
  * Per-block visual identity, keyed to the day-phase each block represents.
@@ -21,6 +30,13 @@ const BLOCK_STYLES = {
   },
   'Strength (M/W/F)': {
     Icon: Dumbbell,
+    textLight: 'text-purple-600',
+    textDark: 'text-purple-400',
+    bar: 'bg-purple-500/80',
+    top: 'border-t-purple-400/80',
+  },
+  'Resistance (M/W/F)': {
+    Icon: InfinityIcon,
     textLight: 'text-purple-600',
     textDark: 'text-purple-400',
     bar: 'bg-purple-500/80',

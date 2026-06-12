@@ -8,9 +8,10 @@
 //
 // Design intent:
 //   - Wake-Up rides the reliable morning tea ritual: quick warm-up + mobility.
-//   - Priority is its own block right after Wake-Up (the 3 priority dumbbells
-//     M/W/F + the 2 priority stretches daily), so the must-do work is visually
-//     separate and hard to lose in the mobility list.
+//   - Priority is its own block right after Wake-Up (the M/W/F weighted work
+//     + the daily stretches), so the must-do work is visually separate and
+//     hard to lose in the mobility list. Membership in this block IS the
+//     priority flag — the star icon keys off the category, not a prop.
 //   - Strength is the M/W/F ~5pm workout: the non-priority loaded bulk only.
 //   - Isometrics get their own planned end-of-workday block (~5pm clock-out),
 //     harder to skip than the floaty evening. They alternate with Strength
@@ -36,32 +37,23 @@ export const exercises = {
       { name: 'External Rotation with Dowel', sets: 3, reps: 10 },
     ],
   },
+  // Everything in this block is priority by definition (the star icon is
+  // driven by block membership, not a per-exercise prop).
   Priority: {
     exercises: [
-      {
-        name: 'Supine Flexion with Dumbbell (2.5)',
-        sets: 3,
-        reps: 15,
-        priority: 'high',
-        days: MWF,
-      },
-      { name: 'Sidelying ER with Dumbbell (2.5)', sets: 3, reps: 10, priority: 'high', days: MWF },
-      {
-        name: 'Sidelying Abduction with Dumbbell (2.5)',
-        sets: 3,
-        reps: 15,
-        priority: 'high',
-        days: MWF,
-      },
-      { name: 'Shoulder IR Stretch', sets: 3, reps: '30s', priority: 'high' },
-      { name: 'Cross Body Stretch with Towel', sets: 3, reps: '30s', priority: 'high' },
+      // Old movements, but the added weight is new — done first.
+      { name: 'Flexion (forward) with Dumbbell (2.5)', sets: 2, reps: 15, days: MWF },
+      { name: 'Extension (backward) with Dumbbell (2.5)', sets: 2, reps: 15, days: MWF },
+      { name: 'Supine Flexion with Dumbbell (2.5)', sets: 3, reps: 15, days: MWF },
+      { name: 'Sidelying ER with Dumbbell (2.5)', sets: 3, reps: 10, days: MWF },
+      { name: 'Sidelying Abduction with Dumbbell (2.5)', sets: 3, reps: 15, days: MWF },
+      { name: 'Shoulder IR Stretch', sets: 3, reps: '30s' },
+      { name: 'Cross Body Stretch with Towel', sets: 3, reps: '30s' },
     ],
   },
   'Strength (M/W/F)': {
     days: MWF,
     exercises: [
-      { name: 'Flexion (forward) with Dumbbell (2.5)', sets: 2, reps: 15 },
-      { name: 'Extension (backward) with Dumbbell (2.5)', sets: 2, reps: 15 },
       { name: 'Wrist Sup/Pro with Dumbbell', sets: 3, reps: 12 },
       { name: 'Bicep Curls with Dumbbell', sets: 3, reps: 10 },
       { name: 'Hammer Curls with Dumbbell', sets: 3, reps: 10 },
@@ -77,6 +69,13 @@ export const exercises = {
         sets: 3,
         reps: 10,
       },
+    ],
+  },
+  // Split out from Strength: same M/W/F session, band work instead of dumbbells,
+  // so each half is independently collapsible and fits a laptop viewport.
+  'Resistance (M/W/F)': {
+    days: MWF,
+    exercises: [
       { name: 'Shoulder Row with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder Extension with Resistance', sets: 3, reps: 10 },
       { name: 'Shoulder Flexion with Resistance', sets: 2, reps: 10 },
