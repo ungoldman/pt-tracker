@@ -12,6 +12,7 @@ import ExerciseRow from './components/ExerciseRow';
 import Header from './components/Header';
 import { categoryStats, completionKey, dayStats, isCompleted as isDone } from './lib/stats';
 import { getBlockStyle } from './lib/blockStyle';
+import { estimateBlock } from './lib/duration';
 
 // The exercise data never changes at runtime, so resolve each day's schedule
 // once at module load instead of re-filtering on every render.
@@ -328,6 +329,10 @@ const App = () => {
     const isCollapsed = isCategoryCollapsed(day, category, isComplete);
     const blockStyle = getBlockStyle(category);
     const BlockIcon = blockStyle.Icon;
+    const { minutes, exact } = estimateBlock(
+      exercises[category],
+      exList.map(({ ex }) => ex)
+    );
     return (
       <div key={category}>
         <button
@@ -344,8 +349,18 @@ const App = () => {
           />
           <BlockIcon size={14} className="flex-shrink-0" />
           {category}
+          {minutes > 0 && (
+            <span
+              className={`ml-auto text-[11px] font-normal normal-case tabular-nums ${
+                darkMode ? 'text-gray-500' : 'text-gray-400'
+              }`}
+            >
+              {exact ? '' : '~'}
+              {minutes} min
+            </span>
+          )}
           <span
-            className={`ml-auto text-xs font-normal tabular-nums ${
+            className={`${minutes > 0 ? 'ml-2' : 'ml-auto'} text-xs font-normal tabular-nums ${
               isComplete ? 'text-green-500' : darkMode ? 'text-gray-400' : 'text-gray-500'
             }`}
           >

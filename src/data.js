@@ -105,6 +105,9 @@ export const exercises = {
     ],
   },
   'Personal Goals (non-PT)': {
+    // Dominated by untimed all-day steps + jogging, so a session estimate
+    // would be misleading.
+    noEstimate: true,
     exercises: [
       { name: 'Daily Steps Goal', target: 5000 },
       // Tue/Thu/Sat: 3x/week with 48h spacing per return-to-running guidance
