@@ -189,7 +189,7 @@ export default function Footer({ darkMode }) {
 
   return (
     <footer
-      className={`w-full border-t mt-6 ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
+      className={`w-full border-t sticky bottom-0 z-40 ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
     >
       <div className="px-3 sm:px-6 py-3">
         <div
