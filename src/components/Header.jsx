@@ -20,6 +20,34 @@ const COLLAPSE_MODES = {
 };
 
 /**
+ * Hover/focus tooltip below a control (the native title is too easy to miss).
+ * `align` keeps the tooltip inside the viewport: 'right' for controls at the
+ * right edge, 'left' for elements near the left edge, 'center' otherwise.
+ */
+const HINT_ALIGN = {
+  center: 'left-1/2 -translate-x-1/2',
+  right: 'right-0',
+  left: 'left-0',
+};
+function Hinted({ hint, darkMode, align = 'center', children }) {
+  return (
+    <div className="relative flex group">
+      {children}
+      <span
+        role="tooltip"
+        className={`pointer-events-none absolute top-full ${HINT_ALIGN[align]} mt-1.5 px-2 py-1 rounded-md text-xs whitespace-nowrap z-50 opacity-0 transition-opacity delay-200 group-hover:opacity-100 group-focus-within:opacity-100 ${
+          darkMode
+            ? 'bg-gray-800 text-gray-200 border border-gray-700'
+            : 'bg-white text-gray-700 border border-gray-200 shadow-sm'
+        }`}
+      >
+        {hint}
+      </span>
+    </div>
+  );
+}
+
+/**
  * Sticky top bar: title, today's stats chips, and controls. On small screens
  * (where the page itself scrolls) it collapses to just the stats line once
  * scrolled, iOS large-title style; on lg+ the content area scrolls internally
@@ -107,45 +135,67 @@ export default function Header({
             scrolled ? 'hidden lg:flex' : 'flex'
           }`}
         >
-          <button
-            onClick={cycleViewMode}
-            className={ghostButton}
-            title="Cycle views: week → day → 3-day"
+          <Hinted hint="Cycle view: week → day → 3-day" darkMode={darkMode} align="right">
+            <button
+              onClick={cycleViewMode}
+              className={ghostButton}
+              aria-label="Cycle view: week, day, 3-day"
+            >
+              <CalendarRange size={16} />
+              <span className="hidden sm:inline">
+                {viewMode === 'week' && 'Week view'}
+                {viewMode === 'day' && 'Day view'}
+                {viewMode === 'three' && '3-day view'}
+              </span>
+            </button>
+          </Hinted>
+          <Hinted
+            hint={`Sections: ${COLLAPSE_MODES[collapseMode].next}`}
+            darkMode={darkMode}
+            align="right"
           >
-            <CalendarRange size={16} />
-            <span className="hidden sm:inline">
-              {viewMode === 'week' && 'Week view'}
-              {viewMode === 'day' && 'Day view'}
-              {viewMode === 'three' && '3-day view'}
-            </span>
-          </button>
-          <button
-            onClick={cycleCollapseMode}
-            className={ghostButton}
-            title={`${COLLAPSE_MODES[collapseMode].label} — click to ${COLLAPSE_MODES[collapseMode].next}`}
-          >
-            {(() => {
-              const ModeIcon = COLLAPSE_MODES[collapseMode].Icon;
-              return <ModeIcon size={16} />;
-            })()}
-          </button>
-          <button
-            onClick={toggleDarkMode}
-            className={ghostButton}
-            title={darkMode ? 'Light mode' : 'Dark mode'}
-          >
-            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
-          <div className="relative" ref={resetRef}>
+            <button
+              onClick={cycleCollapseMode}
+              className={ghostButton}
+              aria-label={`Sections: ${COLLAPSE_MODES[collapseMode].next}`}
+            >
+              {(() => {
+                const ModeIcon = COLLAPSE_MODES[collapseMode].Icon;
+                return <ModeIcon size={16} />;
+              })()}
+            </button>
+          </Hinted>
+          <Hinted hint={darkMode ? 'Light mode' : 'Dark mode'} darkMode={darkMode} align="right">
+            <button
+              onClick={toggleDarkMode}
+              className={ghostButton}
+              aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+          </Hinted>
+          <div className="relative flex group" ref={resetRef}>
             <button
               onClick={() => setResetMenuOpen((open) => !open)}
               className={ghostButton}
-              title="Reset checkboxes…"
+              aria-label="Reset checkboxes"
               aria-haspopup="menu"
               aria-expanded={resetMenuOpen}
             >
               <RotateCcw size={16} />
             </button>
+            {!resetMenuOpen && (
+              <span
+                role="tooltip"
+                className={`pointer-events-none absolute top-full right-0 mt-1.5 px-2 py-1 rounded-md text-xs whitespace-nowrap z-50 opacity-0 transition-opacity delay-200 group-hover:opacity-100 ${
+                  darkMode
+                    ? 'bg-gray-800 text-gray-200 border border-gray-700'
+                    : 'bg-white text-gray-700 border border-gray-200 shadow-sm'
+                }`}
+              >
+                Reset checkboxes…
+              </span>
+            )}
             {resetMenuOpen && (
               <div
                 role="menu"
@@ -196,32 +246,35 @@ export default function Header({
                 </span>
               </span>
               {/* Progress bar */}
-              <span
-                className={`h-1.5 w-16 rounded-full overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}
-              >
+              <Hinted hint={`${pct}% of today's exercises done`} darkMode={darkMode}>
                 <span
-                  className={`block h-full rounded-full transition-all duration-300 ${pct === 100 ? 'bg-green-500' : 'bg-blue-500'}`}
-                  style={{ width: `${pct}%` }}
-                />
-              </span>
+                  className={`h-1.5 w-16 self-center rounded-full overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}
+                >
+                  <span
+                    className={`block h-full rounded-full transition-all duration-300 ${pct === 100 ? 'bg-green-500' : 'bg-blue-500'}`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </span>
+              </Hinted>
             </span>
             {/* Priority chip */}
             {priorityStats.total > 0 && (
-              <span
-                title="Priority exercises completed today"
-                className={`text-[11px] whitespace-nowrap inline-flex items-center gap-1 px-2 py-0.5 rounded-full border ${
-                  priorityStats.done === priorityStats.total
-                    ? darkMode
-                      ? 'border-green-700 text-green-300 bg-green-900/30'
-                      : 'border-green-300 text-green-700 bg-green-50'
-                    : darkMode
-                      ? 'border-yellow-700/60 text-yellow-300 bg-yellow-900/20'
-                      : 'border-yellow-300 text-yellow-700 bg-yellow-50'
-                }`}
-              >
-                <Star size={10} className="flex-shrink-0" />
-                {priorityStats.done}/{priorityStats.total}
-              </span>
+              <Hinted hint="Priority exercises done today" darkMode={darkMode}>
+                <span
+                  className={`text-[11px] whitespace-nowrap inline-flex items-center gap-1 px-2 py-0.5 rounded-full border ${
+                    priorityStats.done === priorityStats.total
+                      ? darkMode
+                        ? 'border-green-700 text-green-300 bg-green-900/30'
+                        : 'border-green-300 text-green-700 bg-green-50'
+                      : darkMode
+                        ? 'border-yellow-700/60 text-yellow-300 bg-yellow-900/20'
+                        : 'border-yellow-300 text-yellow-700 bg-yellow-50'
+                  }`}
+                >
+                  <Star size={10} className="flex-shrink-0" />
+                  {priorityStats.done}/{priorityStats.total}
+                </span>
+              </Hinted>
             )}
             {/* Day-type badge */}
             <span
@@ -241,21 +294,21 @@ export default function Header({
             {/* Week progress dots: one per day, tap to jump there in day view */}
             <span className="flex items-center gap-1.5 ml-1" aria-label="Week progress">
               {weekSummary.map(({ day, pct: dayPct }) => (
-                <button
-                  key={day}
-                  onClick={() => onSelectDay(day)}
-                  title={`${day}: ${dayPct}% done`}
-                  aria-label={`${day}: ${dayPct}% done`}
-                  className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                    dayPct === 100
-                      ? 'bg-green-500'
-                      : dayPct > 0
-                        ? 'bg-blue-500'
-                        : darkMode
-                          ? 'bg-gray-600'
-                          : 'bg-gray-300'
-                  } ${day === todayLabel ? 'ring-2 ring-blue-400/70' : ''}`}
-                />
+                <Hinted key={day} hint={`${day}: ${dayPct}% done`} darkMode={darkMode} align="left">
+                  <button
+                    onClick={() => onSelectDay(day)}
+                    aria-label={`${day}: ${dayPct}% done`}
+                    className={`w-2.5 h-2.5 self-center rounded-full transition-colors ${
+                      dayPct === 100
+                        ? 'bg-green-500'
+                        : dayPct > 0
+                          ? 'bg-blue-500'
+                          : darkMode
+                            ? 'bg-gray-600'
+                            : 'bg-gray-300'
+                    } ${day === todayLabel ? 'ring-2 ring-blue-400/70' : ''}`}
+                  />
+                </Hinted>
               ))}
             </span>
           </div>
