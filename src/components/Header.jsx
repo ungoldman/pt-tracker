@@ -54,32 +54,37 @@ export default function Header({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // One button language: neutral surfaces with uniform borders; color is
-  // reserved for meaning (red text on the destructive resets).
-  const buttonBase =
-    'flex items-center gap-1 px-2.5 sm:px-3 py-2 transition-all text-sm shadow-sm border';
-  const neutralButton = darkMode
-    ? 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'
-    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100';
-  const dangerButton = darkMode
-    ? 'bg-gray-800 text-red-400 border-gray-700 hover:bg-red-900/40'
-    : 'bg-white text-red-600 border-gray-300 hover:bg-red-50';
+  // One button language: ghost icon buttons for the mode/view controls,
+  // bordered surfaces only for the destructive resets (red text = careful).
+  const ghostButton = `flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all text-sm ${
+    darkMode
+      ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
+      : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
+  }`;
+  const dangerButton = `flex items-center gap-1 px-2.5 sm:px-3 py-1.5 transition-all text-sm shadow-sm border ${
+    darkMode
+      ? 'bg-gray-800 text-red-400 border-gray-700 hover:bg-red-900/40'
+      : 'bg-white text-red-600 border-gray-300 hover:bg-red-50'
+  }`;
 
   return (
     <div
       className={`sticky top-0 z-50 border-b ${
-        scrolled ? 'px-3 py-2 sm:px-6 lg:py-6' : 'p-3 sm:p-6'
+        scrolled ? 'px-3 py-1.5 sm:px-6 lg:py-3' : 'p-3 sm:px-6 sm:py-3'
       } ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-gray-50 border-gray-200'}`}
     >
       {/* One row on lg+ (title, stats, controls); below that the stats drop to
           their own full-width line via order/w-full, controls stay by the title. */}
       <div className="w-full flex flex-wrap items-center gap-x-4 gap-y-2">
         <h1
-          className={`order-1 text-2xl sm:text-3xl font-bold tracking-tight flex-shrink-0 items-center gap-2 ${
+          className={`order-1 text-xl sm:text-2xl font-bold tracking-tight flex-shrink-0 items-center gap-2 ${
             scrolled ? 'hidden lg:flex' : 'flex'
           } ${darkMode ? 'text-white' : 'text-gray-800'}`}
         >
-          <Timer size={26} className="flex-shrink-0 translate-y-0.5" />
+          <Timer
+            size={22}
+            className={`flex-shrink-0 translate-y-0.5 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}
+          />
           pt-tracker
         </h1>
 
@@ -91,7 +96,7 @@ export default function Header({
         >
           <button
             onClick={cycleViewMode}
-            className={`${buttonBase} rounded-lg ${neutralButton}`}
+            className={ghostButton}
             title="Cycle views: week → day → 3-day"
           >
             <CalendarRange size={16} />
@@ -103,7 +108,7 @@ export default function Header({
           </button>
           <button
             onClick={cycleCollapseMode}
-            className={`${buttonBase} rounded-lg ${neutralButton}`}
+            className={ghostButton}
             title={`${COLLAPSE_MODES[collapseMode].label} — click to ${COLLAPSE_MODES[collapseMode].next}`}
           >
             {(() => {
@@ -113,7 +118,7 @@ export default function Header({
           </button>
           <button
             onClick={toggleDarkMode}
-            className={`${buttonBase} rounded-lg ${neutralButton}`}
+            className={ghostButton}
             title={darkMode ? 'Light mode' : 'Dark mode'}
           >
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
@@ -121,7 +126,7 @@ export default function Header({
           <div className="inline-flex">
             <button
               onClick={() => resetDay(selectedDay)}
-              className={`${buttonBase} rounded-l-lg ${dangerButton}`}
+              className={`${dangerButton} rounded-l-lg`}
               title="Reset selected day's checkboxes"
             >
               <RotateCcw size={16} />
@@ -129,7 +134,7 @@ export default function Header({
             </button>
             <button
               onClick={resetWeek}
-              className={`${buttonBase} -ml-px rounded-r-lg ${dangerButton}`}
+              className={`${dangerButton} -ml-px rounded-r-lg`}
               title="Reset all checkboxes for the week"
             >
               <RotateCcw size={16} />
