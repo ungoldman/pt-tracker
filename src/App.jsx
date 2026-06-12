@@ -24,6 +24,35 @@ const SCHEDULE_BY_DAY = Object.fromEntries(
 const PREFERS_DARK = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
 const DEFAULT_VIEW = window.innerWidth < 640 ? 'day' : 'week';
 
+// Day-view column count by width (matches the lg/xl Tailwind breakpoints).
+// Used to assign each block a fixed column so collapsing a section never
+// reflows blocks across columns the way CSS `columns` masonry does.
+const columnCountForWidth = (w) => (w >= 1280 ? 3 : w >= 1024 ? 2 : 1);
+
+// Fixed semantic lane per section for the 3-column day view:
+//   0 = Wake-Up + Priority, 1 = the day's focus (Strength or Isometrics —
+//   they never both run on a day), 2 = Wind-Down + Personal Goals.
+// At narrower widths, lanes beyond the last column collapse into it.
+const CATEGORY_LANE = {
+  'Wake-Up': 0,
+  Priority: 0,
+  'Strength (M/W/F)': 1,
+  'Isometrics (End of Day)': 1,
+  'Wind-Down': 2,
+  'Personal Goals (non-PT)': 2,
+};
+const laneFor = (category) => CATEGORY_LANE[category] ?? 1;
+
+function useColumnCount() {
+  const [count, setCount] = useState(() => columnCountForWidth(window.innerWidth));
+  useEffect(() => {
+    const onResize = () => setCount(columnCountForWidth(window.innerWidth));
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+  return count;
+}
+
 const App = () => {
   // localStorage-backed state (init from storage, persist on change via the hook)
   const [darkMode, setDarkMode] = usePersistentState('ptTrackerDarkMode', PREFERS_DARK);
@@ -40,6 +69,7 @@ const App = () => {
   const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'long' });
   const [selectedDay, setSelectedDay] = useState(todayLabel);
   const [expandedNotes, setExpandedNotes] = useState(new Set());
+  const columnCount = useColumnCount();
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
@@ -530,20 +560,26 @@ const App = () => {
               </span>
             </div>
 
-            {/* Blocks as individual phase cards, masonry-packed */}
-            <div className="flex-1 overflow-auto min-h-0 columns-1 lg:columns-2 xl:columns-3 gap-x-4">
-              {getExercisesForDay(selectedDay).map(({ category, exercises: exList }) => (
-                <div
-                  key={category}
-                  className={`break-inside-avoid mb-4 rounded-xl border-t-2 p-2 ${
-                    getBlockStyle(category).top
-                  } ${
-                    darkMode
-                      ? 'bg-gray-800 shadow-md shadow-black/30'
-                      : 'bg-white border border-t-2 border-gray-200 shadow-sm'
-                  }`}
-                >
-                  {renderBlock(selectedDay, category, exList)}
+            {/* Blocks in fixed columns: each block is assigned a column by
+                index (round-robin), so collapsing a section only shrinks its
+                own column and never reflows blocks across columns. */}
+            <div className="flex-1 overflow-auto min-h-0 flex gap-4 items-start">
+              {Array.from({ length: columnCount }, (_, col) => (
+                <div key={col} className="flex-1 min-w-0 flex flex-col gap-4">
+                  {getExercisesForDay(selectedDay)
+                    .filter(({ category }) => Math.min(laneFor(category), columnCount - 1) === col)
+                    .map(({ category, exercises: exList }) => (
+                      <div
+                        key={category}
+                        className={`rounded-xl border-t-2 p-2 ${getBlockStyle(category).top} ${
+                          darkMode
+                            ? 'bg-gray-800 shadow-md shadow-black/30'
+                            : 'bg-white border border-t-2 border-gray-200 shadow-sm'
+                        }`}
+                      >
+                        {renderBlock(selectedDay, category, exList)}
+                      </div>
+                    ))}
                 </div>
               ))}
             </div>
