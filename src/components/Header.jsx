@@ -4,7 +4,6 @@ import {
   Sparkles,
   Star,
   CalendarRange,
-  ChevronDown,
   ChevronsDownUp,
   ChevronsUpDown,
   ListChecks,
@@ -73,17 +72,12 @@ export default function Header({
     };
   }, [resetMenuOpen]);
 
-  // One button language: ghost icon buttons for the mode/view controls,
-  // bordered surfaces only for the destructive resets (red text = careful).
+  // One button language: ghost icon buttons throughout; destructive actions
+  // reveal red only inside the reset menu (plus the confirm dialog).
   const ghostButton = `flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all text-sm ${
     darkMode
       ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
       : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
-  }`;
-  const dangerButton = `flex items-center gap-1 px-2.5 sm:px-3 py-1.5 transition-all text-sm shadow-sm border ${
-    darkMode
-      ? 'bg-gray-800 text-red-400 border-gray-700 hover:bg-red-900/40'
-      : 'bg-white text-red-600 border-gray-300 hover:bg-red-50'
   }`;
 
   return (
@@ -145,17 +139,12 @@ export default function Header({
           <div className="relative" ref={resetRef}>
             <button
               onClick={() => setResetMenuOpen((open) => !open)}
-              className={`${dangerButton} rounded-lg`}
+              className={ghostButton}
               title="Reset checkboxes…"
               aria-haspopup="menu"
               aria-expanded={resetMenuOpen}
             >
               <RotateCcw size={16} />
-              Reset
-              <ChevronDown
-                size={14}
-                className={`transition-transform ${resetMenuOpen ? 'rotate-180' : ''}`}
-              />
             </button>
             {resetMenuOpen && (
               <div
