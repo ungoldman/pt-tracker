@@ -560,21 +560,6 @@ const App = () => {
                   day: 'numeric',
                 })}
               </span>
-              <span
-                className={`text-[11px] px-2 py-0.5 rounded-full border self-center ${
-                  computeIsStrengthDay(getExercisesForDay(selectedDay))
-                    ? darkMode
-                      ? 'border-purple-700/60 text-purple-300 bg-purple-900/20'
-                      : 'border-purple-300 text-purple-700 bg-purple-50'
-                    : darkMode
-                      ? 'border-gray-600 text-gray-400 bg-gray-800'
-                      : 'border-gray-300 text-gray-500 bg-gray-50'
-                }`}
-              >
-                {computeIsStrengthDay(getExercisesForDay(selectedDay))
-                  ? 'Strength day'
-                  : 'Rest day'}
-              </span>
             </div>
 
             {/* Blocks in fixed columns: each block is assigned a column by

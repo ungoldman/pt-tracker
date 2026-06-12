@@ -29,6 +29,15 @@ const HINT_ALIGN = {
   right: 'right-0',
   left: 'left-0',
 };
+// Week-dot fill by day completion: no history stays neutral, then blue
+// under halfway and green at/over halfway. A clean 100% gets a gold star
+// instead of a dot (handled at the call site), so no 100% branch here.
+function weekDotColor(pct, darkMode) {
+  if (pct >= 50) return 'bg-green-500';
+  if (pct > 0) return 'bg-blue-500';
+  return darkMode ? 'bg-gray-600' : 'bg-gray-300';
+}
+
 function Hinted({ hint, darkMode, align = 'center', children }) {
   return (
     <div className="relative flex group">
@@ -293,23 +302,48 @@ export default function Header({
             </span>
             {/* Week progress dots: one per day, tap to jump there in day view */}
             <span className="flex items-center gap-1.5 ml-1" aria-label="Week progress">
-              {weekSummary.map(({ day, pct: dayPct }) => (
-                <Hinted key={day} hint={`${day}: ${dayPct}% done`} darkMode={darkMode} align="left">
-                  <button
-                    onClick={() => onSelectDay(day)}
-                    aria-label={`${day}: ${dayPct}% done`}
-                    className={`w-2.5 h-2.5 self-center rounded-full transition-colors ${
-                      dayPct === 100
-                        ? 'bg-green-500'
-                        : dayPct > 0
-                          ? 'bg-blue-500'
-                          : darkMode
-                            ? 'bg-gray-600'
-                            : 'bg-gray-300'
-                    } ${day === todayLabel ? 'ring-2 ring-blue-400/70' : ''}`}
-                  />
-                </Hinted>
-              ))}
+              {weekSummary.map(({ day, pct: dayPct }) => {
+                const isToday = day === todayLabel;
+                // In day view, ring the day the list is currently showing.
+                const isSelected = viewMode === 'day' && day === selectedDay;
+                return (
+                  <Hinted key={day} hint={`${day}: ${dayPct}% done`} darkMode={darkMode}>
+                    <button
+                      onClick={(e) => {
+                        // Drop focus so the focus-within tooltip doesn't linger
+                        // and overlap a neighbor's hover tooltip after a click.
+                        e.currentTarget.blur();
+                        onSelectDay(day);
+                      }}
+                      aria-label={`${day}: ${dayPct}% done${isToday ? ' (today)' : ''}${
+                        isSelected ? ' (selected)' : ''
+                      }`}
+                      className={`self-center flex items-center justify-center rounded-full ${
+                        isSelected
+                          ? `ring-2 ring-offset-2 ${
+                              darkMode
+                                ? 'ring-gray-400 ring-offset-gray-900'
+                                : 'ring-gray-400 ring-offset-gray-50'
+                            }`
+                          : ''
+                      }`}
+                    >
+                      {dayPct === 100 ? (
+                        <Star
+                          size={isToday ? 16 : 13}
+                          className="text-yellow-400 fill-yellow-400"
+                        />
+                      ) : (
+                        <span
+                          className={`block rounded-full transition-colors ${
+                            isToday ? 'w-3.5 h-3.5' : 'w-2.5 h-2.5'
+                          } ${weekDotColor(dayPct, darkMode)}`}
+                        />
+                      )}
+                    </button>
+                  </Hinted>
+                );
+              })}
             </span>
           </div>
         )}
