@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Timer,
   Sparkles,
   Star,
   CalendarRange,
+  ChevronDown,
   ChevronsDownUp,
   ChevronsUpDown,
   ListChecks,
@@ -44,6 +45,8 @@ export default function Header({
   selectedDay,
 }) {
   const [scrolled, setScrolled] = useState(false);
+  const [resetMenuOpen, setResetMenuOpen] = useState(false);
+  const resetRef = useRef(null);
 
   useEffect(() => {
     // Hysteresis (collapse past 96px, expand under 24px) so the header's own
@@ -53,6 +56,22 @@ export default function Header({
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!resetMenuOpen) return undefined;
+    const onDown = (e) => {
+      if (!resetRef.current?.contains(e.target)) setResetMenuOpen(false);
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') setResetMenuOpen(false);
+    };
+    document.addEventListener('pointerdown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [resetMenuOpen]);
 
   // One button language: ghost icon buttons for the mode/view controls,
   // bordered surfaces only for the destructive resets (red text = careful).
@@ -123,23 +142,54 @@ export default function Header({
           >
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
           </button>
-          <div className="inline-flex">
+          <div className="relative" ref={resetRef}>
             <button
-              onClick={() => resetDay(selectedDay)}
-              className={`${dangerButton} rounded-l-lg`}
-              title="Reset selected day's checkboxes"
+              onClick={() => setResetMenuOpen((open) => !open)}
+              className={`${dangerButton} rounded-lg`}
+              title="Reset checkboxes…"
+              aria-haspopup="menu"
+              aria-expanded={resetMenuOpen}
             >
               <RotateCcw size={16} />
-              Day
+              Reset
+              <ChevronDown
+                size={14}
+                className={`transition-transform ${resetMenuOpen ? 'rotate-180' : ''}`}
+              />
             </button>
-            <button
-              onClick={resetWeek}
-              className={`${dangerButton} -ml-px rounded-r-lg`}
-              title="Reset all checkboxes for the week"
-            >
-              <RotateCcw size={16} />
-              Week
-            </button>
+            {resetMenuOpen && (
+              <div
+                role="menu"
+                className={`absolute right-0 top-full mt-1 min-w-[11rem] rounded-lg border shadow-lg overflow-hidden ${
+                  darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                }`}
+              >
+                <button
+                  role="menuitem"
+                  onClick={() => {
+                    setResetMenuOpen(false);
+                    resetDay(selectedDay);
+                  }}
+                  className={`w-full text-left px-3 py-2 text-sm ${
+                    darkMode ? 'text-red-400 hover:bg-red-900/40' : 'text-red-600 hover:bg-red-50'
+                  }`}
+                >
+                  Reset {selectedDay}
+                </button>
+                <button
+                  role="menuitem"
+                  onClick={() => {
+                    setResetMenuOpen(false);
+                    resetWeek();
+                  }}
+                  className={`w-full text-left px-3 py-2 text-sm ${
+                    darkMode ? 'text-red-400 hover:bg-red-900/40' : 'text-red-600 hover:bg-red-50'
+                  }`}
+                >
+                  Reset week
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
