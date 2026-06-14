@@ -55,11 +55,29 @@ export default memo(function ExerciseRow({
       ? 'text-gray-400'
       : 'text-gray-500';
 
+  // A div (not a button) so the exercise name stays selectable/copyable; a
+  // drag-select shouldn't also toggle, so a click that ends a text selection
+  // is ignored. Keyboard activation (Enter/Space) keeps it operable.
+  const handleToggle = () => {
+    const selection = window.getSelection?.();
+    if (selection && !selection.isCollapsed) return;
+    toggleComplete(day, category, exId);
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleComplete(day, category, exId);
+    }
+  };
+
   return (
     <div className={`relative ${completed ? (darkMode ? 'bg-green-900/25' : 'bg-green-50') : ''}`}>
-      <button
-        onClick={() => toggleComplete(day, category, exId)}
-        className={`w-full flex items-center gap-2.5 pl-2 py-2 min-h-[44px] text-left ${
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={handleToggle}
+        onKeyDown={handleKeyDown}
+        className={`w-full flex items-center gap-2.5 pl-2 py-2 min-h-[44px] text-left cursor-pointer select-text ${
           showNotesUI ? 'pr-9' : 'pr-2'
         }`}
       >
@@ -103,7 +121,7 @@ export default memo(function ExerciseRow({
             </span>
           </>
         )}
-      </button>
+      </div>
 
       {showNotesUI && !isExpanded && (
         <button
