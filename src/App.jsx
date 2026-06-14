@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ChevronDown } from 'lucide-react';
 import { exercises } from './data';
 import { usePersistentState } from './hooks/usePersistentState';
 import {
@@ -8,17 +7,14 @@ import {
   isStrengthDay as computeIsStrengthDay,
 } from './lib/schedule';
 import Footer from './components/Footer';
-import ExerciseRow from './components/ExerciseRow';
 import Header from './components/Header';
-import {
-  categoryStats,
-  completionKey,
-  dayStats,
-  exerciseId,
-  isCompleted as isDone,
-} from './lib/stats';
+import DayCard from './components/DayCard';
+import CategoryBlock from './components/CategoryBlock';
+import DayLabel from './components/DayLabel';
+import { TrackerContext } from './context/TrackerContext';
+import { completionKey, dayStats } from './lib/stats';
 import { getBlockStyle } from './lib/blockStyle';
-import { estimateBlock } from './lib/duration';
+import { getDateForDay, getTodayLabel } from './lib/dates';
 
 // The exercise data never changes at runtime, so resolve each day's schedule
 // once at module load instead of re-filtering on every render.
@@ -75,21 +71,18 @@ const App = () => {
 
   const [confettiKey, setConfettiKey] = useState(null);
   const [justCompleted, setJustCompleted] = useState(new Set());
-  const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const todayLabel = getTodayLabel();
   const [selectedDay, setSelectedDay] = useState(todayLabel);
   const [expandedNotes, setExpandedNotes] = useState(new Set());
+  const [collapseMode, setCollapseMode] = useState('done');
   const columnCount = useColumnCount();
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   useEffect(() => {
-    // Keyboard shortcuts for view switching
+    // Keyboard shortcuts for view switching (ignored while typing a note).
     const handleKeyPress = (e) => {
-      // Only trigger if not typing in an input or textarea
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-        return;
-      }
-
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       switch (e.key.toLowerCase()) {
         case 'w':
           setViewMode('week');
@@ -101,10 +94,8 @@ const App = () => {
           setViewMode('three');
           break;
         default:
-          return;
       }
     };
-
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [setViewMode]);
@@ -114,22 +105,17 @@ const App = () => {
       const key = completionKey(day, category, id);
       const isCurrentlyCompleted = completed[key];
 
-      setCompleted((prev) => ({
-        ...prev,
-        [key]: !prev[key],
-      }));
+      setCompleted((prev) => ({ ...prev, [key]: !prev[key] }));
 
-      // Trigger confetti only when completing (not uncompleting)
+      // Confetti only when completing (not uncompleting), cleared after the burst.
       if (!isCurrentlyCompleted) {
         setConfettiKey(key);
         setJustCompleted((prev) => new Set(prev).add(key));
-
-        // Remove the "just completed" state after animation
         setTimeout(() => {
           setJustCompleted((prev) => {
-            const newSet = new Set(prev);
-            newSet.delete(key);
-            return newSet;
+            const next = new Set(prev);
+            next.delete(key);
+            return next;
           });
         }, 1000);
       }
@@ -139,19 +125,10 @@ const App = () => {
 
   const clearConfetti = useCallback(() => setConfettiKey(null), []);
 
-  const isCompleted = (day, category, id) => isDone(completed, day, category, id);
-
-  const wasJustCompleted = (day, category, id) => justCompleted.has(completionKey(day, category, id));
-
-  const getNote = (day, category, id) => notes[completionKey(day, category, id)] || '';
-
   const handleNoteChange = useCallback(
     (day, category, id, value) => {
       const key = completionKey(day, category, id);
-      setNotes((prev) => ({
-        ...prev,
-        [key]: value,
-      }));
+      setNotes((prev) => ({ ...prev, [key]: value }));
     },
     [setNotes]
   );
@@ -168,25 +145,6 @@ const App = () => {
     });
   }, []);
 
-  // A fully-completed block defaults to collapsed (done work stops costing
-  // space); an explicit user toggle always wins over the default, so the
-  // toggle flips the *effective* state rather than the stored one.
-  const toggleCategoryCollapse = (day, category, currentlyCollapsed) => {
-    const key = `${day}-${category}`;
-    setCollapsedCategories((prev) => ({
-      ...prev,
-      [key]: !currentlyCollapsed,
-    }));
-  };
-
-  const isCategoryCollapsed = (day, category, defaultCollapsed = false) => {
-    const key = `${day}-${category}`;
-    return collapsedCategories[key] ?? defaultCollapsed;
-  };
-
-  const getCategoryStats = (day, category, scheduled) =>
-    categoryStats(completed, day, category, scheduled);
-
   const discardNote = useCallback(
     (key) => {
       setNotes((prev) => {
@@ -199,6 +157,16 @@ const App = () => {
     [setNotes, closeNotes]
   );
 
+  // A fully-completed block defaults to collapsed (done work stops costing
+  // space); an explicit user toggle always wins over the default, so the
+  // toggle flips the *effective* state rather than the stored one.
+  const toggleCategoryCollapse = (day, category, currentlyCollapsed) => {
+    setCollapsedCategories((prev) => ({ ...prev, [`${day}-${category}`]: !currentlyCollapsed }));
+  };
+
+  const isCategoryCollapsed = (day, category, defaultCollapsed = false) =>
+    collapsedCategories[`${day}-${category}`] ?? defaultCollapsed;
+
   const resetWeek = () => {
     if (window.confirm('Are you sure you want to reset all checkboxes for the week?')) {
       setCompleted({});
@@ -209,68 +177,18 @@ const App = () => {
 
   const resetDay = (day) => {
     if (window.confirm(`Are you sure you want to reset all checkboxes for ${day}?`)) {
-      setCompleted((prev) => {
-        const updated = { ...prev };
-        Object.keys(updated).forEach((key) => {
-          if (key.startsWith(day + '-')) {
-            delete updated[key];
-          }
-        });
-        return updated;
-      });
+      const stripDay = (map) =>
+        Object.fromEntries(Object.entries(map).filter(([key]) => !key.startsWith(day + '-')));
+      setCompleted(stripDay);
+      setNotes(stripDay);
       setJustCompleted(new Set());
-      setNotes((prev) => {
-        const updated = { ...prev };
-        Object.keys(updated).forEach((key) => {
-          if (key.startsWith(day + '-')) {
-            delete updated[key];
-          }
-        });
-        return updated;
-      });
     }
   };
 
   const getExercisesForDay = (day) => SCHEDULE_BY_DAY[day];
 
-  const getDateForDay = (day) => {
-    const today = new Date();
-    const todayIdx = days.indexOf(todayLabel);
-    const targetIdx = days.indexOf(day);
-    const diff = targetIdx - todayIdx;
-    const result = new Date(today);
-    result.setDate(today.getDate() + diff);
-    return result;
-  };
-
-  const formatDateLabel = (date) =>
-    date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-  const renderDayLabel = (day, isSelectedDay = false) => {
-    const emphasizeSelectedDate = isSelectedDay && viewMode === 'day';
-    const dateColor = emphasizeSelectedDate
-      ? darkMode
-        ? 'text-blue-300'
-        : 'text-white/80'
-      : darkMode
-        ? 'text-gray-400'
-        : 'text-gray-500';
-
-    return (
-      <span className="flex items-baseline justify-between w-full gap-2">
-        <span>{day}</span>
-        <span className={`text-[11px] ${dateColor}`}>{formatDateLabel(getDateForDay(day))}</span>
-        {/* <span className={`text-[11px] italic ${dateColor} align`}>({focus[day]})</span> */}
-      </span>
-    );
-  };
-
   const cycleViewMode = () => {
-    setViewMode((prev) => {
-      if (prev === 'week') return 'day';
-      if (prev === 'day') return 'three';
-      return 'week';
-    });
+    setViewMode((prev) => (prev === 'week' ? 'day' : prev === 'day' ? 'three' : 'week'));
   };
 
   // Global section visibility cycles through three modes:
@@ -278,8 +196,6 @@ const App = () => {
   //     per-block default, so the override map is simply cleared;
   //   all  — every block on every day collapsed (explicit overrides);
   //   none — every block expanded (explicit overrides beat the done-default).
-  const [collapseMode, setCollapseMode] = useState('done');
-
   const cycleCollapseMode = () => {
     const next = { done: 'all', all: 'none', none: 'done' }[collapseMode];
     setCollapseMode(next);
@@ -322,283 +238,172 @@ const App = () => {
     [setViewMode]
   );
 
-  // One block: accent-colored header with phase icon, progress bar, rows.
-  // Shared by the day-view block cards and the week/3-day day cards.
-  const renderBlock = (day, category, exList) => {
-    const stats = getCategoryStats(day, category, exList);
-    const isComplete = stats.total > 0 && stats.completedCount === stats.total;
-    const isCollapsed = isCategoryCollapsed(day, category, isComplete);
-    const blockStyle = getBlockStyle(category);
-    const BlockIcon = blockStyle.Icon;
-    const { minutes, exact } = estimateBlock(
-      exercises[category],
-      exList.map(({ ex }) => ex)
-    );
-    return (
-      <div key={category}>
-        <button
-          onClick={() => toggleCategoryCollapse(day, category, isCollapsed)}
-          className={`w-full flex items-center gap-2 font-semibold text-xs uppercase tracking-wide mb-1 px-2 py-1 rounded transition-colors ${
-            darkMode
-              ? `${blockStyle.textDark} hover:bg-gray-700/50`
-              : `${blockStyle.textLight} hover:bg-black/5`
-          }`}
-        >
-          <ChevronDown
-            size={16}
-            className={`flex-shrink-0 transition-transform ${isCollapsed ? '-rotate-90' : ''}`}
-          />
-          <BlockIcon size={14} className="flex-shrink-0" />
-          {category}
-          {minutes > 0 && (
-            <span
-              className={`ml-auto text-[11px] font-normal normal-case tabular-nums ${
-                darkMode ? 'text-gray-500' : 'text-gray-400'
-              }`}
-            >
-              {exact ? '' : '~'}
-              {minutes} min
-            </span>
-          )}
-          <span
-            className={`${minutes > 0 ? 'ml-2' : 'ml-auto'} text-xs font-normal tabular-nums ${
-              isComplete ? 'text-green-500' : darkMode ? 'text-gray-400' : 'text-gray-500'
-            }`}
-          >
-            {stats.completedCount}/{stats.total}
-          </span>
-        </button>
-        <div
-          className={`h-1 mx-2 mb-1.5 rounded-full overflow-hidden ${darkMode ? 'bg-gray-700/60' : 'bg-gray-200'}`}
-        >
-          <div
-            className={`h-full rounded-full transition-all duration-300 ${
-              isComplete ? 'bg-green-500' : blockStyle.bar
-            }`}
-            style={{
-              width: `${stats.total > 0 ? (stats.completedCount / stats.total) * 100 : 0}%`,
-            }}
-          />
-        </div>
-        {!isCollapsed && (
-          <div className={`divide-y ${darkMode ? 'divide-gray-700/40' : 'divide-gray-200'}`}>
-            {exList.map(({ ex }) => {
-              const exId = exerciseId(ex);
-              const exerciseKey = completionKey(day, category, exId);
-              const noteText = getNote(day, category, exId);
-              return (
-                <ExerciseRow
-                  key={exId}
-                  ex={ex}
-                  exId={exId}
-                  day={day}
-                  category={category}
-                  exerciseKey={exerciseKey}
-                  completed={isCompleted(day, category, exId)}
-                  justCompleted={wasJustCompleted(day, category, exId)}
-                  noteText={noteText}
-                  isExpanded={expandedNotes.has(exerciseKey)}
-                  hasNote={!!noteText}
-                  darkMode={darkMode}
-                  viewMode={viewMode}
-                  showConfetti={confettiKey === exerciseKey}
-                  onConfettiComplete={clearConfetti}
-                  toggleComplete={toggleComplete}
-                  openNotes={openNotes}
-                  closeNotes={closeNotes}
-                  discardNote={discardNote}
-                  handleNoteChange={handleNoteChange}
-                />
-              );
-            })}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // Whole-day card used by the week and 3-day views.
-  const renderDayCard = (day, highlightToday = false) => {
-    const isToday = highlightToday && day === todayLabel;
-    const dayExercises = getExercisesForDay(day);
-
-    return (
-      <div
-        key={day}
-        className={`h-full flex flex-col min-h-0 rounded-xl border p-2 ${
-          darkMode
-            ? 'bg-gray-800 border-transparent shadow-md shadow-black/30'
-            : 'bg-white border-gray-200 shadow-sm'
-        } ${
-          isToday
-            ? darkMode
-              ? 'border-blue-500/70 bg-blue-900'
-              : 'border-blue-300 bg-blue-50'
-            : ''
-        }`}
-      >
-        <div
-          className={`mb-2 -mx-2 px-4 pb-2 border-b flex items-baseline justify-between ${
-            isToday
-              ? darkMode
-                ? 'border-blue-500/70'
-                : 'border-blue-300'
-              : darkMode
-                ? 'border-gray-700'
-                : 'border-gray-200'
-          }`}
-        >
-          <h2 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-            {renderDayLabel(day)}
-          </h2>
-        </div>
-
-        <div className="flex-1 overflow-auto min-h-0 space-y-3">
-          {dayExercises.map(({ category, exercises: exList }) =>
-            renderBlock(day, category, exList)
-          )}
-        </div>
-      </div>
-    );
+  // Shared state + handlers for the day/block/row tree (see TrackerContext).
+  const tracker = {
+    darkMode,
+    viewMode,
+    completed,
+    notes,
+    expandedNotes,
+    confettiKey,
+    justCompleted,
+    isCategoryCollapsed,
+    toggleCategoryCollapse,
+    toggleComplete,
+    clearConfetti,
+    openNotes,
+    closeNotes,
+    discardNote,
+    handleNoteChange,
   };
 
   return (
-    <div className={`flex flex-col min-h-screen ${darkMode ? 'app-bg-dark' : 'app-bg-light'}`}>
-      <Header
-        darkMode={darkMode}
-        toggleDarkMode={toggleDarkMode}
-        stats={stats}
-        pct={pct}
-        priorityStats={priorityStats}
-        isStrengthDay={isStrengthDay}
-        weekSummary={weekSummary}
-        todayLabel={todayLabel}
-        onSelectDay={jumpToDay}
-        viewMode={viewMode}
-        cycleViewMode={cycleViewMode}
-        collapseMode={collapseMode}
-        cycleCollapseMode={cycleCollapseMode}
-        resetDay={resetDay}
-        resetWeek={resetWeek}
-        selectedDay={selectedDay}
-      />
+    <TrackerContext.Provider value={tracker}>
+      <div className={`flex flex-col min-h-screen ${darkMode ? 'app-bg-dark' : 'app-bg-light'}`}>
+        <Header
+          darkMode={darkMode}
+          toggleDarkMode={toggleDarkMode}
+          stats={stats}
+          pct={pct}
+          priorityStats={priorityStats}
+          isStrengthDay={isStrengthDay}
+          weekSummary={weekSummary}
+          todayLabel={todayLabel}
+          onSelectDay={jumpToDay}
+          viewMode={viewMode}
+          cycleViewMode={cycleViewMode}
+          collapseMode={collapseMode}
+          cycleCollapseMode={cycleCollapseMode}
+          resetDay={resetDay}
+          resetWeek={resetWeek}
+          selectedDay={selectedDay}
+        />
 
-      {/* Main Content */}
-      <div className="w-full p-3 sm:p-6 flex-1 min-h-0 flex flex-col lg:overflow-hidden">
-        {viewMode === 'day' && (
-          <>
-            {/* Compact 7-up day grid (small screens) */}
-            <div className="mb-3 grid grid-cols-7 gap-1 sm:hidden">
-              {days.map((day) => {
-                const isSelectedDay = selectedDay === day;
-                return (
-                  <button
-                    key={day}
-                    onClick={() => setSelectedDay(day)}
-                    className={`py-1.5 rounded-lg border text-center transition-all ${
-                      isSelectedDay
-                        ? darkMode
-                          ? 'bg-blue-700 text-white border-blue-600'
-                          : 'bg-blue-600 text-white border-blue-700'
-                        : darkMode
-                          ? 'bg-gray-800 text-gray-200 border-gray-700'
-                          : 'bg-white text-gray-700 border-gray-200'
-                    } ${day === todayLabel && !isSelectedDay ? 'ring-1 ring-blue-400/70' : ''}`}
-                  >
-                    <span className="block text-xs font-semibold">{day.slice(0, 3)}</span>
-                    <span
-                      className={`block text-[10px] ${isSelectedDay ? 'text-white/80' : 'opacity-60'}`}
+        <div className="w-full p-3 sm:p-6 flex-1 min-h-0 flex flex-col lg:overflow-hidden">
+          {viewMode === 'day' && (
+            <>
+              {/* Compact 7-up day grid (small screens) */}
+              <div className="mb-3 grid grid-cols-7 gap-1 sm:hidden">
+                {days.map((day) => {
+                  const isSelectedDay = selectedDay === day;
+                  return (
+                    <button
+                      key={day}
+                      onClick={() => setSelectedDay(day)}
+                      className={`py-1.5 rounded-lg border text-center transition-all ${
+                        isSelectedDay
+                          ? darkMode
+                            ? 'bg-blue-700 text-white border-blue-600'
+                            : 'bg-blue-600 text-white border-blue-700'
+                          : darkMode
+                            ? 'bg-gray-800 text-gray-200 border-gray-700'
+                            : 'bg-white text-gray-700 border-gray-200'
+                      } ${day === todayLabel && !isSelectedDay ? 'ring-1 ring-blue-400/70' : ''}`}
                     >
-                      {getDateForDay(day).getDate()}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Full day pills (larger screens) */}
-            <div className="mb-4 hidden sm:flex gap-2 flex-wrap justify-center">
-              {days.map((day) => {
-                const isSelectedDay = selectedDay === day;
-                return (
-                  <button
-                    key={day}
-                    onClick={() => setSelectedDay(day)}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium border transition-all ${
-                      isSelectedDay
-                        ? darkMode
-                          ? 'bg-blue-700 text-white border-blue-600'
-                          : 'bg-blue-600 text-white border-blue-700'
-                        : darkMode
-                          ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-blue-500'
-                          : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
-                    } ${day === todayLabel && !isSelectedDay ? 'ring-1 ring-blue-400/70' : ''}`}
-                  >
-                    {renderDayLabel(day, isSelectedDay)}
-                  </button>
-                );
-              })}
-            </div>
-          </>
-        )}
-
-        {viewMode === 'week' ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 lg:gap-1 flex-1 min-h-0">
-            {days.map((day) => renderDayCard(day, true))}
-          </div>
-        ) : viewMode === 'day' ? (
-          <div className="w-full max-w-2xl lg:max-w-5xl xl:max-w-7xl mx-auto flex-1 min-h-0 flex flex-col">
-            {/* Day headline */}
-            <div className="mb-3 px-1 flex items-baseline gap-3 flex-wrap">
-              <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-                {selectedDay === todayLabel ? 'Today' : selectedDay}
-              </h2>
-              <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                {selectedDay === todayLabel ? `${selectedDay}, ` : ''}
-                {getDateForDay(selectedDay).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </span>
-            </div>
-
-            {/* Blocks in fixed columns: each block is assigned a column by
-                index (round-robin), so collapsing a section only shrinks its
-                own column and never reflows blocks across columns. */}
-            <div className="flex-1 overflow-auto min-h-0 flex gap-4 items-start">
-              {Array.from({ length: columnCount }, (_, col) => (
-                <div key={col} className="flex-1 min-w-0 flex flex-col gap-4">
-                  {getExercisesForDay(selectedDay)
-                    .filter(({ category }) => Math.min(laneFor(category), columnCount - 1) === col)
-                    .map(({ category, exercises: exList }) => (
-                      <div
-                        key={category}
-                        className={`rounded-xl border-t-2 p-2 ${getBlockStyle(category).top} ${
-                          darkMode
-                            ? 'bg-gray-800 shadow-md shadow-black/30'
-                            : 'bg-white border border-t-2 border-gray-200 shadow-sm'
-                        }`}
+                      <span className="block text-xs font-semibold">{day.slice(0, 3)}</span>
+                      <span
+                        className={`block text-[10px] ${isSelectedDay ? 'text-white/80' : 'opacity-60'}`}
                       >
-                        {renderBlock(selectedDay, category, exList)}
-                      </div>
-                    ))}
+                        {getDateForDay(day).getDate()}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Full day pills (larger screens) */}
+              <div className="mb-4 hidden sm:flex gap-2 flex-wrap justify-center">
+                {days.map((day) => {
+                  const isSelectedDay = selectedDay === day;
+                  return (
+                    <button
+                      key={day}
+                      onClick={() => setSelectedDay(day)}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium border transition-all ${
+                        isSelectedDay
+                          ? darkMode
+                            ? 'bg-blue-700 text-white border-blue-600'
+                            : 'bg-blue-600 text-white border-blue-700'
+                          : darkMode
+                            ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-blue-500'
+                            : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
+                      } ${day === todayLabel && !isSelectedDay ? 'ring-1 ring-blue-400/70' : ''}`}
+                    >
+                      <DayLabel
+                        day={day}
+                        isSelectedDay={isSelectedDay}
+                        darkMode={darkMode}
+                        viewMode={viewMode}
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          {viewMode === 'week' ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 lg:gap-1 flex-1 min-h-0">
+              {days.map((day) => (
+                <DayCard key={day} day={day} blocks={getExercisesForDay(day)} highlightToday />
+              ))}
+            </div>
+          ) : viewMode === 'day' ? (
+            <div className="w-full max-w-2xl lg:max-w-5xl xl:max-w-7xl mx-auto flex-1 min-h-0 flex flex-col">
+              {/* Day headline */}
+              <div className="mb-3 px-1 flex items-baseline gap-3 flex-wrap">
+                <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                  {selectedDay === todayLabel ? 'Today' : selectedDay}
+                </h2>
+                <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {selectedDay === todayLabel ? `${selectedDay}, ` : ''}
+                  {getDateForDay(selectedDay).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </span>
+              </div>
+
+              {/* Blocks in fixed columns: each block is assigned a semantic lane
+                  (see CATEGORY_LANE), so collapsing a section only shrinks its
+                  own column and never reflows blocks across columns. */}
+              <div className="flex-1 overflow-auto min-h-0 flex gap-4 items-start">
+                {Array.from({ length: columnCount }, (_, col) => (
+                  <div key={col} className="flex-1 min-w-0 flex flex-col gap-4">
+                    {getExercisesForDay(selectedDay)
+                      .filter(
+                        ({ category }) => Math.min(laneFor(category), columnCount - 1) === col
+                      )
+                      .map(({ category, exercises: exList }) => (
+                        <div
+                          key={category}
+                          className={`rounded-xl border-t-2 p-2 ${getBlockStyle(category).top} ${
+                            darkMode
+                              ? 'bg-gray-800 shadow-md shadow-black/30'
+                              : 'bg-white border border-t-2 border-gray-200 shadow-sm'
+                          }`}
+                        >
+                          <CategoryBlock day={selectedDay} category={category} exList={exList} />
+                        </div>
+                      ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col md:flex-row w-full gap-4 flex-1 min-h-0 items-stretch">
+              {threeDayWindow.map((day) => (
+                <div key={day} className="flex-1 min-w-0 h-full">
+                  <DayCard day={day} blocks={getExercisesForDay(day)} />
                 </div>
               ))}
             </div>
-          </div>
-        ) : (
-          <div className="flex flex-col md:flex-row w-full gap-4 flex-1 min-h-0 items-stretch">
-            {threeDayWindow.map((day) => (
-              <div key={day} className="flex-1 min-w-0 h-full">
-                {renderDayCard(day)}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
-      <Footer darkMode={darkMode} />
-    </div>
+        <Footer darkMode={darkMode} />
+      </div>
+    </TrackerContext.Provider>
   );
 };
 
