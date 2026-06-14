@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { TimerReset, Square } from 'lucide-react';
 
 const TIMER_LINKS = [
   { href: 'https://www.youtube.com/watch?v=_wi7j1_-O3Q', label: '10s video' },
   { href: 'https://www.youtube.com/watch?v=kD6FCbmAORY', label: '30s video' },
 ];
+
+// Get-into-position window before the first hold begins.
+const PREP_SECONDS = 5;
 
 /**
  * Load the bowl recordings into WebAudio buffers on first user gesture.
@@ -140,14 +144,36 @@ function bowl(ctx) {
  * doesn't drift it.
  */
 export default function Footer({ darkMode }) {
-  const [duration, setDuration] = useState(null); // null = idle
+  const [duration, setDuration] = useState(null); // the selected interval; null = idle
+  const [phase, setPhase] = useState('idle'); // 'idle' | 'prep' | 'running'
   const [run, setRun] = useState(0); // bumped on start so re-pressing the active duration restarts it
   const [remaining, setRemaining] = useState(0);
+  const [prepLeft, setPrepLeft] = useState(0);
   const [reps, setReps] = useState(0);
   const audioRef = useRef(null);
 
+  // Prep countdown: a quiet window to get into position. When it elapses the
+  // bowl strikes (marking the first hold) and we hand off to the running phase.
   useEffect(() => {
-    if (duration == null) return undefined;
+    if (phase !== 'prep') return undefined;
+    const endsAt = Date.now() + PREP_SECONDS * 1000;
+    const tick = setInterval(() => {
+      const left = Math.ceil((endsAt - Date.now()) / 1000);
+      if (left <= 0) {
+        chime(audioRef.current, duration);
+        navigator.vibrate?.(200);
+        setPhase('running');
+      } else {
+        setPrepLeft(left);
+      }
+    }, 200);
+    return () => clearInterval(tick);
+  }, [phase, run, duration]);
+
+  // Running phase: wall-clock based so background-tab throttling doesn't drift
+  // it; chimes and bumps the rep at each interval until stopped.
+  useEffect(() => {
+    if (phase !== 'running') return undefined;
     let endsAt = Date.now() + duration * 1000;
     const tick = setInterval(() => {
       const left = Math.ceil((endsAt - Date.now()) / 1000);
@@ -162,23 +188,35 @@ export default function Footer({ darkMode }) {
       }
     }, 200);
     return () => clearInterval(tick);
-  }, [duration, run]);
+  }, [phase, duration, run]);
 
   const start = (secs) => {
-    // Strike the bowl immediately: confirms volume and marks the first rep.
-    if (window.AudioContext) {
-      ensureAudio(audioRef).then((audio) => chime(audio, secs));
-    }
+    // Create/resume the AudioContext within the user gesture so the bowl can
+    // sound when the prep countdown ends; the strike itself waits for that.
+    if (window.AudioContext) ensureAudio(audioRef);
     setReps(0);
     setRemaining(secs);
+    setPrepLeft(PREP_SECONDS);
     setDuration(secs);
+    setPhase('prep');
     setRun((r) => r + 1);
   };
 
   const stop = () => {
+    setPhase('idle');
     setDuration(null);
     silence(audioRef.current);
   };
+
+  // Esc closes the takeover modal while it's up.
+  useEffect(() => {
+    if (phase === 'idle') return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') stop();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [phase]);
 
   const idleButton = darkMode
     ? 'border-gray-700 text-gray-300 hover:border-blue-500 hover:text-blue-300'
@@ -187,78 +225,109 @@ export default function Footer({ darkMode }) {
     ? 'border-blue-500 text-blue-300 bg-blue-900/40'
     : 'border-blue-400 text-blue-700 bg-blue-50';
 
+  const inProgress = phase !== 'idle';
+  const bigDigits = 'font-bold tabular-nums leading-none text-[34vw] sm:text-[22rem]';
+
   return (
-    <footer
-      className={`w-full border-t sticky bottom-0 z-40 ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
-    >
-      <div className="px-3 sm:px-6 py-3">
-        <div
-          className={`flex flex-wrap items-center gap-x-4 gap-y-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}
-        >
-          <h3 className="text-sm font-semibold flex items-center gap-2 whitespace-nowrap">
-            <TimerReset size={16} className={darkMode ? 'text-gray-500' : 'text-gray-400'} />
-            Hold timer
-          </h3>
+    <>
+      {inProgress &&
+        createPortal(
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Hold timer"
+            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-6 px-6 backdrop-blur-sm ${
+              darkMode ? 'bg-gray-950/95 text-gray-100' : 'bg-white/95 text-gray-900'
+            }`}
+          >
+            <span
+              className={`text-sm uppercase tracking-[0.25em] ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}
+            >
+              {duration}-second holds
+            </span>
 
-          <div className="flex items-center gap-2">
-            {[10, 30].map((secs) => (
-              <button
-                key={secs}
-                onClick={() => start(secs)}
-                className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
-                  duration === secs ? activeButton : idleButton
-                }`}
-                title={`Repeating ${secs}-second timer`}
-              >
-                {secs}s
-              </button>
-            ))}
-          </div>
+            {phase === 'prep' ? (
+              <>
+                <span
+                  className={`text-2xl font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}
+                >
+                  Get ready…
+                </span>
+                <span className={bigDigits}>{prepLeft}</span>
+              </>
+            ) : (
+              <>
+                <span className="text-2xl font-medium">Hold — rep {reps + 1}</span>
+                <span className={`${bigDigits} ${remaining <= 3 ? 'text-orange-400' : ''}`}>
+                  {remaining}
+                </span>
+              </>
+            )}
 
-          {duration != null && (
-            <div className="flex items-center gap-3">
-              <span
-                className={`text-2xl font-bold tabular-nums ${
-                  remaining <= 3 ? 'text-orange-400' : darkMode ? 'text-gray-100' : 'text-gray-800'
-                }`}
-              >
-                {remaining}s
-              </span>
-              <span className="text-sm whitespace-nowrap">rep {reps + 1}</span>
-              <button
-                onClick={stop}
-                className={`flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg border transition-colors ${
-                  darkMode
-                    ? 'border-red-800 text-red-300 hover:bg-red-900/40'
-                    : 'border-red-300 text-red-600 hover:bg-red-50'
-                }`}
-              >
-                <Square size={12} />
-                Stop
-              </button>
+            <button
+              onClick={stop}
+              autoFocus
+              className={`mt-2 flex items-center gap-2 text-lg font-semibold px-6 py-3 rounded-xl border-2 transition-colors ${
+                darkMode
+                  ? 'border-red-700 text-red-300 hover:bg-red-900/40'
+                  : 'border-red-300 text-red-600 hover:bg-red-50'
+              }`}
+            >
+              <Square size={18} />
+              {phase === 'prep' ? 'Cancel' : 'Stop'}
+            </button>
+          </div>,
+          document.body
+        )}
+
+      <footer
+        className={`w-full border-t sticky bottom-0 z-40 ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
+      >
+        <div className="px-3 sm:px-6 py-3">
+          <div
+            className={`flex flex-wrap items-center gap-x-4 gap-y-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}
+          >
+            <h3 className="text-sm font-semibold flex items-center gap-2 whitespace-nowrap">
+              <TimerReset size={16} className={darkMode ? 'text-gray-500' : 'text-gray-400'} />
+              Hold timer
+            </h3>
+
+            <div className="flex items-center gap-2">
+              {[10, 30].map((secs) => (
+                <button
+                  key={secs}
+                  onClick={() => start(secs)}
+                  className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
+                    duration === secs ? activeButton : idleButton
+                  }`}
+                  title={`Repeating ${secs}-second timer`}
+                >
+                  {secs}s
+                </button>
+              ))}
             </div>
-          )}
 
-          {/* The original interval videos, kept as a fallback */}
-          <div className="ml-auto flex items-center gap-4">
-            {TIMER_LINKS.map(({ href, label }) => (
-              <a
-                key={href}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`text-xs transition-colors hover:underline ${
-                  darkMode
-                    ? 'text-gray-500 hover:text-gray-300'
-                    : 'text-gray-400 hover:text-gray-600'
-                }`}
-              >
-                {label}
-              </a>
-            ))}
+            {/* The original interval videos, kept as a fallback */}
+            <div className="ml-auto flex items-center gap-4">
+              {TIMER_LINKS.map(({ href, label }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-xs transition-colors hover:underline ${
+                    darkMode
+                      ? 'text-gray-500 hover:text-gray-300'
+                      : 'text-gray-400 hover:text-gray-600'
+                  }`}
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }
