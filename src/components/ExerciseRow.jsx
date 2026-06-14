@@ -12,7 +12,7 @@ import { formatExerciseName, getExerciseIcon, getPriorityIcon } from '../lib/exe
  */
 export default memo(function ExerciseRow({
   ex,
-  exIndex,
+  exId,
   day,
   category,
   exerciseKey,
@@ -58,7 +58,7 @@ export default memo(function ExerciseRow({
   return (
     <div className={`relative ${completed ? (darkMode ? 'bg-green-900/25' : 'bg-green-50') : ''}`}>
       <button
-        onClick={() => toggleComplete(day, category, exIndex)}
+        onClick={() => toggleComplete(day, category, exId)}
         className={`w-full flex items-center gap-2.5 pl-2 py-2 min-h-[44px] text-left ${
           showNotesUI ? 'pr-9' : 'pr-2'
         }`}
@@ -177,7 +177,7 @@ export default memo(function ExerciseRow({
           </div>
           <textarea
             value={noteText}
-            onChange={(e) => handleNoteChange(day, category, exIndex, e.target.value)}
+            onChange={(e) => handleNoteChange(day, category, exId, e.target.value)}
             onClick={(e) => e.stopPropagation()}
             onFocus={(e) => {
               e.stopPropagation();

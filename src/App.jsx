@@ -10,7 +10,13 @@ import {
 import Footer from './components/Footer';
 import ExerciseRow from './components/ExerciseRow';
 import Header from './components/Header';
-import { categoryStats, completionKey, dayStats, isCompleted as isDone } from './lib/stats';
+import {
+  categoryStats,
+  completionKey,
+  dayStats,
+  exerciseId,
+  isCompleted as isDone,
+} from './lib/stats';
 import { getBlockStyle } from './lib/blockStyle';
 import { estimateBlock } from './lib/duration';
 
@@ -104,8 +110,8 @@ const App = () => {
   }, [setViewMode]);
 
   const toggleComplete = useCallback(
-    (day, category, exerciseIndex) => {
-      const key = completionKey(day, category, exerciseIndex);
+    (day, category, id) => {
+      const key = completionKey(day, category, id);
       const isCurrentlyCompleted = completed[key];
 
       setCompleted((prev) => ({
@@ -133,22 +139,15 @@ const App = () => {
 
   const clearConfetti = useCallback(() => setConfettiKey(null), []);
 
-  const isCompleted = (day, category, exerciseIndex) =>
-    isDone(completed, day, category, exerciseIndex);
+  const isCompleted = (day, category, id) => isDone(completed, day, category, id);
 
-  const wasJustCompleted = (day, category, exerciseIndex) => {
-    const key = `${day}-${category}-${exerciseIndex}`;
-    return justCompleted.has(key);
-  };
+  const wasJustCompleted = (day, category, id) => justCompleted.has(completionKey(day, category, id));
 
-  const getNote = (day, category, exerciseIndex) => {
-    const key = `${day}-${category}-${exerciseIndex}`;
-    return notes[key] || '';
-  };
+  const getNote = (day, category, id) => notes[completionKey(day, category, id)] || '';
 
   const handleNoteChange = useCallback(
-    (day, category, exerciseIndex, value) => {
-      const key = completionKey(day, category, exerciseIndex);
+    (day, category, id, value) => {
+      const key = completionKey(day, category, id);
       setNotes((prev) => ({
         ...prev,
         [key]: value,
@@ -383,19 +382,20 @@ const App = () => {
         </div>
         {!isCollapsed && (
           <div className={`divide-y ${darkMode ? 'divide-gray-700/40' : 'divide-gray-200'}`}>
-            {exList.map(({ ex, index: exIndex }) => {
-              const exerciseKey = `${day}-${category}-${exIndex}`;
-              const noteText = getNote(day, category, exIndex);
+            {exList.map(({ ex }) => {
+              const exId = exerciseId(ex);
+              const exerciseKey = completionKey(day, category, exId);
+              const noteText = getNote(day, category, exId);
               return (
                 <ExerciseRow
-                  key={exIndex}
+                  key={exId}
                   ex={ex}
-                  exIndex={exIndex}
+                  exId={exId}
                   day={day}
                   category={category}
                   exerciseKey={exerciseKey}
-                  completed={isCompleted(day, category, exIndex)}
-                  justCompleted={wasJustCompleted(day, category, exIndex)}
+                  completed={isCompleted(day, category, exId)}
+                  justCompleted={wasJustCompleted(day, category, exId)}
                   noteText={noteText}
                   isExpanded={expandedNotes.has(exerciseKey)}
                   hasNote={!!noteText}

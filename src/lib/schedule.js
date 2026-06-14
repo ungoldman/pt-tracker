@@ -2,18 +2,18 @@ export const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Fr
 
 /**
  * Returns the exercises scheduled for `day`, grouped by block:
- *   [{ category, exercises: [{ ex, index }] }]
+ *   [{ category, exercises: [{ ex }] }]
  *
  * Scheduling: a per-exercise `days` array wins; otherwise the block's `days`;
- * otherwise the exercise is daily. The original array `index` is preserved so
- * completion/note keys (`${day}-${category}-${index}`) stay stable as the
- * visible list is filtered per day. Blocks with nothing scheduled are dropped.
+ * otherwise the exercise is daily. Completion/note identity comes from the
+ * exercise itself (see `exerciseId` in stats.js), not its position, so no
+ * index is carried. Blocks with nothing scheduled are dropped.
  */
 export function getExercisesForDay(exercises, day) {
   const result = [];
   Object.entries(exercises).forEach(([category, data]) => {
     const scheduled = data.exercises
-      .map((ex, index) => ({ ex, index }))
+      .map((ex) => ({ ex }))
       .filter(({ ex }) => {
         const sched = ex.days || data.days;
         return !sched || sched.includes(day);
