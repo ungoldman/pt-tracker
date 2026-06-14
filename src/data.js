@@ -100,7 +100,7 @@ export const exercises = {
       { name: 'Corner Pec Minor Stretch', sets: 3, hold: '30s' },
       { name: 'Serratus Activation with Foam Roll', sets: 2, hold: '30s' },
       // More stretch than strength, so daily here rather than M/W/F loading
-      { name: 'Prone Shoulder Extension (facedown)', sets: 3, reps: 12 },
+      { name: 'Prone Shoulder Extension', sets: 3, reps: 12 },
     ],
   },
   'Personal Goals (non-PT)': {
@@ -114,7 +114,7 @@ export const exercises = {
       // pace, add duration before intensity, +10%/week max once comfortable).
       {
         name: 'Light Jog',
-        target: '0.5 miles',
+        target: '1 mile',
         days: ['Tuesday', 'Thursday', 'Saturday'],
       },
       { name: 'Sit ups', sets: 2, reps: 30 },
