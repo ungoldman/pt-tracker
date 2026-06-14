@@ -87,12 +87,12 @@ export const exercises = {
   'Isometrics (End of Day)': {
     days: NON_STRENGTH_DAYS,
     exercises: [
-      { name: 'Isometric Shoulder Flexion', sets: 10, hold: '10s' },
-      { name: 'Isometric Shoulder Extension', sets: 10, hold: '10s' },
-      { name: 'Isometric Internal Rotation', sets: 10, hold: '10s' },
-      { name: 'Isometric External Rotation', sets: 10, hold: '10s' },
-      { name: 'Isometric Shoulder Abduction', sets: 10, hold: '10s' },
-      { name: 'Isometric Shoulder Adduction', sets: 10, hold: '10s' },
+      { name: 'Isometric Shoulder Flexion', sets: 3, hold: '30s' },
+      { name: 'Isometric Shoulder Extension', sets: 3, hold: '30s' },
+      { name: 'Isometric Internal Rotation', sets: 3, hold: '30s' },
+      { name: 'Isometric External Rotation', sets: 3, hold: '30s' },
+      { name: 'Isometric Shoulder Abduction', sets: 3, hold: '30s' },
+      { name: 'Isometric Shoulder Adduction', sets: 3, hold: '30s' },
     ],
   },
   'Wind-Down': {
