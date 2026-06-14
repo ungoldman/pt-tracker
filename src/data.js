@@ -117,7 +117,7 @@ export const exercises = {
         target: '0.5 miles',
         days: ['Tuesday', 'Thursday', 'Saturday'],
       },
-      { name: 'Sit ups', sets: 3, reps: 15 },
+      { name: 'Sit ups', sets: 2, reps: 30 },
     ],
   },
 };
