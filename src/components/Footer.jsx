@@ -141,72 +141,79 @@ function bowl(ctx) {
 }
 
 /**
- * Play a soft woodblock knock: the warm, percussive "tok" that marks the end
- * of a hold and the start of the rest, distinct from the deep bowl that
- * resumes the next hold. Tracked in audio.playing so silence() can stop it.
+ * Play the rest cue: three quick low temple-block taps that mark the end of a
+ * hold and the start of the rest, distinct from the deep bowl that resumes the
+ * next hold. Tracked in audio.playing so silence() can stop it.
  */
 function knock(audio) {
   if (!audio) return;
-  const entry = woodblock(audio.ctx);
+  const entry = templeTriple(audio.ctx);
   audio.playing.add(entry);
 }
 
 /**
- * Synthesized woodblock: a couple of low, inharmonic wooden partials with a
- * fast decay (so it reads as a tap, not a tone) plus a short band-limited
- * noise transient for the contact "tok". Low and subtle, no ringing tail.
+ * Synthesized temple block (muyu) struck three times in quick succession.
+ * Each hit is a few low inharmonic wooden partials with a short ring plus a
+ * band-limited noise transient for the contact "tok". Pitch/spacing/ring were
+ * dialed in on the composer soundboard (E3 dropped a sixth, 0.1s apart).
  */
-function woodblock(ctx) {
+function templeTriple(ctx) {
   if (!ctx) return { stop: () => {}, gain: { gain: { setTargetAtTime: () => {} } } };
   const now = ctx.currentTime;
   const master = ctx.createGain();
-  master.gain.value = 0.7;
+  master.gain.value = 0.85;
   master.connect(ctx.destination);
   const nodes = [];
 
-  // Resonant body: a low fundamental with inharmonic overtones gives the
-  // "wood"; short decays keep it a knock rather than a pitched note.
-  const f0 = 230;
+  const f0 = 98.9; // low wooden thunk
+  const gap = 0.1; // spacing between taps
+  const ring = 0.6; // decay scale: short, no lingering tail
+  const attack = 0.004;
   const partials = [
-    { ratio: 1, gain: 1.0, decay: 0.18 },
-    { ratio: 2.7, gain: 0.4, decay: 0.12 },
-    { ratio: 4.5, gain: 0.15, decay: 0.07 },
+    { ratio: 1, gain: 1.0, decay: 0.55 },
+    { ratio: 2.76, gain: 0.45, decay: 0.32 },
+    { ratio: 5.2, gain: 0.18, decay: 0.16 },
   ];
-  partials.forEach(({ ratio, gain, decay }) => {
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0, now);
-    g.gain.linearRampToValueAtTime(gain, now + 0.002);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + decay);
-    g.connect(master);
-    const osc = ctx.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.value = f0 * ratio;
-    osc.connect(g);
-    osc.start(now);
-    osc.stop(now + decay + 0.05);
-    nodes.push(osc);
-  });
 
-  // Contact transient: a very short band-passed noise burst for the tap.
-  const noiseLen = 0.03;
-  const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * noiseLen), ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < data.length; i += 1) data[i] = Math.random() * 2 - 1;
-  const noise = ctx.createBufferSource();
-  noise.buffer = buffer;
-  const bp = ctx.createBiquadFilter();
-  bp.type = 'bandpass';
-  bp.frequency.value = 1500;
-  bp.Q.value = 0.7;
-  const ng = ctx.createGain();
-  ng.gain.setValueAtTime(0.5, now);
-  ng.gain.exponentialRampToValueAtTime(0.0001, now + noiseLen);
-  noise.connect(bp);
-  bp.connect(ng);
-  ng.connect(master);
-  noise.start(now);
-  noise.stop(now + noiseLen + 0.01);
-  nodes.push(noise);
+  for (let hit = 0; hit < 3; hit += 1) {
+    const t0 = now + hit * gap;
+    partials.forEach(({ ratio, gain, decay }) => {
+      const d = decay * ring;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, t0);
+      g.gain.linearRampToValueAtTime(gain, t0 + attack);
+      g.gain.setTargetAtTime(0, t0 + attack, d / 4);
+      g.connect(master);
+      const osc = ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = f0 * ratio;
+      osc.connect(g);
+      osc.start(t0);
+      osc.stop(t0 + attack + d + 0.3);
+      nodes.push(osc);
+    });
+
+    // Contact transient: a very short band-passed noise burst for the tap.
+    const noiseLen = 0.025;
+    const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * noiseLen), ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i += 1) data[i] = Math.random() * 2 - 1;
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 1100;
+    bp.Q.value = 1.5;
+    const ng = ctx.createGain();
+    ng.gain.setValueAtTime(0.35, t0);
+    ng.gain.exponentialRampToValueAtTime(0.0001, t0 + noiseLen);
+    noise.connect(bp);
+    bp.connect(ng);
+    ng.connect(master);
+    noise.start(t0);
+    noise.stop(t0 + noiseLen + 0.05);
+    nodes.push(noise);
+  }
 
   return {
     stop: (t) =>
@@ -214,7 +221,7 @@ function woodblock(ctx) {
         try {
           n.stop(t);
         } catch {
-          // already ended
+          // already ended or scheduled past the stop time
         }
       }),
     gain: master,
@@ -225,7 +232,7 @@ function woodblock(ctx) {
  * Repeating interval timer for isometric holds: pick 10s or 30s, it counts
  * down, chimes (and vibrates, where supported), then rests BREAK_SECONDS
  * before the next rep, looping until stopped. The bowl marks the start of each
- * hold; a soft woodblock knock marks the end of the hold / start of the rest.
+ * hold; three soft temple-block taps mark the end of the hold / start of rest.
  * Wall-clock based so background-tab throttling doesn't drift it.
  */
 export default function Footer({ darkMode }) {
