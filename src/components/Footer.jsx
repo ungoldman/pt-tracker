@@ -10,6 +10,9 @@ const TIMER_LINKS = [
 // Get-into-position window before the first hold begins.
 const PREP_SECONDS = 5;
 
+// Rest between holds.
+const BREAK_SECONDS = 10;
+
 /**
  * Load the bowl recordings into WebAudio buffers on first user gesture.
  * Both are real Tibetan singing bowl strikes from Wikimedia Commons
@@ -138,22 +141,105 @@ function bowl(ctx) {
 }
 
 /**
+ * Play a soft woodblock knock: the warm, percussive "tok" that marks the end
+ * of a hold and the start of the rest, distinct from the deep bowl that
+ * resumes the next hold. Tracked in audio.playing so silence() can stop it.
+ */
+function knock(audio) {
+  if (!audio) return;
+  const entry = woodblock(audio.ctx);
+  audio.playing.add(entry);
+}
+
+/**
+ * Synthesized woodblock: a couple of low, inharmonic wooden partials with a
+ * fast decay (so it reads as a tap, not a tone) plus a short band-limited
+ * noise transient for the contact "tok". Low and subtle, no ringing tail.
+ */
+function woodblock(ctx) {
+  if (!ctx) return { stop: () => {}, gain: { gain: { setTargetAtTime: () => {} } } };
+  const now = ctx.currentTime;
+  const master = ctx.createGain();
+  master.gain.value = 0.7;
+  master.connect(ctx.destination);
+  const nodes = [];
+
+  // Resonant body: a low fundamental with inharmonic overtones gives the
+  // "wood"; short decays keep it a knock rather than a pitched note.
+  const f0 = 230;
+  const partials = [
+    { ratio: 1, gain: 1.0, decay: 0.18 },
+    { ratio: 2.7, gain: 0.4, decay: 0.12 },
+    { ratio: 4.5, gain: 0.15, decay: 0.07 },
+  ];
+  partials.forEach(({ ratio, gain, decay }) => {
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(gain, now + 0.002);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+    g.connect(master);
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = f0 * ratio;
+    osc.connect(g);
+    osc.start(now);
+    osc.stop(now + decay + 0.05);
+    nodes.push(osc);
+  });
+
+  // Contact transient: a very short band-passed noise burst for the tap.
+  const noiseLen = 0.03;
+  const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * noiseLen), ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < data.length; i += 1) data[i] = Math.random() * 2 - 1;
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const bp = ctx.createBiquadFilter();
+  bp.type = 'bandpass';
+  bp.frequency.value = 1500;
+  bp.Q.value = 0.7;
+  const ng = ctx.createGain();
+  ng.gain.setValueAtTime(0.5, now);
+  ng.gain.exponentialRampToValueAtTime(0.0001, now + noiseLen);
+  noise.connect(bp);
+  bp.connect(ng);
+  ng.connect(master);
+  noise.start(now);
+  noise.stop(now + noiseLen + 0.01);
+  nodes.push(noise);
+
+  return {
+    stop: (t) =>
+      nodes.forEach((n) => {
+        try {
+          n.stop(t);
+        } catch {
+          // already ended
+        }
+      }),
+    gain: master,
+  };
+}
+
+/**
  * Repeating interval timer for isometric holds: pick 10s or 30s, it counts
- * down, beeps (and vibrates, where supported), bumps the rep count, and
- * restarts until stopped. Wall-clock based so background-tab throttling
- * doesn't drift it.
+ * down, chimes (and vibrates, where supported), then rests BREAK_SECONDS
+ * before the next rep, looping until stopped. The bowl marks the start of each
+ * hold; a soft woodblock knock marks the end of the hold / start of the rest.
+ * Wall-clock based so background-tab throttling doesn't drift it.
  */
 export default function Footer({ darkMode }) {
   const [duration, setDuration] = useState(null); // the selected interval; null = idle
-  const [phase, setPhase] = useState('idle'); // 'idle' | 'prep' | 'running'
+  const [phase, setPhase] = useState('idle'); // 'idle' | 'prep' | 'hold' | 'break'
   const [run, setRun] = useState(0); // bumped on start so re-pressing the active duration restarts it
   const [remaining, setRemaining] = useState(0);
   const [prepLeft, setPrepLeft] = useState(0);
+  const [breakLeft, setBreakLeft] = useState(0);
   const [reps, setReps] = useState(0);
   const audioRef = useRef(null);
 
   // Prep countdown: a quiet window to get into position. When it elapses the
-  // bowl strikes (marking the first hold) and we hand off to the running phase.
+  // bowl strikes (marking the first hold) and we hand off to the hold phase.
   useEffect(() => {
     if (phase !== 'prep') return undefined;
     const endsAt = Date.now() + PREP_SECONDS * 1000;
@@ -162,7 +248,7 @@ export default function Footer({ darkMode }) {
       if (left <= 0) {
         chime(audioRef.current, duration);
         navigator.vibrate?.(200);
-        setPhase('running');
+        setPhase('hold');
       } else {
         setPrepLeft(left);
       }
@@ -170,19 +256,19 @@ export default function Footer({ darkMode }) {
     return () => clearInterval(tick);
   }, [phase, run, duration]);
 
-  // Running phase: wall-clock based so background-tab throttling doesn't drift
-  // it; chimes and bumps the rep at each interval until stopped.
+  // Hold phase: count down the interval, then knock (end of rep), bank the rep,
+  // and hand off to the rest. Wall-clock based against this phase's start.
   useEffect(() => {
-    if (phase !== 'running') return undefined;
-    let endsAt = Date.now() + duration * 1000;
+    if (phase !== 'hold') return undefined;
+    const endsAt = Date.now() + duration * 1000;
     const tick = setInterval(() => {
       const left = Math.ceil((endsAt - Date.now()) / 1000);
       if (left <= 0) {
-        chime(audioRef.current, duration);
+        knock(audioRef.current);
         navigator.vibrate?.(200);
         setReps((r) => r + 1);
-        endsAt += duration * 1000;
-        setRemaining(duration);
+        setBreakLeft(BREAK_SECONDS);
+        setPhase('break');
       } else {
         setRemaining(left);
       }
@@ -190,13 +276,38 @@ export default function Footer({ darkMode }) {
     return () => clearInterval(tick);
   }, [phase, duration, run]);
 
+  // Rest phase: count down BREAK_SECONDS, then the bowl strikes to resume the
+  // next hold.
+  useEffect(() => {
+    if (phase !== 'break') return undefined;
+    const endsAt = Date.now() + BREAK_SECONDS * 1000;
+    const tick = setInterval(() => {
+      const left = Math.ceil((endsAt - Date.now()) / 1000);
+      if (left <= 0) {
+        chime(audioRef.current, duration);
+        navigator.vibrate?.(200);
+        setRemaining(duration);
+        setPhase('hold');
+      } else {
+        setBreakLeft(left);
+      }
+    }, 200);
+    return () => clearInterval(tick);
+  }, [phase, duration, run]);
+
   const start = (secs) => {
     // Create/resume the AudioContext within the user gesture so the bowl can
-    // sound when the prep countdown ends; the strike itself waits for that.
-    if (window.AudioContext) ensureAudio(audioRef);
+    // sound when the prep countdown ends. ensureAudio sets audioRef.current
+    // synchronously (only the bowl fetch is async), so the knock can sound
+    // right now to mark the start of the prep countdown.
+    if (window.AudioContext) {
+      ensureAudio(audioRef);
+      knock(audioRef.current);
+    }
     setReps(0);
     setRemaining(secs);
     setPrepLeft(PREP_SECONDS);
+    setBreakLeft(BREAK_SECONDS);
     setDuration(secs);
     setPhase('prep');
     setRun((r) => r + 1);
@@ -254,6 +365,15 @@ export default function Footer({ darkMode }) {
                   Get ready…
                 </span>
                 <span className={bigDigits}>{prepLeft}</span>
+              </>
+            ) : phase === 'break' ? (
+              <>
+                <span
+                  className={`text-2xl font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}
+                >
+                  Rest — next up rep {reps + 1}
+                </span>
+                <span className={`${bigDigits} text-emerald-400`}>{breakLeft}</span>
               </>
             ) : (
               <>
