@@ -64,16 +64,21 @@ const App = () => {
   const [completed, setCompleted] = usePersistentState('ptTrackerCompleted', {});
   const [notes, setNotes] = usePersistentState('ptTrackerNotes', {});
   const [viewMode, setViewMode] = usePersistentState('ptTrackerViewMode', DEFAULT_VIEW);
-  const [collapsedCategories, setCollapsedCategories] = usePersistentState(
-    'ptTrackerCollapsedCategories',
-    {}
-  );
+  // Collapse overrides live only in memory. The intrinsic rule (a completed
+  // block collapses, everything else is open) is always the baseline; an
+  // override is a deliberate deviation from it — a manual peek or a bulk
+  // action. Persisting them is what used to let stale entries silently shadow
+  // the intrinsic rule, so they reset on reload and whenever a block's
+  // completion changes (see toggleComplete).
+  const [collapsedCategories, setCollapsedCategories] = useState({});
 
   const [confettiKey, setConfettiKey] = useState(null);
   const [justCompleted, setJustCompleted] = useState(new Set());
   const todayLabel = getTodayLabel();
   const [selectedDay, setSelectedDay] = useState(todayLabel);
   const [expandedNotes, setExpandedNotes] = useState(new Set());
+  // Which bulk action the header control offers next. Cosmetic and momentary:
+  // the modes are actions, not a persisted rule, so this resets on reload.
   const [collapseMode, setCollapseMode] = useState('done');
   const columnCount = useColumnCount();
 
@@ -107,6 +112,17 @@ const App = () => {
 
       setCompleted((prev) => ({ ...prev, [key]: !prev[key] }));
 
+      // A completion change re-derives this block's collapse from scratch: drop
+      // any override so finishing it always collapses and reopening it always
+      // expands, no matter what bulk action was last applied.
+      setCollapsedCategories((prev) => {
+        const catKey = `${day}-${category}`;
+        if (!(catKey in prev)) return prev;
+        const next = { ...prev };
+        delete next[catKey];
+        return next;
+      });
+
       // Confetti only when completing (not uncompleting), cleared after the burst.
       if (!isCurrentlyCompleted) {
         setConfettiKey(key);
@@ -120,7 +136,7 @@ const App = () => {
         }, 1000);
       }
     },
-    [completed, setCompleted]
+    [completed, setCompleted, setCollapsedCategories]
   );
 
   const clearConfetti = useCallback(() => setConfettiKey(null), []);
@@ -157,15 +173,16 @@ const App = () => {
     [setNotes, closeNotes]
   );
 
-  // A fully-completed block defaults to collapsed (done work stops costing
-  // space); an explicit user toggle always wins over the default, so the
-  // toggle flips the *effective* state rather than the stored one.
+  // Effective collapse = an explicit override, else the intrinsic rule: a
+  // fully-completed block is collapsed, everything else is open. Bulk actions
+  // and manual toggles set overrides; completion clears them (toggleComplete),
+  // so finishing a block always collapses it whatever the last bulk action was.
   const toggleCategoryCollapse = (day, category, currentlyCollapsed) => {
     setCollapsedCategories((prev) => ({ ...prev, [`${day}-${category}`]: !currentlyCollapsed }));
   };
 
-  const isCategoryCollapsed = (day, category, defaultCollapsed = false) =>
-    collapsedCategories[`${day}-${category}`] ?? defaultCollapsed;
+  const isCategoryCollapsed = (day, category, isComplete = false) =>
+    collapsedCategories[`${day}-${category}`] ?? isComplete;
 
   const resetWeek = () => {
     if (window.confirm('Are you sure you want to reset all checkboxes for the week?')) {
@@ -191,11 +208,12 @@ const App = () => {
     setViewMode((prev) => (prev === 'week' ? 'day' : prev === 'day' ? 'three' : 'week'));
   };
 
-  // Global section visibility cycles through three modes:
-  //   done (default) — only fully-completed blocks collapse, via the
-  //     per-block default, so the override map is simply cleared;
-  //   all  — every block on every day collapsed (explicit overrides);
-  //   none — every block expanded (explicit overrides beat the done-default).
+  // The header control cycles through three momentary bulk actions:
+  //   all  — collapse every block now (override every block closed);
+  //   none — expand every block now (override every block open);
+  //   done — reset to the intrinsic rule (clear overrides: completed collapse).
+  // These arrange things once; they don't persist and don't override the
+  // completion rule — finishing a block still collapses it (toggleComplete).
   const cycleCollapseMode = () => {
     const next = { done: 'all', all: 'none', none: 'done' }[collapseMode];
     setCollapseMode(next);
