@@ -28,25 +28,12 @@ const PREFERS_DARK = window.matchMedia?.('(prefers-color-scheme: dark)').matches
 const DEFAULT_VIEW = window.innerWidth < 640 ? 'day' : 'week';
 
 // Day-view column count by width (matches the lg/xl Tailwind breakpoints).
-// Used to assign each block a fixed column so collapsing a section never
-// reflows blocks across columns the way CSS `columns` masonry does.
 const columnCountForWidth = (w) => (w >= 1280 ? 3 : w >= 1024 ? 2 : 1);
 
-// Fixed semantic lane per section for the 3-column day view:
-//   0 = Wake-Up + Priority, 1 = the day's strength session (Strength +
-//   Resistance, or Isometrics — never both on a day), 2 = Wind-Down +
-//   Personal Goals. At narrower widths, lanes beyond the last column
-//   collapse into it.
-const CATEGORY_LANE = {
-  'Wake-Up': 0,
-  Priority: 0,
-  'Strength (M/W/F)': 1,
-  'Resistance (M/W/F)': 1,
-  'Isometrics (End of Day)': 1,
-  'Wind-Down': 2,
-  'Personal Goals (non-PT)': 2,
-};
-const laneFor = (category) => CATEGORY_LANE[category] ?? 1;
+// Each block's fixed day-view lane (column) is declared on the block in data.js,
+// so it can't desync from the block name and collapsing a section never reflows
+// blocks across columns. Lanes past the last visible column collapse into it.
+const laneFor = (category) => exercises[category]?.lane ?? 1;
 
 function useColumnCount() {
   const [count, setCount] = useState(() => columnCountForWidth(window.innerWidth));
