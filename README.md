@@ -71,9 +71,9 @@ star icon and feed the header priority chip, keyed off block membership.
 
 Scheduling resolves in order: a per-exercise `days` wins, else the block's
 `days`, else daily. Loaded strength and resistance are gated to
-**Mon/Wed/Fri** (48h recovery between sessions). Isometrics alternate with
-strength (**Sun/Tue/Thu/Sat**) to avoid double-loading strength days, and
-mobility and stretches run daily. Completion and notes are stored in
+**Mon/Wed/Fri** (48h recovery between sessions); the strength work is split by
+body position into `Strength: Supine/Sidelying` and `Strength: Standing`.
+Mobility and stretches run daily. Completion and notes are stored in
 localStorage keyed by `${day}-${block}-${exerciseId}`, where `exerciseId` is a
 short hash of the exercise name (see `stats.js`). Keying off durable identity
 rather than array position means reordering or inserting exercises no longer
