@@ -12,16 +12,12 @@
 //     + the daily stretches), so the must-do work is visually separate and
 //     hard to lose in the mobility list. Membership in this block IS the
 //     priority flag — the star icon keys off the category, not a prop.
-//   - Strength is the M/W/F ~5pm workout: the non-priority loaded bulk only.
-//   - Isometrics get their own planned end-of-workday block (~5pm clock-out),
-//     harder to skip than the floaty evening. They alternate with Strength
-//     (Tue/Thu/Sat/Sun) so strength days don't carry a double load; isometrics
-//     are low-damage so daily would be safe, but 4x/week clears the 2-3x/week
-//     effective dose and evens out the week.
+//   - Strength is the M/W/F ~5pm workout (the non-priority loaded bulk), split
+//     by body position into Supine/Sidelying (floor work) and Standing so each
+//     half is independently collapsible and fits a laptop viewport.
 //   - Wind-Down is the bedtime stretches.
 //   - Personal Goals are NOT PT-prescribed (steps, jog, sit-ups) — Nate's own.
 const MWF = ['Monday', 'Wednesday', 'Friday'];
-const NON_STRENGTH_DAYS = ['Sunday', 'Tuesday', 'Thursday', 'Saturday'];
 
 export const exercises = {
   'Wake-Up': {
@@ -42,16 +38,30 @@ export const exercises = {
   Priority: {
     exercises: [
       // Old movements, but the added weight is new — done first.
-      { name: 'Flexion (forward) with Dumbbell (2.5)', sets: 2, reps: 15, days: MWF },
-      { name: 'Extension (backward) with Dumbbell (2.5)', sets: 2, reps: 15, days: MWF },
-      { name: 'Supine Flexion with Dumbbell (2.5)', sets: 3, reps: 15, days: MWF },
-      { name: 'Sidelying Abduction with Dumbbell (2.5)', sets: 3, reps: 15, days: MWF },
-      { name: 'Sidelying ER with Dumbbell (2.5)', sets: 3, reps: 10, days: MWF },
+      { name: 'Flexion (forward) with Dumbbell (3)', sets: 2, reps: 15, days: MWF },
+      { name: 'Extension (backward) with Dumbbell (3)', sets: 2, reps: 15, days: MWF },
+      { name: 'Supine Flexion with Dumbbell (3)', sets: 3, reps: 15, days: MWF },
+      { name: 'Sidelying Abduction with Dumbbell (3)', sets: 3, reps: 15, days: MWF },
+      { name: 'Sidelying ER with Dumbbell (3)', sets: 3, reps: 10, days: MWF },
       { name: 'Shoulder IR Stretch', sets: 3, reps: '30s' },
       { name: 'Cross Body Stretch with Towel', sets: 3, reps: '30s' },
     ],
   },
-  'Strength (M/W/F)': {
+  // Split from a single Strength block by body position, so each half is
+  // independently collapsible and fits a laptop viewport. Same M/W/F session.
+  'Strength: Supine/Sidelying': {
+    days: MWF,
+    exercises: [
+      { name: 'Bench Press with Dumbbell', sets: 3, reps: 10 },
+      { name: 'Supine Serratus Punches with Dumbbell', sets: 2, reps: 10 },
+      { name: 'Supine Horizontal Abd/Add with Dumbbell', sets: 3, reps: 8 },
+      { name: 'Incline Bench Press with Dumbbell', sets: 3, reps: 10 },
+      { name: 'Sidelying Shoulder Horizontal Abduction with Dumbbell (3)', sets: 3, reps: 10 },
+      { name: 'Supine Shoulder Horizontal Abduction with Dumbbell (3)', sets: 3, reps: 10 },
+      { name: 'Supine Elbow Flexion Extension with Dumbbell (3)', sets: 3, reps: 12 },
+    ],
+  },
+  'Strength: Standing': {
     days: MWF,
     exercises: [
       { name: 'Wrist Sup/Pro with Dumbbell', sets: 3, reps: 12 },
@@ -65,15 +75,14 @@ export const exercises = {
         reps: 10,
       },
       { name: 'Bent Over Row with Dumbbell', sets: 3, reps: 10 },
-      { name: 'Bench Press with Dumbbell', sets: 3, reps: 10 },
-      { name: 'Supine Serratus Punches with Dumbbell', sets: 2, reps: 10 },
-      { name: 'Supine Horizontal Abd/Add with Dumbbell', sets: 3, reps: 8 },
-      { name: 'Incline Bench Press with Dumbbell', sets: 3, reps: 10 },
+      { name: 'Kettlebell Suitcase Carry (15)', sets: 3, reps: '10ft' },
+      { name: 'Weight Lassos (overhead/side/front) with Dumbbell (3)', sets: 3, reps: 10 },
+      { name: 'Shoulder Abduction - Thumbs Up with Dumbbell (3)', sets: 3, reps: 12 },
     ],
   },
   // Split out from Strength: same M/W/F session, band work instead of dumbbells,
   // so each half is independently collapsible and fits a laptop viewport.
-  'Resistance (M/W/F)': {
+  'Resistance': {
     days: MWF,
     exercises: [
       { name: 'Shoulder Row with Resistance', sets: 3, reps: 12 },
@@ -82,17 +91,6 @@ export const exercises = {
       { name: 'Tricep Extensions with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder IR (rotate) with Resistance', sets: 3, reps: 12 },
       { name: 'Shoulder ER (step) with Resistance', sets: 3, reps: 12 },
-    ],
-  },
-  'Isometrics (End of Day)': {
-    days: NON_STRENGTH_DAYS,
-    exercises: [
-      { name: 'Isometric Shoulder Flexion', sets: 3, hold: '30s' },
-      { name: 'Isometric Shoulder Extension', sets: 3, hold: '30s' },
-      { name: 'Isometric Internal Rotation', sets: 3, hold: '30s' },
-      { name: 'Isometric External Rotation', sets: 3, hold: '30s' },
-      { name: 'Isometric Shoulder Abduction', sets: 3, hold: '30s' },
-      { name: 'Isometric Shoulder Adduction', sets: 3, hold: '30s' },
     ],
   },
   'Wind-Down': {
