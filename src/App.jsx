@@ -23,7 +23,7 @@ const SCHEDULE_BY_DAY = Object.fromEntries(days.map((day) => [day, scheduleForDa
 // First-run defaults (localStorage wins once the user has a saved value):
 // follow the OS theme, and start phones in day view rather than a 7-up week.
 const PREFERS_DARK = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false
-const DEFAULT_VIEW = window.innerWidth < 640 ? 'day' : 'week'
+const DEFAULT_VIEW = 'day'
 
 // Day-view column count by width (matches the lg/xl Tailwind breakpoints).
 const columnCountForWidth = (w) => (w >= 1280 ? 3 : w >= 1024 ? 2 : 1)
