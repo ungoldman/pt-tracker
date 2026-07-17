@@ -1,8 +1,8 @@
 {
-  "name": "pt-exercise-tracker",
+  "name": "pt-tracker",
   "version": "1.0.0",
   "private": true,
-  "description": "A small Vite + React app for tracking daily shoulder PT.",
+  "description": "A small Vite + React app for tracking daily physical therapy exercises.",
   "license": "ISC",
   "author": "Nate Goldman",
   "type": "module",
