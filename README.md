@@ -1,7 +1,7 @@
 # pt-tracker
 
-A small Vite + React app for tracking daily shoulder PT, grouped into day-phase
-blocks with a per-exercise / per-block weekly schedule.
+A small Vite + React app for tracking daily physical therapy exercises, grouped into
+day-phase blocks with a per-exercise / per-block weekly schedule.
 
 ## Install
 
