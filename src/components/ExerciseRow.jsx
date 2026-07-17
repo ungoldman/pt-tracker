@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import { Check, BellRing, FileText } from 'lucide-react';
-import Confetti from './Confetti';
-import { formatExerciseName, getExerciseIcon, getPriorityIcon } from '../lib/exerciseDisplay';
+import { BellRing, Check, FileText } from 'lucide-react'
+import { memo } from 'react'
+import { formatExerciseName, getExerciseIcon, getPriorityIcon } from '../lib/exerciseDisplay'
+import Confetti from './Confetti'
 
 /**
  * One exercise as a dense flat list row: completion toggle, badges, name,
@@ -29,9 +29,9 @@ export default memo(function ExerciseRow({
   openNotes,
   closeNotes,
   discardNote,
-  handleNoteChange,
+  handleNoteChange
 }) {
-  const showNotesUI = viewMode === 'day' || viewMode === 'three';
+  const showNotesUI = viewMode === 'day' || viewMode === 'three'
   const repsText = (
     <>
       {ex.sets ? `${ex.sets} x ` : ''}
@@ -39,39 +39,40 @@ export default memo(function ExerciseRow({
       {ex.hold}
       {ex.target}
     </>
-  );
+  )
   const nameColor = completed
     ? darkMode
       ? 'text-green-300'
       : 'text-green-800'
     : darkMode
       ? 'text-gray-200'
-      : 'text-gray-800';
+      : 'text-gray-800'
   const repsColor = completed
     ? darkMode
       ? 'text-green-400'
       : 'text-green-600'
     : darkMode
       ? 'text-gray-400'
-      : 'text-gray-500';
+      : 'text-gray-500'
 
   // A div (not a button) so the exercise name stays selectable/copyable; a
   // drag-select shouldn't also toggle, so a click that ends a text selection
   // is ignored. Keyboard activation (Enter/Space) keeps it operable.
   const handleToggle = () => {
-    const selection = window.getSelection?.();
-    if (selection && !selection.isCollapsed) return;
-    toggleComplete(day, category, exId);
-  };
+    const selection = window.getSelection?.()
+    if (selection && !selection.isCollapsed) return
+    toggleComplete(day, category, exId)
+  }
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggleComplete(day, category, exId);
+      e.preventDefault()
+      toggleComplete(day, category, exId)
     }
-  };
+  }
 
   return (
     <div className={`relative ${completed ? (darkMode ? 'bg-green-900/25' : 'bg-green-50') : ''}`}>
+      {/* biome-ignore lint/a11y/useSemanticElements: the row wraps nested interactive controls (the note button), which a native button can't contain, so it stays a div with an explicit button role. */}
       <div
         role="button"
         tabIndex={0}
@@ -125,9 +126,10 @@ export default memo(function ExerciseRow({
 
       {showNotesUI && !isExpanded && (
         <button
+          type="button"
           onClick={(e) => {
-            e.stopPropagation();
-            openNotes(exerciseKey);
+            e.stopPropagation()
+            openNotes(exerciseKey)
           }}
           className="absolute right-1 top-1/2 -translate-y-1/2 p-2"
           title={hasNote ? 'View note' : 'Add a note'}
@@ -163,9 +165,10 @@ export default memo(function ExerciseRow({
             <div className="flex justify-end gap-2">
               {hasNote && (
                 <button
+                  type="button"
                   onClick={(e) => {
-                    e.stopPropagation();
-                    discardNote(exerciseKey);
+                    e.stopPropagation()
+                    discardNote(exerciseKey)
                   }}
                   className={`text-[11px] rounded-md transition-colors hover:underline opacity-75 ${
                     darkMode
@@ -178,9 +181,10 @@ export default memo(function ExerciseRow({
                 </button>
               )}
               <button
+                type="button"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  closeNotes(exerciseKey);
+                  e.stopPropagation()
+                  closeNotes(exerciseKey)
                 }}
                 className={`text-[11px] rounded-md transition-colors hover:underline opacity-75 ${
                   darkMode
@@ -198,8 +202,8 @@ export default memo(function ExerciseRow({
             onChange={(e) => handleNoteChange(day, category, exId, e.target.value)}
             onClick={(e) => e.stopPropagation()}
             onFocus={(e) => {
-              e.stopPropagation();
-              openNotes(exerciseKey);
+              e.stopPropagation()
+              openNotes(exerciseKey)
             }}
             className={`w-full text-sm rounded-md resize-none p-2 focus:outline-none focus:ring-2 ${
               darkMode
@@ -216,5 +220,5 @@ export default memo(function ExerciseRow({
         <div className="absolute inset-0 pointer-events-none ring-2 ring-inset ring-green-400/70"></div>
       )}
     </div>
-  );
-});
+  )
+})

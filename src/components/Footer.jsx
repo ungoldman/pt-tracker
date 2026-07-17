@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { TimerReset, Square } from 'lucide-react';
+import { Square, TimerReset } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 const TIMER_LINKS = [
   { href: 'https://www.youtube.com/watch?v=_wi7j1_-O3Q', label: '10s video' },
-  { href: 'https://www.youtube.com/watch?v=kD6FCbmAORY', label: '30s video' },
-];
+  { href: 'https://www.youtube.com/watch?v=kD6FCbmAORY', label: '30s video' }
+]
 
 // Get-into-position window before the first hold begins.
-const PREP_SECONDS = 5;
+const PREP_SECONDS = 5
 
 // Rest between holds.
-const BREAK_SECONDS = 10;
+const BREAK_SECONDS = 10
 
 /**
  * Load the bowl recordings into WebAudio buffers on first user gesture.
@@ -24,22 +24,22 @@ const BREAK_SECONDS = 10;
  */
 async function ensureAudio(ref) {
   if (!ref.current) {
-    const ctx = new AudioContext();
-    ref.current = { ctx, buffers: {}, playing: new Set() };
+    const ctx = new AudioContext()
+    ref.current = { ctx, buffers: {}, playing: new Set() }
     await Promise.all(
       [10, 30].map(async (secs) => {
         try {
-          const res = await fetch(`/bowl${secs}.m4a`);
-          const data = await res.arrayBuffer();
-          ref.current.buffers[secs] = await ctx.decodeAudioData(data);
+          const res = await fetch(`${import.meta.env.BASE_URL}bowl${secs}.m4a`)
+          const data = await res.arrayBuffer()
+          ref.current.buffers[secs] = await ctx.decodeAudioData(data)
         } catch {
           // Recording unavailable; chime() falls back to the synthesized bowl.
         }
       })
-    );
+    )
   }
-  ref.current.ctx.resume?.();
-  return ref.current;
+  ref.current.ctx.resume?.()
+  return ref.current
 }
 
 /**
@@ -48,44 +48,44 @@ async function ensureAudio(ref) {
  * silence() can fade it out.
  */
 function chime(audio, secs) {
-  if (!audio) return;
-  const { ctx, buffers } = audio;
-  const buffer = buffers[secs] || buffers[10] || buffers[30];
-  let entry;
+  if (!audio) return
+  const { ctx, buffers } = audio
+  const buffer = buffers[secs] || buffers[10] || buffers[30]
+  let entry
   if (buffer) {
-    const src = ctx.createBufferSource();
-    src.buffer = buffer;
-    const gain = ctx.createGain();
-    gain.gain.value = 1.0;
-    src.connect(gain);
-    gain.connect(ctx.destination);
-    src.start();
+    const src = ctx.createBufferSource()
+    src.buffer = buffer
+    const gain = ctx.createGain()
+    gain.gain.value = 1.0
+    src.connect(gain)
+    gain.connect(ctx.destination)
+    src.start()
     entry = {
       stop: (t) => {
         try {
-          src.stop(t);
+          src.stop(t)
         } catch {
           // already ended
         }
       },
-      gain,
-    };
-    src.onended = () => audio.playing.delete(entry);
+      gain
+    }
+    src.onended = () => audio.playing.delete(entry)
   } else {
-    entry = bowl(ctx);
+    entry = bowl(ctx)
   }
-  audio.playing.add(entry);
+  audio.playing.add(entry)
 }
 
 /** Fade out and stop any still-ringing strikes (Stop shouldn't leave a 16s tail). */
 function silence(audio) {
-  if (!audio) return;
-  const { ctx } = audio;
+  if (!audio) return
+  const { ctx } = audio
   audio.playing.forEach(({ stop, gain }) => {
-    gain.gain.setTargetAtTime(0, ctx.currentTime, 0.08);
-    stop(ctx.currentTime + 0.3);
-  });
-  audio.playing.clear();
+    gain.gain.setTargetAtTime(0, ctx.currentTime, 0.08)
+    stop(ctx.currentTime + 0.3)
+  })
+  audio.playing.clear()
 }
 
 /**
@@ -94,50 +94,50 @@ function silence(audio) {
  * slow beating shimmer of the real thing.
  */
 function bowl(ctx) {
-  if (!ctx) return { stop: () => {}, gain: { gain: { setTargetAtTime: () => {} } } };
-  const now = ctx.currentTime;
-  const master = ctx.createGain();
-  master.gain.value = 0.7;
-  master.connect(ctx.destination);
-  const oscillators = [];
+  if (!ctx) return { stop: () => {}, gain: { gain: { setTargetAtTime: () => {} } } }
+  const now = ctx.currentTime
+  const master = ctx.createGain()
+  master.gain.value = 0.7
+  master.connect(ctx.destination)
+  const oscillators = []
 
-  const f0 = 196; // ~G3: warm, low, gong-like
+  const f0 = 196 // ~G3: warm, low, gong-like
   const partials = [
     { ratio: 1, gain: 1.0, decay: 5 },
     { ratio: 2.005, gain: 0.55, decay: 4 },
     { ratio: 3.42, gain: 0.3, decay: 2.8 },
     { ratio: 5.43, gain: 0.18, decay: 1.8 },
-    { ratio: 8.21, gain: 0.08, decay: 1.1 },
-  ];
+    { ratio: 8.21, gain: 0.08, decay: 1.1 }
+  ]
 
   partials.forEach(({ ratio, gain, decay }) => {
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0, now);
-    g.gain.linearRampToValueAtTime(gain * 0.5, now + 0.025); // soft mallet attack
-    g.gain.exponentialRampToValueAtTime(0.0001, now + decay);
-    g.connect(master);
-    [1, 1.003].forEach((detune) => {
-      const osc = ctx.createOscillator();
-      osc.type = 'sine';
-      osc.frequency.value = f0 * ratio * detune;
-      osc.connect(g);
-      osc.start(now);
-      osc.stop(now + decay + 0.1);
-      oscillators.push(osc);
-    });
-  });
+    const g = ctx.createGain()
+    g.gain.setValueAtTime(0, now)
+    g.gain.linearRampToValueAtTime(gain * 0.5, now + 0.025) // soft mallet attack
+    g.gain.exponentialRampToValueAtTime(0.0001, now + decay)
+    g.connect(master)
+    ;[1, 1.003].forEach((detune) => {
+      const osc = ctx.createOscillator()
+      osc.type = 'sine'
+      osc.frequency.value = f0 * ratio * detune
+      osc.connect(g)
+      osc.start(now)
+      osc.stop(now + decay + 0.1)
+      oscillators.push(osc)
+    })
+  })
 
   return {
     stop: (t) =>
       oscillators.forEach((o) => {
         try {
-          o.stop(t);
+          o.stop(t)
         } catch {
           // already ended
         }
       }),
-    gain: master,
-  };
+    gain: master
+  }
 }
 
 /**
@@ -146,9 +146,9 @@ function bowl(ctx) {
  * next hold. Tracked in audio.playing so silence() can stop it.
  */
 function knock(audio) {
-  if (!audio) return;
-  const entry = templeTriple(audio.ctx);
-  audio.playing.add(entry);
+  if (!audio) return
+  const entry = templeTriple(audio.ctx)
+  audio.playing.add(entry)
 }
 
 /**
@@ -158,74 +158,74 @@ function knock(audio) {
  * dialed in on the composer soundboard (E3 dropped a sixth, 0.1s apart).
  */
 function templeTriple(ctx) {
-  if (!ctx) return { stop: () => {}, gain: { gain: { setTargetAtTime: () => {} } } };
-  const now = ctx.currentTime;
-  const master = ctx.createGain();
-  master.gain.value = 0.85;
-  master.connect(ctx.destination);
-  const nodes = [];
+  if (!ctx) return { stop: () => {}, gain: { gain: { setTargetAtTime: () => {} } } }
+  const now = ctx.currentTime
+  const master = ctx.createGain()
+  master.gain.value = 0.85
+  master.connect(ctx.destination)
+  const nodes = []
 
-  const f0 = 98.9; // low wooden thunk
-  const gap = 0.1; // spacing between taps
-  const ring = 0.6; // decay scale: short, no lingering tail
-  const attack = 0.004;
+  const f0 = 98.9 // low wooden thunk
+  const gap = 0.1 // spacing between taps
+  const ring = 0.6 // decay scale: short, no lingering tail
+  const attack = 0.004
   const partials = [
     { ratio: 1, gain: 1.0, decay: 0.55 },
     { ratio: 2.76, gain: 0.45, decay: 0.32 },
-    { ratio: 5.2, gain: 0.18, decay: 0.16 },
-  ];
+    { ratio: 5.2, gain: 0.18, decay: 0.16 }
+  ]
 
   for (let hit = 0; hit < 3; hit += 1) {
-    const t0 = now + hit * gap;
+    const t0 = now + hit * gap
     partials.forEach(({ ratio, gain, decay }) => {
-      const d = decay * ring;
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0, t0);
-      g.gain.linearRampToValueAtTime(gain, t0 + attack);
-      g.gain.setTargetAtTime(0, t0 + attack, d / 4);
-      g.connect(master);
-      const osc = ctx.createOscillator();
-      osc.type = 'sine';
-      osc.frequency.value = f0 * ratio;
-      osc.connect(g);
-      osc.start(t0);
-      osc.stop(t0 + attack + d + 0.3);
-      nodes.push(osc);
-    });
+      const d = decay * ring
+      const g = ctx.createGain()
+      g.gain.setValueAtTime(0, t0)
+      g.gain.linearRampToValueAtTime(gain, t0 + attack)
+      g.gain.setTargetAtTime(0, t0 + attack, d / 4)
+      g.connect(master)
+      const osc = ctx.createOscillator()
+      osc.type = 'sine'
+      osc.frequency.value = f0 * ratio
+      osc.connect(g)
+      osc.start(t0)
+      osc.stop(t0 + attack + d + 0.3)
+      nodes.push(osc)
+    })
 
     // Contact transient: a very short band-passed noise burst for the tap.
-    const noiseLen = 0.025;
-    const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * noiseLen), ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < data.length; i += 1) data[i] = Math.random() * 2 - 1;
-    const noise = ctx.createBufferSource();
-    noise.buffer = buffer;
-    const bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.frequency.value = 1100;
-    bp.Q.value = 1.5;
-    const ng = ctx.createGain();
-    ng.gain.setValueAtTime(0.35, t0);
-    ng.gain.exponentialRampToValueAtTime(0.0001, t0 + noiseLen);
-    noise.connect(bp);
-    bp.connect(ng);
-    ng.connect(master);
-    noise.start(t0);
-    noise.stop(t0 + noiseLen + 0.05);
-    nodes.push(noise);
+    const noiseLen = 0.025
+    const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * noiseLen), ctx.sampleRate)
+    const data = buffer.getChannelData(0)
+    for (let i = 0; i < data.length; i += 1) data[i] = Math.random() * 2 - 1
+    const noise = ctx.createBufferSource()
+    noise.buffer = buffer
+    const bp = ctx.createBiquadFilter()
+    bp.type = 'bandpass'
+    bp.frequency.value = 1100
+    bp.Q.value = 1.5
+    const ng = ctx.createGain()
+    ng.gain.setValueAtTime(0.35, t0)
+    ng.gain.exponentialRampToValueAtTime(0.0001, t0 + noiseLen)
+    noise.connect(bp)
+    bp.connect(ng)
+    ng.connect(master)
+    noise.start(t0)
+    noise.stop(t0 + noiseLen + 0.05)
+    nodes.push(noise)
   }
 
   return {
     stop: (t) =>
       nodes.forEach((n) => {
         try {
-          n.stop(t);
+          n.stop(t)
         } catch {
           // already ended or scheduled past the stop time
         }
       }),
-    gain: master,
-  };
+    gain: master
+  }
 }
 
 /**
@@ -236,71 +236,74 @@ function templeTriple(ctx) {
  * Wall-clock based so background-tab throttling doesn't drift it.
  */
 export default function Footer({ darkMode }) {
-  const [duration, setDuration] = useState(null); // the selected interval; null = idle
-  const [phase, setPhase] = useState('idle'); // 'idle' | 'prep' | 'hold' | 'break'
-  const [run, setRun] = useState(0); // bumped on start so re-pressing the active duration restarts it
-  const [remaining, setRemaining] = useState(0);
-  const [prepLeft, setPrepLeft] = useState(0);
-  const [breakLeft, setBreakLeft] = useState(0);
-  const [reps, setReps] = useState(0);
-  const audioRef = useRef(null);
+  const [duration, setDuration] = useState(null) // the selected interval; null = idle
+  const [phase, setPhase] = useState('idle') // 'idle' | 'prep' | 'hold' | 'break'
+  const [run, setRun] = useState(0) // bumped on start so re-pressing the active duration restarts it
+  const [remaining, setRemaining] = useState(0)
+  const [prepLeft, setPrepLeft] = useState(0)
+  const [breakLeft, setBreakLeft] = useState(0)
+  const [reps, setReps] = useState(0)
+  const audioRef = useRef(null)
 
   // Prep countdown: a quiet window to get into position. When it elapses the
   // bowl strikes (marking the first hold) and we hand off to the hold phase.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: run is an intentional restart trigger (re-pressing the active duration bumps it); it isn't read in the body.
   useEffect(() => {
-    if (phase !== 'prep') return undefined;
-    const endsAt = Date.now() + PREP_SECONDS * 1000;
+    if (phase !== 'prep') return undefined
+    const endsAt = Date.now() + PREP_SECONDS * 1000
     const tick = setInterval(() => {
-      const left = Math.ceil((endsAt - Date.now()) / 1000);
+      const left = Math.ceil((endsAt - Date.now()) / 1000)
       if (left <= 0) {
-        chime(audioRef.current, duration);
-        navigator.vibrate?.(200);
-        setPhase('hold');
+        chime(audioRef.current, duration)
+        navigator.vibrate?.(200)
+        setPhase('hold')
       } else {
-        setPrepLeft(left);
+        setPrepLeft(left)
       }
-    }, 200);
-    return () => clearInterval(tick);
-  }, [phase, run, duration]);
+    }, 200)
+    return () => clearInterval(tick)
+  }, [phase, run, duration])
 
   // Hold phase: count down the interval, then knock (end of rep), bank the rep,
   // and hand off to the rest. Wall-clock based against this phase's start.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: run is an intentional restart trigger (re-pressing the active duration bumps it); it isn't read in the body.
   useEffect(() => {
-    if (phase !== 'hold') return undefined;
-    const endsAt = Date.now() + duration * 1000;
+    if (phase !== 'hold') return undefined
+    const endsAt = Date.now() + duration * 1000
     const tick = setInterval(() => {
-      const left = Math.ceil((endsAt - Date.now()) / 1000);
+      const left = Math.ceil((endsAt - Date.now()) / 1000)
       if (left <= 0) {
-        knock(audioRef.current);
-        navigator.vibrate?.(200);
-        setReps((r) => r + 1);
-        setBreakLeft(BREAK_SECONDS);
-        setPhase('break');
+        knock(audioRef.current)
+        navigator.vibrate?.(200)
+        setReps((r) => r + 1)
+        setBreakLeft(BREAK_SECONDS)
+        setPhase('break')
       } else {
-        setRemaining(left);
+        setRemaining(left)
       }
-    }, 200);
-    return () => clearInterval(tick);
-  }, [phase, duration, run]);
+    }, 200)
+    return () => clearInterval(tick)
+  }, [phase, duration, run])
 
   // Rest phase: count down BREAK_SECONDS, then the bowl strikes to resume the
   // next hold.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: run is an intentional restart trigger (re-pressing the active duration bumps it); it isn't read in the body.
   useEffect(() => {
-    if (phase !== 'break') return undefined;
-    const endsAt = Date.now() + BREAK_SECONDS * 1000;
+    if (phase !== 'break') return undefined
+    const endsAt = Date.now() + BREAK_SECONDS * 1000
     const tick = setInterval(() => {
-      const left = Math.ceil((endsAt - Date.now()) / 1000);
+      const left = Math.ceil((endsAt - Date.now()) / 1000)
       if (left <= 0) {
-        chime(audioRef.current, duration);
-        navigator.vibrate?.(200);
-        setRemaining(duration);
-        setPhase('hold');
+        chime(audioRef.current, duration)
+        navigator.vibrate?.(200)
+        setRemaining(duration)
+        setPhase('hold')
       } else {
-        setBreakLeft(left);
+        setBreakLeft(left)
       }
-    }, 200);
-    return () => clearInterval(tick);
-  }, [phase, duration, run]);
+    }, 200)
+    return () => clearInterval(tick)
+  }, [phase, duration, run])
 
   const start = (secs) => {
     // Create/resume the AudioContext within the user gesture so the bowl can
@@ -308,43 +311,43 @@ export default function Footer({ darkMode }) {
     // synchronously (only the bowl fetch is async), so the knock can sound
     // right now to mark the start of the prep countdown.
     if (window.AudioContext) {
-      ensureAudio(audioRef);
-      knock(audioRef.current);
+      ensureAudio(audioRef)
+      knock(audioRef.current)
     }
-    setReps(0);
-    setRemaining(secs);
-    setPrepLeft(PREP_SECONDS);
-    setBreakLeft(BREAK_SECONDS);
-    setDuration(secs);
-    setPhase('prep');
-    setRun((r) => r + 1);
-  };
+    setReps(0)
+    setRemaining(secs)
+    setPrepLeft(PREP_SECONDS)
+    setBreakLeft(BREAK_SECONDS)
+    setDuration(secs)
+    setPhase('prep')
+    setRun((r) => r + 1)
+  }
 
-  const stop = () => {
-    setPhase('idle');
-    setDuration(null);
-    silence(audioRef.current);
-  };
+  const stop = useCallback(() => {
+    setPhase('idle')
+    setDuration(null)
+    silence(audioRef.current)
+  }, [])
 
   // Esc closes the takeover modal while it's up.
   useEffect(() => {
-    if (phase === 'idle') return undefined;
+    if (phase === 'idle') return undefined
     const onKey = (e) => {
-      if (e.key === 'Escape') stop();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [phase]);
+      if (e.key === 'Escape') stop()
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [phase, stop])
 
   const idleButton = darkMode
     ? 'border-gray-700 text-gray-300 hover:border-blue-500 hover:text-blue-300'
-    : 'border-gray-300 text-gray-600 hover:border-blue-400 hover:text-blue-600';
+    : 'border-gray-300 text-gray-600 hover:border-blue-400 hover:text-blue-600'
   const activeButton = darkMode
     ? 'border-blue-500 text-blue-300 bg-blue-900/40'
-    : 'border-blue-400 text-blue-700 bg-blue-50';
+    : 'border-blue-400 text-blue-700 bg-blue-50'
 
-  const inProgress = phase !== 'idle';
-  const bigDigits = 'font-bold tabular-nums leading-none text-[34vw] sm:text-[22rem]';
+  const inProgress = phase !== 'idle'
+  const bigDigits = 'font-bold tabular-nums leading-none text-[34vw] sm:text-[22rem]'
 
   return (
     <>
@@ -392,7 +395,9 @@ export default function Footer({ darkMode }) {
             )}
 
             <button
+              type="button"
               onClick={stop}
+              // biome-ignore lint/a11y/noAutofocus: focuses the stop control when the takeover opens so keyboard and screen-reader users land on it.
               autoFocus
               className={`mt-2 flex items-center gap-2 text-lg font-semibold px-6 py-3 rounded-xl border-2 transition-colors ${
                 darkMode
@@ -422,6 +427,7 @@ export default function Footer({ darkMode }) {
             <div className="flex items-center gap-2">
               {[10, 30].map((secs) => (
                 <button
+                  type="button"
                   key={secs}
                   onClick={() => start(secs)}
                   className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
@@ -456,5 +462,5 @@ export default function Footer({ darkMode }) {
         </div>
       </footer>
     </>
-  );
+  )
 }

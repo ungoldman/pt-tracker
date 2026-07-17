@@ -1,4 +1,4 @@
-export const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 /**
  * Returns the exercises scheduled for `day`, grouped by block:
@@ -10,22 +10,22 @@ export const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Fr
  * index is carried. Blocks with nothing scheduled are dropped.
  */
 export function getExercisesForDay(exercises, day) {
-  const result = [];
+  const result = []
   Object.entries(exercises).forEach(([category, data]) => {
     const scheduled = data.exercises
       .map((ex) => ({ ex }))
       .filter(({ ex }) => {
-        const sched = ex.days || data.days;
-        return !sched || sched.includes(day);
-      });
+        const sched = ex.days || data.days
+        return !sched || sched.includes(day)
+      })
     if (scheduled.length > 0) {
-      result.push({ category, exercises: scheduled });
+      result.push({ category, exercises: scheduled })
     }
-  });
-  return result;
+  })
+  return result
 }
 
 /** A day is a strength/training day if the Strength block is scheduled on it. */
 export function isStrengthDay(blocks) {
-  return blocks.some(({ category }) => category.startsWith('Strength'));
+  return blocks.some(({ category }) => category.startsWith('Strength'))
 }

@@ -1,23 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
 import {
-  Timer,
-  Sparkles,
-  Star,
   CalendarRange,
   ChevronsDownUp,
   ChevronsUpDown,
   ListChecks,
-  Sun,
   Moon,
   RotateCcw,
-} from 'lucide-react';
+  Sparkles,
+  Star,
+  Sun,
+  Timer
+} from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
 // Section-visibility cycle: what each mode shows and what a click does next.
 const COLLAPSE_MODES = {
   done: { Icon: ListChecks, label: 'Done sections collapsed', next: 'collapse all' },
   all: { Icon: ChevronsDownUp, label: 'All sections collapsed', next: 'expand all' },
-  none: { Icon: ChevronsUpDown, label: 'All sections expanded', next: 'collapse done' },
-};
+  none: { Icon: ChevronsUpDown, label: 'All sections expanded', next: 'collapse done' }
+}
 
 /**
  * Hover/focus tooltip below a control (the native title is too easy to miss).
@@ -27,15 +27,15 @@ const COLLAPSE_MODES = {
 const HINT_ALIGN = {
   center: 'left-1/2 -translate-x-1/2',
   right: 'right-0',
-  left: 'left-0',
-};
+  left: 'left-0'
+}
 // Week-dot fill by day completion: no history stays neutral, then blue
 // under halfway and green at/over halfway. A clean 100% gets a gold star
 // instead of a dot (handled at the call site), so no 100% branch here.
 function weekDotColor(pct, darkMode) {
-  if (pct >= 50) return 'bg-green-500';
-  if (pct > 0) return 'bg-blue-500';
-  return darkMode ? 'bg-gray-600' : 'bg-gray-300';
+  if (pct >= 50) return 'bg-green-500'
+  if (pct > 0) return 'bg-blue-500'
+  return darkMode ? 'bg-gray-600' : 'bg-gray-300'
 }
 
 function Hinted({ hint, darkMode, align = 'center', children }) {
@@ -53,7 +53,7 @@ function Hinted({ hint, darkMode, align = 'center', children }) {
         {hint}
       </span>
     </div>
-  );
+  )
 }
 
 /**
@@ -78,36 +78,35 @@ export default function Header({
   cycleCollapseMode,
   resetDay,
   resetWeek,
-  selectedDay,
+  selectedDay
 }) {
-  const [scrolled, setScrolled] = useState(false);
-  const [resetMenuOpen, setResetMenuOpen] = useState(false);
-  const resetRef = useRef(null);
+  const [scrolled, setScrolled] = useState(false)
+  const [resetMenuOpen, setResetMenuOpen] = useState(false)
+  const resetRef = useRef(null)
 
   useEffect(() => {
     // Hysteresis (collapse past 96px, expand under 24px) so the header's own
     // height change can't flutter the state around the threshold.
-    const onScroll = () =>
-      setScrolled((prev) => (prev ? window.scrollY > 24 : window.scrollY > 96));
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    const onScroll = () => setScrolled((prev) => (prev ? window.scrollY > 24 : window.scrollY > 96))
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
-    if (!resetMenuOpen) return undefined;
+    if (!resetMenuOpen) return undefined
     const onDown = (e) => {
-      if (!resetRef.current?.contains(e.target)) setResetMenuOpen(false);
-    };
+      if (!resetRef.current?.contains(e.target)) setResetMenuOpen(false)
+    }
     const onKey = (e) => {
-      if (e.key === 'Escape') setResetMenuOpen(false);
-    };
-    document.addEventListener('pointerdown', onDown);
-    document.addEventListener('keydown', onKey);
+      if (e.key === 'Escape') setResetMenuOpen(false)
+    }
+    document.addEventListener('pointerdown', onDown)
+    document.addEventListener('keydown', onKey)
     return () => {
-      document.removeEventListener('pointerdown', onDown);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, [resetMenuOpen]);
+      document.removeEventListener('pointerdown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [resetMenuOpen])
 
   // One button language: ghost icon buttons throughout; destructive actions
   // reveal red only inside the reset menu (plus the confirm dialog).
@@ -115,7 +114,7 @@ export default function Header({
     darkMode
       ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
       : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
-  }`;
+  }`
 
   return (
     <div
@@ -146,6 +145,7 @@ export default function Header({
         >
           <Hinted hint="Cycle view: week → day → 3-day" darkMode={darkMode} align="right">
             <button
+              type="button"
               onClick={cycleViewMode}
               className={ghostButton}
               aria-label="Cycle view: week, day, 3-day"
@@ -164,18 +164,20 @@ export default function Header({
             align="right"
           >
             <button
+              type="button"
               onClick={cycleCollapseMode}
               className={ghostButton}
               aria-label={`Sections: ${COLLAPSE_MODES[collapseMode].next}`}
             >
               {(() => {
-                const ModeIcon = COLLAPSE_MODES[collapseMode].Icon;
-                return <ModeIcon size={16} />;
+                const ModeIcon = COLLAPSE_MODES[collapseMode].Icon
+                return <ModeIcon size={16} />
               })()}
             </button>
           </Hinted>
           <Hinted hint={darkMode ? 'Light mode' : 'Dark mode'} darkMode={darkMode} align="right">
             <button
+              type="button"
               onClick={toggleDarkMode}
               className={ghostButton}
               aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -185,6 +187,7 @@ export default function Header({
           </Hinted>
           <div className="relative flex group" ref={resetRef}>
             <button
+              type="button"
               onClick={() => setResetMenuOpen((open) => !open)}
               className={ghostButton}
               aria-label="Reset checkboxes"
@@ -213,10 +216,11 @@ export default function Header({
                 }`}
               >
                 <button
+                  type="button"
                   role="menuitem"
                   onClick={() => {
-                    setResetMenuOpen(false);
-                    resetDay(selectedDay);
+                    setResetMenuOpen(false)
+                    resetDay(selectedDay)
                   }}
                   className={`w-full text-left px-3 py-2 text-sm ${
                     darkMode ? 'text-red-400 hover:bg-red-900/40' : 'text-red-600 hover:bg-red-50'
@@ -225,10 +229,11 @@ export default function Header({
                   Reset {selectedDay}
                 </button>
                 <button
+                  type="button"
                   role="menuitem"
                   onClick={() => {
-                    setResetMenuOpen(false);
-                    resetWeek();
+                    setResetMenuOpen(false)
+                    resetWeek()
                   }}
                   className={`w-full text-left px-3 py-2 text-sm ${
                     darkMode ? 'text-red-400 hover:bg-red-900/40' : 'text-red-600 hover:bg-red-50'
@@ -301,19 +306,25 @@ export default function Header({
               {isStrengthDay ? 'Strength day' : 'Rest day'}
             </span>
             {/* Week progress dots: one per day, tap to jump there in day view */}
-            <span className="flex items-center gap-1.5 ml-1" aria-label="Week progress">
+            {/* biome-ignore lint/a11y/useSemanticElements: a fieldset is for form controls; this is a labelled group of day-navigation buttons. */}
+            <span
+              className="flex items-center gap-1.5 ml-1"
+              role="group"
+              aria-label="Week progress"
+            >
               {weekSummary.map(({ day, pct: dayPct }) => {
-                const isToday = day === todayLabel;
+                const isToday = day === todayLabel
                 // In day view, ring the day the list is currently showing.
-                const isSelected = viewMode === 'day' && day === selectedDay;
+                const isSelected = viewMode === 'day' && day === selectedDay
                 return (
                   <Hinted key={day} hint={`${day}: ${dayPct}% done`} darkMode={darkMode}>
                     <button
+                      type="button"
                       onClick={(e) => {
                         // Drop focus so the focus-within tooltip doesn't linger
                         // and overlap a neighbor's hover tooltip after a click.
-                        e.currentTarget.blur();
-                        onSelectDay(day);
+                        e.currentTarget.blur()
+                        onSelectDay(day)
                       }}
                       aria-label={`${day}: ${dayPct}% done${isToday ? ' (today)' : ''}${
                         isSelected ? ' (selected)' : ''
@@ -342,12 +353,12 @@ export default function Header({
                       )}
                     </button>
                   </Hinted>
-                );
+                )
               })}
             </span>
           </div>
         )}
       </div>
     </div>
-  );
+  )
 }

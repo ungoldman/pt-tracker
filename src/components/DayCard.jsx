@@ -1,15 +1,15 @@
-import DayLabel from './DayLabel';
-import CategoryBlock from './CategoryBlock';
-import { getTodayLabel } from '../lib/dates';
-import { useTracker } from '../context/TrackerContext';
+import { useTracker } from '../context/TrackerContext'
+import { getTodayLabel } from '../lib/dates'
+import CategoryBlock from './CategoryBlock'
+import DayLabel from './DayLabel'
 
 /**
  * A whole day as a scrollable card of blocks, used by the week and 3-day views.
  * `highlightToday` tints the card when `day` is today.
  */
 export default function DayCard({ day, blocks, highlightToday = false }) {
-  const { darkMode, viewMode } = useTracker();
-  const isToday = highlightToday && day === getTodayLabel();
+  const { darkMode, viewMode } = useTracker()
+  const isToday = highlightToday && day === getTodayLabel()
 
   return (
     <div
@@ -43,5 +43,5 @@ export default function DayCard({ day, blocks, highlightToday = false }) {
         ))}
       </div>
     </div>
-  );
+  )
 }

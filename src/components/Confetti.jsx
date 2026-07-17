@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 const COLORS = [
   'bg-yellow-400',
@@ -7,15 +7,15 @@ const COLORS = [
   'bg-pink-400',
   'bg-purple-400',
   'bg-red-400',
-  'bg-orange-400',
-];
+  'bg-orange-400'
+]
 
 /** Burst of falling confetti pieces; calls onComplete after the animation. */
 export default function Confetti({ onComplete }) {
   useEffect(() => {
-    const timer = setTimeout(onComplete, 2000);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
+    const timer = setTimeout(onComplete, 2000)
+    return () => clearTimeout(timer)
+  }, [onComplete])
 
   // Generate the pieces once per mount; regenerating on re-render would
   // visibly reshuffle them mid-animation.
@@ -26,9 +26,9 @@ export default function Confetti({ onComplete }) {
       delay: Math.random() * 0.2,
       rotation: Math.random() * 360,
       duration: 1.5 + Math.random() * 0.5,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      color: COLORS[Math.floor(Math.random() * COLORS.length)]
     }))
-  );
+  )
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
@@ -48,10 +48,10 @@ export default function Confetti({ onComplete }) {
             top: '-20px',
             animation: `confetti ${piece.duration}s ease-out forwards`,
             animationDelay: `${piece.delay}s`,
-            transform: `rotate(${piece.rotation}deg)`,
+            transform: `rotate(${piece.rotation}deg)`
           }}
         />
       ))}
     </div>
-  );
+  )
 }

@@ -1,10 +1,10 @@
-import { ChevronDown } from 'lucide-react';
-import ExerciseRow from './ExerciseRow';
-import { exercises } from '../data';
-import { getBlockStyle } from '../lib/blockStyle';
-import { estimateBlock } from '../lib/duration';
-import { categoryStats, completionKey, exerciseId, isCompleted as isDone } from '../lib/stats';
-import { useTracker } from '../context/TrackerContext';
+import { ChevronDown } from 'lucide-react'
+import { useTracker } from '../context/TrackerContext'
+import { exercises } from '../data'
+import { getBlockStyle } from '../lib/blockStyle'
+import { estimateBlock } from '../lib/duration'
+import { categoryStats, completionKey, exerciseId, isCompleted as isDone } from '../lib/stats'
+import ExerciseRow from './ExerciseRow'
 
 /**
  * One block: an accent-colored collapsible header with phase icon, time
@@ -28,22 +28,23 @@ export default function CategoryBlock({ day, category, exList }) {
     openNotes,
     closeNotes,
     discardNote,
-    handleNoteChange,
-  } = useTracker();
+    handleNoteChange
+  } = useTracker()
 
-  const stats = categoryStats(completed, day, category, exList);
-  const isComplete = stats.total > 0 && stats.completedCount === stats.total;
-  const isCollapsed = isCategoryCollapsed(day, category, isComplete);
-  const blockStyle = getBlockStyle(category);
-  const BlockIcon = blockStyle.Icon;
+  const stats = categoryStats(completed, day, category, exList)
+  const isComplete = stats.total > 0 && stats.completedCount === stats.total
+  const isCollapsed = isCategoryCollapsed(day, category, isComplete)
+  const blockStyle = getBlockStyle(category)
+  const BlockIcon = blockStyle.Icon
   const { minutes, exact } = estimateBlock(
     exercises[category],
     exList.map(({ ex }) => ex)
-  );
+  )
 
   return (
     <div>
       <button
+        type="button"
         onClick={() => toggleCategoryCollapse(day, category, isCollapsed)}
         className={`w-full flex items-center gap-2 font-semibold text-xs uppercase tracking-wide mb-1 px-2 py-1 rounded transition-colors ${
           darkMode
@@ -83,16 +84,16 @@ export default function CategoryBlock({ day, category, exList }) {
             isComplete ? 'bg-green-500' : blockStyle.bar
           }`}
           style={{
-            width: `${stats.total > 0 ? (stats.completedCount / stats.total) * 100 : 0}%`,
+            width: `${stats.total > 0 ? (stats.completedCount / stats.total) * 100 : 0}%`
           }}
         />
       </div>
       {!isCollapsed && (
         <div className={`divide-y ${darkMode ? 'divide-gray-700/40' : 'divide-gray-200'}`}>
           {exList.map(({ ex }) => {
-            const exId = exerciseId(ex);
-            const exerciseKey = completionKey(day, category, exId);
-            const noteText = notes[exerciseKey] || '';
+            const exId = exerciseId(ex)
+            const exerciseKey = completionKey(day, category, exId)
+            const noteText = notes[exerciseKey] || ''
             return (
               <ExerciseRow
                 key={exId}
@@ -116,10 +117,10 @@ export default function CategoryBlock({ day, category, exList }) {
                 discardNote={discardNote}
                 handleNoteChange={handleNoteChange}
               />
-            );
+            )
           })}
         </div>
       )}
     </div>
-  );
+  )
 }

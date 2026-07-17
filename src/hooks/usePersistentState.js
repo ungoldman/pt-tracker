@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 /**
  * useState backed by localStorage. Reads the key once on init and writes on
@@ -8,22 +8,22 @@ import { useEffect, useState } from 'react';
  */
 export function usePersistentState(key, defaultValue) {
   const [value, setValue] = useState(() => {
-    if (typeof window === 'undefined') return defaultValue;
+    if (typeof window === 'undefined') return defaultValue
     try {
-      const saved = localStorage.getItem(key);
-      return saved !== null ? JSON.parse(saved) : defaultValue;
+      const saved = localStorage.getItem(key)
+      return saved !== null ? JSON.parse(saved) : defaultValue
     } catch {
-      return defaultValue;
+      return defaultValue
     }
-  });
+  })
 
   useEffect(() => {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
+      localStorage.setItem(key, JSON.stringify(value))
     } catch {
       // Ignore write failures (private mode, quota exceeded).
     }
-  }, [key, value]);
+  }, [key, value])
 
-  return [value, setValue];
+  return [value, setValue]
 }

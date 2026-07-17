@@ -10,8 +10,8 @@ TypeScript, and coverage machinery from that standard does not apply here.
 - install: `npm install`
 - run: `npm start` (Vite dev server, opens http://localhost:5173)
 - build: `npm run build` (outputs to `dist/`)
-- lint: `npm run lint` (ESLint, read-only)
-- format: `npm run format` (Prettier, writes `src/`)
+- lint: `npm run lint` (Biome, read-only)
+- format: `npm run format` (Biome, writes `src/`)
 - preview a build: `npm run preview`
 
 The `pt` command (`bin/pt.js`) launches the dev server from anywhere once
@@ -30,7 +30,7 @@ Playwright MCP works well for this.
 ## Stack
 
 JavaScript and JSX, no TypeScript. React 19 with function components and hooks.
-Vite 8, Tailwind CSS v3, ESLint 9 flat config, Prettier. npm is the package
+Vite 8, Tailwind CSS v3, Biome (lint + format). npm is the package
 manager and `package-lock.json` is committed. The `version` field in
 `package.json` is inert, there are no releases.
 
