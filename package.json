@@ -1,7 +1,16 @@
 {
   "name": "pt-exercise-tracker",
   "version": "1.0.0",
+  "private": true,
+  "description": "A small Vite + React app for tracking daily shoulder PT.",
+  "license": "ISC",
+  "author": "Nate Goldman",
   "type": "module",
+  "homepage": "https://ungoldman.github.io/pt-tracker/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ungoldman/pt-tracker.git"
+  },
   "scripts": {
     "start": "vite --open",
     "build": "vite build",
