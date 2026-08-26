@@ -12,6 +12,7 @@ import {
 // per-exercise `days` wins, else the block's `days`, else daily. Loaded work
 // (Strength/Resistance) runs Mon/Wed/Fri for ~48h shoulder recovery between
 // sessions.
+const TTS = ["Tuesday", "Thursday", "Saturday"];
 const MWF = ["Monday", "Wednesday", "Friday"];
 
 const e = [
@@ -20,21 +21,18 @@ const e = [
     type: "priority",
     sets: 3,
     reps: 10,
-    days: MWF,
   },
   {
     name: "Sidelying Abduction with Dumbbell (3)",
     type: "priority",
     sets: 3,
     reps: 10,
-    days: MWF,
   },
   {
     name: "Supine Flexion with Dumbbell (3)",
     type: "priority",
     sets: 3,
     reps: 10,
-    days: MWF,
   },
 
   {
@@ -55,14 +53,12 @@ const e = [
     type: "priority",
     sets: 2,
     reps: 10,
-    days: MWF,
   },
   {
     name: "Standing Extension with Dumbbell (3)",
     type: "priority",
     sets: 2,
     reps: 10,
-    days: MWF,
   },
 
   { name: "Corner Pec Minor Stretch", type: "stretch", sets: 3, hold: "30s" },
@@ -161,7 +157,6 @@ const e = [
     type: "priority",
     sets: 3,
     reps: "20ft",
-    days: MWF,
   },
 
   {
@@ -169,7 +164,6 @@ const e = [
     type: "priority",
     sets: 3,
     reps: 10,
-    days: MWF,
   },
 
   {
@@ -177,7 +171,6 @@ const e = [
     type: "priority",
     sets: 3,
     reps: 10,
-    days: MWF,
   },
 
   {
@@ -185,7 +178,6 @@ const e = [
     type: "priority",
     sets: 3,
     reps: 12,
-    days: MWF,
   },
 
   {
@@ -193,7 +185,6 @@ const e = [
     type: "priority",
     sets: 3,
     reps: 10,
-    days: MWF,
   },
 
   {
@@ -201,7 +192,6 @@ const e = [
     type: "priority",
     sets: 3,
     reps: 12,
-    days: MWF,
   },
 
   {
@@ -209,7 +199,6 @@ const e = [
     type: "priority",
     sets: 3,
     reps: "20ft",
-    days: MWF,
   },
 
   {
@@ -248,7 +237,6 @@ const blocks = {
     icon: Dumbbell,
     accent: "purple",
     days: MWF,
-    lane: 1,
   },
   resistance: {
     displayName: "Resistance",
@@ -256,7 +244,6 @@ const blocks = {
     icon: InfinityIcon,
     accent: "purple",
     days: MWF,
-    lane: 2,
   },
   "wind-down": {
     displayName: "Wind Down",
@@ -324,11 +311,10 @@ const categories = {
   },
   Resistance: {
     displayName: "Resistance",
-    lane: 2,
+    lane: 0,
     icon: InfinityIcon,
     accent: "purple",
-    days: MWF,
-    lane: 2,
+    days: TTS,
   },
 };
 
