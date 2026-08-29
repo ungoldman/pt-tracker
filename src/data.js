@@ -228,7 +228,7 @@ const exerciseList = [
     link: 'https://www.youtube.com/watch?v=ALl174GTuoY'
   },
   {
-    name: 'Standing Calf Raises',
+    name: 'Calf Raises',
     type: '10k',
     sets: 3,
     reps: 15,
