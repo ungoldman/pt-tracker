@@ -1,351 +1,389 @@
-import {
-  Dumbbell,
-  Infinity as InfinityIcon,
-  Moon,
-  Star,
-  Sunrise,
-  Target,
-} from "lucide-react";
+import { Dumbbell, Infinity as InfinityIcon, Moon, Star, Sunrise, Target } from 'lucide-react'
 
 // Each block carries its own layout identity: `lane` (fixed day-view column),
 // `icon`, and `accent` (color token, resolved by lib/blockStyle). Scheduling: a
 // per-exercise `days` wins, else the block's `days`, else daily. Loaded work
 // (Strength/Resistance) runs Mon/Wed/Fri for ~48h shoulder recovery between
 // sessions.
-const TTS = ["Tuesday", "Thursday", "Saturday"];
-const MWF = ["Monday", "Wednesday", "Friday"];
+const MWF = ['Monday', 'Wednesday', 'Friday']
+const TTS = ['Tuesday', 'Thursday', 'Saturday']
+const STT = ['Sunday', 'Tuesday', 'Thursday']
 
-const e = [
+const exerciseList = [
   {
-    name: "Sidelying ER with Dumbbell (3)",
-    type: "priority",
+    name: 'Sidelying ER with Dumbbell (3)',
+    type: 'priority',
     sets: 3,
-    reps: 10,
+    reps: 10
   },
   {
-    name: "Sidelying Abduction with Dumbbell (3)",
-    type: "priority",
+    name: 'Sidelying Abduction with Dumbbell (3)',
+    type: 'priority',
     sets: 3,
-    reps: 10,
+    reps: 10
   },
   {
-    name: "Supine Flexion with Dumbbell (3)",
-    type: "priority",
+    name: 'Supine Flexion with Dumbbell (3)',
+    type: 'priority',
     sets: 3,
-    reps: 10,
-  },
-
-  {
-    name: "Shoulder IR Stretch",
-    type: "stretch",
-    sets: 3,
-    reps: "30s",
-  },
-  {
-    name: "Cross Body IR Stretch with Towel",
-    type: "stretch",
-    sets: 3,
-    reps: "30s",
+    reps: 10
   },
 
   {
-    name: "Standing Flexion with Dumbbell (3)",
-    type: "priority",
+    name: 'Shoulder IR Stretch',
+    type: 'stretch',
+    sets: 3,
+    reps: '30s'
+  },
+  {
+    name: 'Cross Body IR Stretch with Towel',
+    type: 'stretch',
+    sets: 3,
+    reps: '30s'
+  },
+
+  {
+    name: 'Standing Flexion with Dumbbell (3)',
+    type: 'priority',
     sets: 2,
-    reps: 10,
+    reps: 10
   },
   {
-    name: "Standing Extension with Dumbbell (3)",
-    type: "priority",
+    name: 'Standing Extension with Dumbbell (3)',
+    type: 'priority',
     sets: 2,
-    reps: 10,
+    reps: 10
   },
 
-  { name: "Corner Pec Minor Stretch", type: "stretch", sets: 3, hold: "30s" },
+  { name: 'Corner Pec Minor Stretch', type: 'stretch', sets: 3, hold: '30s' },
 
   {
-    name: "Standing Bicep Curls (5) with Dumbbell",
-    type: "strength",
+    name: 'Standing Bicep Curls (5) with Dumbbell',
+    type: 'strength',
     sets: 3,
-    reps: 10,
+    reps: 10
   },
   {
-    name: "Standing Bent Over Triceps Extension (5) with Dumbbell",
-    type: "strength",
+    name: 'Standing Bent Over Triceps Extension (5) with Dumbbell',
+    type: 'strength',
     sets: 3,
-    reps: 8,
+    reps: 8
   },
 
   {
-    name: "Supine Serratus Punches (5) with Dumbbell",
-    type: "strength",
+    name: 'Supine Serratus Punches (5) with Dumbbell',
+    type: 'strength',
     sets: 2,
-    reps: 10,
+    reps: 10
   },
 
   {
-    name: "Shoulder Extension with Resistance",
-    type: "resistance",
+    name: 'Shoulder Extension with Resistance',
+    type: 'resistance',
     sets: 3,
-    reps: 10,
+    reps: 10
   },
 
   {
-    name: "Wall Slides (flex/scap/abd)",
-    type: "warmup",
+    name: 'Wall Slides (flex/scap/abd)',
+    type: 'warmup',
     sets: 2,
-    reps: 10,
+    reps: 10
   },
   {
-    name: "Wall Ball Circles (flex/scap/abd)",
-    type: "warmup",
+    name: 'Wall Ball Circles (flex/scap/abd)',
+    type: 'warmup',
     sets: 3,
-    reps: 15,
+    reps: 15
   },
 
   {
-    name: "Shoulder Flexion with Resistance",
-    type: "resistance",
+    name: 'Shoulder Flexion with Resistance',
+    type: 'resistance',
     sets: 2,
-    reps: 10,
+    reps: 10
   },
   {
-    name: "Seated Horizontal Abduction with Dumbbell",
-    type: "strength",
+    name: 'Seated Horizontal Abduction with Dumbbell',
+    type: 'strength',
     sets: 2,
-    reps: 10,
+    reps: 10
   },
 
   {
-    name: "Supine Bench Press (5) with Dumbbell",
-    type: "strength",
+    name: 'Supine Bench Press (5) with Dumbbell',
+    type: 'strength',
     sets: 3,
-    reps: 10,
+    reps: 10
   },
 
   {
-    name: "Shoulder ER (step) with Resistance",
-    type: "resistance",
+    name: 'Shoulder ER (step) with Resistance',
+    type: 'resistance',
     sets: 3,
-    reps: 12,
+    reps: 12
   },
-  { name: "Bent Over Row with Dumbbell", type: "strength", sets: 3, reps: 10 },
+  { name: 'Bent Over Row with Dumbbell', type: 'strength', sets: 3, reps: 10 },
 
   {
-    name: "Serratus Activation with Foam Roll",
-    type: "stretch",
+    name: 'Serratus Activation with Foam Roll',
+    type: 'stretch',
     sets: 2,
-    hold: "30s",
+    hold: '30s'
   },
 
   {
-    name: "Seated Abduction, Elbow Bent with Dumbbell",
-    type: "strength",
+    name: 'Seated Abduction, Elbow Bent with Dumbbell',
+    type: 'strength',
     sets: 3,
-    reps: 10,
+    reps: 10
   },
 
   {
-    name: "Shoulder IR (rotate) with Resistance",
-    type: "resistance",
+    name: 'Shoulder IR (rotate) with Resistance',
+    type: 'resistance',
     sets: 3,
-    reps: 12,
+    reps: 12
   },
 
   {
-    name: "Standing Kettlebell Suitcase Carry with Dumbbell (15)",
-    type: "priority",
+    name: 'Standing Kettlebell Suitcase Carry with Dumbbell (15)',
+    type: 'priority',
     sets: 3,
-    reps: "20ft",
+    reps: '20ft'
   },
 
   {
-    name: "Sidelying Horizontal Abduction with Dumbbell (3)",
-    type: "priority",
+    name: 'Sidelying Horizontal Abduction with Dumbbell (3)',
+    type: 'priority',
     sets: 3,
-    reps: 10,
+    reps: 10
   },
 
   {
-    name: "Supine Horizontal Abduction with Dumbbell (3)",
-    type: "priority",
+    name: 'Supine Horizontal Abduction with Dumbbell (3)',
+    type: 'priority',
     sets: 3,
-    reps: 10,
+    reps: 10
   },
 
   {
-    name: "Supine Skullcrushers with Dumbbell (3)",
-    type: "priority",
+    name: 'Supine Skullcrushers with Dumbbell (3)',
+    type: 'priority',
     sets: 3,
-    reps: 12,
+    reps: 12
   },
 
   {
-    name: "Standing Weight Lassos with Dumbbell (3)",
-    type: "priority",
+    name: 'Standing Weight Lassos with Dumbbell (3)',
+    type: 'priority',
     sets: 3,
-    reps: 10,
+    reps: 10
   },
 
   {
-    name: "Standing Abduction, Thumbs Up with Dumbbell (3)",
-    type: "priority",
+    name: 'Standing Abduction, Thumbs Up with Dumbbell (3)',
+    type: 'priority',
     sets: 3,
-    reps: 12,
+    reps: 12
   },
 
   {
     name: "Standing 90 90 Farmer's Carry with Dumbbell (15)",
-    type: "priority",
+    type: 'priority',
     sets: 3,
-    reps: "20ft",
+    reps: '20ft'
   },
 
   {
-    name: "Supine Prone Shoulder Extension (facedown)",
-    type: "wind-down",
+    name: 'Supine Prone Shoulder Extension (facedown)',
+    type: 'wind-down',
     sets: 3,
-    reps: 12,
+    reps: 12
   },
 
-  // personal goals are not PT-prescribed. Untimed steps/jog dominate, so skip the time estimate.
-  { name: "Daily Steps Goal", type: "personal", target: 5000 },
+  // PERSONAL GOALS
+  { name: 'Daily Steps', type: 'personal', target: 5000 },
+  { name: 'Sit Ups', type: 'personal', sets: 2, reps: 30 },
+
+  // 10K TRAINING
   {
-    name: "Light Jog",
-    type: "personal",
-    target: "1 mile",
+    name: 'Run',
+    type: '10k',
+    target: '2k+',
+    days: STT
   },
-  { name: "Sit ups", type: "personal", sets: 2, reps: 30 },
-];
+  {
+    name: 'Squats',
+    type: '10k',
+    sets: 3,
+    reps: 10,
+    link: 'https://www.youtube.com/watch?v=DlS-GAF8Edg'
+  },
+  {
+    name: 'Reverse Lunges (each leg)',
+    type: '10k',
+    sets: 3,
+    reps: 10,
+    link: 'https://www.youtube.com/watch?v=ALl174GTuoY'
+  },
+  {
+    name: 'Standing Calf Raises',
+    type: '10k',
+    sets: 3,
+    reps: 15,
+    link: 'https://www.youtube.com/watch?v=ndQc4mz4mBU'
+  },
+  {
+    name: 'Glute bridge',
+    type: '10k',
+    sets: 3,
+    reps: 10,
+    link: 'https://www.youtube.com/watch?v=tdmSB0q21ic'
+  },
+  {
+    name: 'Dead Bugs (each side)',
+    type: '10k',
+    sets: 3,
+    reps: 10,
+    link: 'https://www.youtube.com/watch?v=bxn9FBrt4-A'
+  }
+]
 
 const blocks = {
   warmup: {
-    displayName: "Warm Up",
+    displayName: 'Warm Up',
     lane: 0,
     icon: Sunrise,
-    accent: "amber",
+    accent: 'amber'
   },
   priority: {
-    displayName: "Priority",
+    displayName: 'Priority',
     lane: 0,
     icon: Star,
-    accent: "yellow",
+    accent: 'yellow'
   },
   strength: {
-    displayName: "Strength",
+    displayName: 'Strength',
     lane: 1,
     icon: Dumbbell,
-    accent: "purple",
-    days: MWF,
+    accent: 'purple',
+    days: MWF
   },
   resistance: {
-    displayName: "Resistance",
+    displayName: 'Resistance',
     lane: 2,
     icon: InfinityIcon,
-    accent: "purple",
-    days: MWF,
+    accent: 'purple',
+    days: MWF
   },
-  "wind-down": {
-    displayName: "Wind Down",
+  'wind-down': {
+    displayName: 'Wind Down',
     lane: 2,
     icon: Moon,
-    accent: "indigo",
+    accent: 'indigo'
   },
   personal: {
-    displayName: "Personal Goals",
+    displayName: 'Personal Goals',
     lane: 1,
     icon: Target,
-    accent: "teal",
-    noEstimate: true,
-  },
-};
+    accent: 'teal',
+    noEstimate: true
+  }
+}
 
-const categories = {
+export const categories = {
   warmup: {
-    displayName: "Warm Up",
+    displayName: 'Warm Up',
     lane: 0,
     icon: Sunrise,
-    accent: "amber",
+    accent: 'amber'
   },
   stretch: {
-    displayName: "Stretch",
+    displayName: 'Stretch',
     lane: 1,
     icon: Star,
-    accent: "teal",
+    accent: 'teal'
   },
   personal: {
-    displayName: "Personal Goals",
+    displayName: 'Personal Goals',
     lane: 2,
     icon: Target,
-    accent: "blue",
+    accent: 'blue',
+    noEstimate: true
+  },
+  '10k': {
+    displayName: '10k Training',
+    lane: 2,
+    icon: Target,
+    accent: 'red',
     noEstimate: true,
+    days: MWF
   },
 
   Sidelying: {
-    displayName: "Sidelying",
+    displayName: 'Sidelying',
     lane: 0,
     icon: Dumbbell,
-    accent: "purple",
-    days: MWF,
+    accent: 'purple',
+    days: MWF
   },
   Supine: {
-    displayName: "Supine",
+    displayName: 'Supine',
     lane: 0,
     icon: Dumbbell,
-    accent: "purple",
-    days: MWF,
+    accent: 'purple',
+    days: MWF
   },
   Standing: {
-    displayName: "Standing",
+    displayName: 'Standing',
     lane: 1,
     icon: Dumbbell,
-    accent: "purple",
-    days: MWF,
+    accent: 'purple',
+    days: MWF
   },
   Seated: {
-    displayName: "Seated",
+    displayName: 'Seated',
     lane: 2,
     icon: Dumbbell,
-    accent: "purple",
-    days: MWF,
+    accent: 'purple',
+    days: MWF
   },
   Resistance: {
-    displayName: "Resistance",
+    displayName: 'Resistance',
     lane: 0,
     icon: InfinityIcon,
-    accent: "purple",
-    days: TTS,
-  },
-};
+    accent: 'purple',
+    days: TTS
+  }
+}
 
 export const exercises = Object.keys(categories).reduce((acc, cat) => {
-  if (cat === "warmup" || cat === "stretch" || cat === "personal") {
-    const blockExercises = e.filter((exercise) => exercise.type === cat);
+  if (cat === 'warmup' || cat === 'stretch' || cat === 'personal' || cat === '10k') {
+    const blockExercises = exerciseList.filter((exercise) => exercise.type === cat)
     if (blockExercises.length > 0) {
-      acc[cat] = { ...categories[cat], exercises: blockExercises };
+      acc[cat] = { ...categories[cat], exercises: blockExercises }
     }
-    return acc;
+    return acc
   }
 
-  const blockExercises = e.filter((exercise) => exercise.name.includes(cat));
+  const blockExercises = exerciseList.filter((exercise) => exercise.name.includes(cat))
   if (blockExercises.length > 0) {
     acc[cat] = {
       ...categories[cat],
       exercises: blockExercises.map((ex) => ({
         ...ex,
-        name: ex.name.includes("Stretch")
-          ? ex.name
-          : ex.name.replace(`${cat} `, ""),
-      })),
-    };
+        name: ex.name.includes('Stretch') ? ex.name : ex.name.replace(`${cat} `, '')
+      }))
+    }
   }
-  return acc;
-}, {});
+  return acc
+}, {})
 
 export const exercisesOld = Object.keys(blocks).reduce((acc, block) => {
-  const blockExercises = e.filter((exercise) => exercise.type === block);
+  const blockExercises = exerciseList.filter((exercise) => exercise.type === block)
   if (blockExercises.length > 0) {
-    acc[block] = { ...blocks[block], exercises: blockExercises };
+    acc[block] = { ...blocks[block], exercises: blockExercises }
   }
-  return acc;
-}, {});
+  return acc
+}, {})

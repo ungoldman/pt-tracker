@@ -34,6 +34,12 @@ const ACCENTS = {
     textDark: 'text-teal-400',
     bar: 'bg-teal-500/80',
     top: 'border-t-teal-400/80'
+  },
+  red: {
+    textLight: 'text-red-600',
+    textDark: 'text-red-400',
+    bar: 'bg-red-500/80',
+    top: 'border-t-red-400/80'
   }
 }
 

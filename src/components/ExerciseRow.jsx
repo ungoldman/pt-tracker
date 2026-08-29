@@ -31,6 +31,28 @@ export default memo(function ExerciseRow({
   discardNote,
   handleNoteChange
 }) {
+  const nameBlock = ex.link ? (
+    <>
+      <span>{formatExerciseName(ex.name)}</span>
+      <span class="text-xs text-gray-500">
+        &nbsp;(
+        <a
+          href={ex.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`underline underline-offset-2 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}
+          // prevent default click behavior (toggle complete) when clicking the link
+          onClick={(e) => e.stopPropagation()}
+        >
+          video
+        </a>
+        )
+      </span>
+    </>
+  ) : (
+    formatExerciseName(ex.name)
+  )
+
   const showNotesUI = viewMode === 'day' || viewMode === 'three'
   const repsText = (
     <>
@@ -100,7 +122,7 @@ export default memo(function ExerciseRow({
         {viewMode === 'week' ? (
           <span className="flex-1 min-w-0">
             <span className={`block text-sm font-medium leading-tight ${nameColor}`}>
-              {formatExerciseName(ex.name)}
+              {nameBlock}
               {hasNote && (
                 <span
                   className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500 ml-1.5 align-middle"
@@ -115,7 +137,7 @@ export default memo(function ExerciseRow({
         ) : (
           <>
             <span className={`flex-1 min-w-0 text-sm font-medium leading-tight ${nameColor}`}>
-              {formatExerciseName(ex.name)}
+              {nameBlock}
             </span>
             <span className={`text-xs font-medium whitespace-nowrap tabular-nums ${repsColor}`}>
               {repsText}

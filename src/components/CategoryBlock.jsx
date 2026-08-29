@@ -1,6 +1,6 @@
 import { ChevronDown } from 'lucide-react'
 import { useTracker } from '../context/TrackerContext'
-import { exercises } from '../data'
+import { categories, exercises } from '../data'
 import { getBlockStyle } from '../lib/blockStyle'
 import { estimateBlock } from '../lib/duration'
 import { categoryStats, completionKey, exerciseId, isCompleted as isDone } from '../lib/stats'
@@ -57,7 +57,7 @@ export default function CategoryBlock({ day, category, exList }) {
           className={`flex-shrink-0 transition-transform ${isCollapsed ? '-rotate-90' : ''}`}
         />
         <BlockIcon size={14} className="flex-shrink-0" />
-        {category}
+        {categories[category]?.displayName || category}
         {minutes > 0 && (
           <span
             className={`ml-auto text-[11px] font-normal normal-case tabular-nums ${
