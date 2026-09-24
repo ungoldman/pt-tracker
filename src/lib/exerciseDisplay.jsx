@@ -36,7 +36,7 @@ export function getExerciseIcon(exerciseName, darkMode) {
   return null
 }
 
-/** Star marker for priority-block exercises, or null. */
+/** Star marker for exercises flagged `priority`, or null. */
 export function getPriorityIcon(show, darkMode) {
   if (!show) return null
   return <Star size={14} className={darkMode ? 'text-yellow-400' : 'text-yellow-500'} />

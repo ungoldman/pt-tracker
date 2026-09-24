@@ -117,7 +117,7 @@ export default memo(function ExerciseRow({
         >
           {completed && <Check size={12} strokeWidth={3} />}
         </span>
-        {getPriorityIcon(category === 'Priority', darkMode)}
+        {getPriorityIcon(ex.priority, darkMode)}
         {getExerciseIcon(ex.name, darkMode)}
         {viewMode === 'week' ? (
           <span className="flex-1 min-w-0">

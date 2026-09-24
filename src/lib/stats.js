@@ -46,8 +46,7 @@ export function dayStats(completed, blocks, day) {
       totalToday += 1
       const done = isCompleted(completed, day, category, exerciseId(ex))
       if (done) completedToday += 1
-      // Priority is now defined by block membership, not a per-exercise prop.
-      if (category === 'Priority') {
+      if (ex.priority) {
         priorityTotal += 1
         if (done) priorityDone += 1
       }
