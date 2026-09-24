@@ -25,7 +25,7 @@ export function getExercisesForDay(exercises, day) {
   return result
 }
 
-/** A day is a strength/training day if the Strength block is scheduled on it. */
-export function isStrengthDay(blocks) {
-  return blocks.some(({ category }) => category.startsWith('Strength'))
+/** A day is a strength day if any block flagged `strength` is scheduled on it. */
+export function isStrengthDay(exercises, blocks) {
+  return blocks.some(({ category }) => exercises[category]?.strength)
 }

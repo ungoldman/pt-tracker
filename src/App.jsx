@@ -225,7 +225,7 @@ const App = () => {
   const todayBlocks = getExercisesForDay(todayLabel)
   const stats = dayStats(completed, todayBlocks, todayLabel)
   const pct = stats.pct
-  const isStrengthDay = computeIsStrengthDay(todayBlocks)
+  const isStrengthDay = computeIsStrengthDay(exercises, todayBlocks)
   const priorityStats = { done: stats.priorityDone, total: stats.priorityTotal }
   const threeDayWindow = getThreeDayWindow()
   const weekSummary = days.map((day) => ({

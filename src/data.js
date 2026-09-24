@@ -3,7 +3,7 @@ import { Dumbbell, Hand, Infinity as InfinityIcon, Star, Sunrise, Target } from 
 // Blocks keyed by name, in display order. Each carries its layout identity:
 // `lane` (fixed day-view column), `icon`, and `accent` (color token, resolved
 // by lib/blockStyle). Scheduling: a per-exercise `days` wins, else the block's
-// `days`, else daily. The dumbbell blocks run Mon/Wed/Fri for ~48h shoulder
+// `days`, else daily. The `strength` blocks run Mon/Wed/Fri for ~48h shoulder
 // recovery between sessions, and Resistance runs on the days between.
 //
 // Completion and notes are keyed by block name plus a hash of the exercise
@@ -103,6 +103,7 @@ export const exercises = {
   },
   Sidelying: {
     displayName: 'Sidelying',
+    strength: true,
     lane: 0,
     accent: 'purple',
     days: MWF,
@@ -115,6 +116,7 @@ export const exercises = {
   },
   Supine: {
     displayName: 'Supine',
+    strength: true,
     lane: 0,
     accent: 'purple',
     days: MWF,
@@ -130,6 +132,7 @@ export const exercises = {
   },
   Standing: {
     displayName: 'Standing',
+    strength: true,
     lane: 1,
     accent: 'purple',
     days: MWF,
@@ -158,6 +161,7 @@ export const exercises = {
   },
   Seated: {
     displayName: 'Seated',
+    strength: true,
     lane: 2,
     accent: 'purple',
     days: MWF,
