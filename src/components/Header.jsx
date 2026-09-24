@@ -66,8 +66,6 @@ export default function Header({
   darkMode,
   toggleDarkMode,
   stats,
-  pct,
-  priorityStats,
   isStrengthDay,
   weekSummary,
   todayLabel,
@@ -80,6 +78,7 @@ export default function Header({
   resetWeek,
   selectedDay
 }) {
+  const { pct, priorityDone, priorityTotal } = stats
   const [scrolled, setScrolled] = useState(false)
   const [resetMenuOpen, setResetMenuOpen] = useState(false)
   const resetRef = useRef(null)
@@ -272,11 +271,11 @@ export default function Header({
               </Hinted>
             </span>
             {/* Priority chip */}
-            {priorityStats.total > 0 && (
+            {priorityTotal > 0 && (
               <Hinted hint="Priority exercises done today" darkMode={darkMode}>
                 <span
                   className={`text-[11px] whitespace-nowrap inline-flex items-center gap-1 px-2 py-0.5 rounded-full border ${
-                    priorityStats.done === priorityStats.total
+                    priorityDone === priorityTotal
                       ? darkMode
                         ? 'border-green-700 text-green-300 bg-green-900/30'
                         : 'border-green-300 text-green-700 bg-green-50'
@@ -286,7 +285,7 @@ export default function Header({
                   }`}
                 >
                   <Star size={10} className="flex-shrink-0" />
-                  {priorityStats.done}/{priorityStats.total}
+                  {priorityDone}/{priorityTotal}
                 </span>
               </Hinted>
             )}
