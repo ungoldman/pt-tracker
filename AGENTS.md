@@ -44,16 +44,18 @@ manager and `package-lock.json` is committed. The `version` field in
   day and block tree so props do not thread through every level. `ExerciseRow`
   is the deliberate exception. It takes explicit props and is wrapped in
   `React.memo`, so a note keystroke re-renders only the row being edited.
-- `src/data.js`: the exercise content. Blocks keyed by name, each with an
-  `exercises` list and optional `days` / `minutes` / `noEstimate`. See the
-  README data-model section for the shape and the scheduling rules.
+- `src/data.js`: the exercise content. Blocks keyed by name, in display order,
+  each with an `exercises` list, layout fields (`lane`, `icon`, `accent`), and
+  optional `days` / `strength` / `minutes` / `noEstimate`. Exercises can carry
+  `priority`. See the README data-model section for the shape and the
+  scheduling rules.
 - `src/lib/`: pure helpers. `stats.js` (`hashString`, `exerciseId`,
   `completionKey`, `isCompleted`, `categoryStats`, `dayStats`), `schedule.js`
   (`DAYS`, `getExercisesForDay`, `isStrengthDay`), `dates.js`, `duration.js`
   (time estimates), `blockStyle.js`, `exerciseDisplay.jsx` (name formatting and
-  icon badges).
-- `src/components/`: `Header`, `Footer`, `DayCard`, `DayLabel`, `CategoryBlock`,
-  `ExerciseRow`, `Confetti`.
+  icon badges), `audio.js` (hold-timer WebAudio cues).
+- `src/components/`: `Header`, `Footer`, `DayPicker`, `DayView`, `DayCard`,
+  `DayLabel`, `CategoryBlock`, `ExerciseRow`, `Confetti`.
 - `src/hooks/usePersistentState.js`: `useState` mirrored to localStorage.
 - `scripts/generate-doodles.mjs`: generates the background doodle wallpaper tile
   (`public/doodles.svg`).
@@ -67,7 +69,9 @@ view mode. Completion and notes are keyed `${day}-${category}-${exerciseId}`,
 where `day` is the weekday name and `exerciseId` is a short hash of the exercise
 name (FNV-1a, see `stats.js`). Keying off the name hash rather than array
 position means reordering or inserting exercises keeps existing checkmarks
-intact. Renaming an exercise drops its state, which is an accepted trade.
+intact. Renaming an exercise or its block drops its state, which is an accepted
+trade. A data refactor that should not drop state can be checked by diffing
+every resolved completion key before and after.
 
 Ephemeral or derived UI state stays in plain `useState` and is never persisted.
 This rule has a scar behind it: section-collapse overrides used to be persisted,
@@ -81,8 +85,8 @@ bulk action ran last.
 ## Hold timer and audio (Footer)
 
 The hold timer cycles prep, hold, then a rest break, looping until stopped, all
-wall-clock based so a backgrounded tab does not drift. Audio is WebAudio,
-synthesized in the component. The interval chime plays the singing-bowl
+wall-clock based so a backgrounded tab does not drift. Audio is WebAudio, in
+`src/lib/audio.js`. The interval chime plays the singing-bowl
 recordings from `public/` with a synthesized bowl as fallback. The rest cue is a
 synthesized triple temple-block tap with no shipped asset. If you retune a cue,
 the knobs are the partial frequencies and their decays.
