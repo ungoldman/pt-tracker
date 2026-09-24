@@ -34,7 +34,7 @@ export default memo(function ExerciseRow({
   const nameBlock = ex.link ? (
     <>
       <span>{formatExerciseName(ex.name)}</span>
-      <span class="text-xs text-gray-500">
+      <span className="text-xs text-gray-500">
         &nbsp;(
         <a
           href={ex.link}
