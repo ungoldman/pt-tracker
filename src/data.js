@@ -56,9 +56,10 @@ const exerciseList = [
   },
 
   { name: 'Corner Pec Minor Stretch', type: 'stretch', sets: 3, hold: '30s' },
+  { name: 'Sleeper Stretch (+ reverse)', type: 'stretch', sets: 1, reps: 8, hold: '10s' },
 
   {
-    name: 'Standing Bicep Curls (5) with Dumbbell',
+    name: 'Seated Bicep Curls with Rotation (5) with Dumbbell',
     type: 'strength',
     sets: 3,
     reps: 10
@@ -94,7 +95,7 @@ const exerciseList = [
     name: 'Wall Ball Circles (flex/scap/abd)',
     type: 'warmup',
     sets: 3,
-    reps: 15
+    reps: 12
   },
 
   {
@@ -123,7 +124,7 @@ const exerciseList = [
     sets: 3,
     reps: 12
   },
-  { name: 'Bent Over Row with Dumbbell', type: 'strength', sets: 3, reps: 10 },
+  { name: 'Standing Bent Over Row with Dumbbell', type: 'strength', sets: 2, reps: 8 },
 
   {
     name: 'Serratus Activation with Foam Roll',
@@ -143,7 +144,7 @@ const exerciseList = [
     name: 'Shoulder IR (rotate) with Resistance',
     type: 'resistance',
     sets: 3,
-    reps: 12
+    reps: 15
   },
 
   {
@@ -175,7 +176,7 @@ const exerciseList = [
   },
 
   {
-    name: 'Standing Weight Lassos with Dumbbell (3)',
+    name: 'Standing Weight Lassos (side + overhead) with Dumbbell (3)',
     type: 'priority',
     sets: 3,
     reps: 10
@@ -201,6 +202,10 @@ const exerciseList = [
     sets: 3,
     reps: 12
   },
+
+  { name: 'Standing Wall Push Up', type: 'strength', sets: 3, reps: 10 },
+  // No chin-up bar at home. Improvised, e.g. playground equipment.
+  { name: 'Seated Chin Up', type: 'strength', sets: 2, reps: 8 },
 
   // HAND (home program, daily)
   { name: 'Volar Hand Self Massage', type: 'hand', sets: 3, reps: 10 },
