@@ -358,8 +358,13 @@ export const categories = {
   }
 }
 
+// Types that pick their own block. Everything else is sorted into position
+// blocks by name, so a typed exercise named "Seated ..." would otherwise land
+// in two blocks.
+const TYPED = new Set(['warmup', 'stretch', 'personal', '10k'])
+
 export const exercises = Object.keys(categories).reduce((acc, cat) => {
-  if (cat === 'warmup' || cat === 'stretch' || cat === 'personal' || cat === '10k') {
+  if (TYPED.has(cat)) {
     const blockExercises = exerciseList.filter((exercise) => exercise.type === cat)
     if (blockExercises.length > 0) {
       acc[cat] = { ...categories[cat], exercises: blockExercises }
@@ -367,7 +372,9 @@ export const exercises = Object.keys(categories).reduce((acc, cat) => {
     return acc
   }
 
-  const blockExercises = exerciseList.filter((exercise) => exercise.name.includes(cat))
+  const blockExercises = exerciseList.filter(
+    (exercise) => !TYPED.has(exercise.type) && exercise.name.includes(cat)
+  )
   if (blockExercises.length > 0) {
     acc[cat] = {
       ...categories[cat],
