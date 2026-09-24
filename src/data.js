@@ -1,4 +1,4 @@
-import { Dumbbell, Infinity as InfinityIcon, Moon, Star, Sunrise, Target } from 'lucide-react'
+import { Dumbbell, Hand, Infinity as InfinityIcon, Moon, Star, Sunrise, Target } from 'lucide-react'
 
 // Each block carries its own layout identity: `lane` (fixed day-view column),
 // `icon`, and `accent` (color token, resolved by lib/blockStyle). Scheduling: a
@@ -202,6 +202,23 @@ const exerciseList = [
     reps: 12
   },
 
+  // HAND (home program, daily)
+  { name: 'Volar Hand Self Massage', type: 'hand', sets: 3, reps: 10 },
+  { name: 'Seated Finger DIP Flexion AROM with Blocking', type: 'hand', sets: 3, reps: 10 },
+  { name: 'Finger PIP Flexion Extension with Blocking', type: 'hand', sets: 3, reps: 10 },
+  {
+    name: 'Seated Wrist Flexor Hook Fist Tendon Gliding',
+    type: 'hand',
+    sets: 3,
+    reps: 10,
+    hold: '3s'
+  },
+  { name: 'Putty Squeezes', type: 'hand', sets: 1, hold: '60s' },
+  { name: 'Finger Pinch and Pull with Putty', type: 'hand', sets: 3, reps: 10 },
+  { name: 'Quick Finger Spreading with Rubber Band', type: 'hand', sets: 3, reps: 10 },
+  { name: 'Heat Therapy', type: 'hand', target: '5 min · 1-2x/day' },
+  { name: 'Finger Wrap', type: 'hand', target: 'for typing, yard work' },
+
   // PERSONAL GOALS
   { name: 'Daily Steps', type: 'personal', target: 5000 },
   { name: 'Sit Ups', type: 'personal', sets: 2, reps: 30 },
@@ -299,6 +316,12 @@ export const categories = {
     icon: Sunrise,
     accent: 'amber'
   },
+  hand: {
+    displayName: 'Hand',
+    lane: 0,
+    icon: Hand,
+    accent: 'indigo'
+  },
   stretch: {
     displayName: 'Stretch',
     lane: 1,
@@ -361,7 +384,7 @@ export const categories = {
 // Types that pick their own block. Everything else is sorted into position
 // blocks by name, so a typed exercise named "Seated ..." would otherwise land
 // in two blocks.
-const TYPED = new Set(['warmup', 'stretch', 'personal', '10k'])
+const TYPED = new Set(['warmup', 'stretch', 'personal', '10k', 'hand'])
 
 export const exercises = Object.keys(categories).reduce((acc, cat) => {
   if (TYPED.has(cat)) {
