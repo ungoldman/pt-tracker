@@ -58,7 +58,7 @@ export default memo(function ExerciseRow({
     <>
       {ex.sets ? `${ex.sets} x ` : ''}
       {ex.reps}
-      {ex.hold}
+      {ex.reps && ex.hold ? ` · ${ex.hold} hold` : ex.hold}
       {ex.target}
     </>
   )

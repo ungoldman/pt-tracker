@@ -17,6 +17,7 @@ export function exerciseSeconds(ex) {
   const sets = ex.sets || 1
   const rest = (sets - 1) * REST
   const hold = parseSeconds(ex.hold)
+  if (hold != null && typeof ex.reps === 'number') return sets * ex.reps * hold + rest
   if (hold != null) return sets * hold + rest
   if (typeof ex.reps === 'number') return sets * ex.reps * REP_TEMPO + rest
   const repHold = parseSeconds(ex.reps) // some stretches use reps: "30s"
