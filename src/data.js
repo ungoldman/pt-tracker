@@ -1,424 +1,186 @@
-import { Dumbbell, Hand, Infinity as InfinityIcon, Moon, Star, Sunrise, Target } from 'lucide-react'
+import { Dumbbell, Hand, Infinity as InfinityIcon, Star, Sunrise, Target } from 'lucide-react'
 
-// Each block carries its own layout identity: `lane` (fixed day-view column),
-// `icon`, and `accent` (color token, resolved by lib/blockStyle). Scheduling: a
-// per-exercise `days` wins, else the block's `days`, else daily. Loaded work
-// (Strength/Resistance) runs Mon/Wed/Fri for ~48h shoulder recovery between
-// sessions.
+// Blocks keyed by name, in display order. Each carries its layout identity:
+// `lane` (fixed day-view column), `icon`, and `accent` (color token, resolved
+// by lib/blockStyle). Scheduling: a per-exercise `days` wins, else the block's
+// `days`, else daily. The dumbbell blocks run Mon/Wed/Fri for ~48h shoulder
+// recovery between sessions, and Resistance runs on the days between.
+//
+// Completion and notes are keyed by block name plus a hash of the exercise
+// name (see lib/stats), so renaming either one drops its saved state.
 const MWF = ['Monday', 'Wednesday', 'Friday']
 const TTS = ['Tuesday', 'Thursday', 'Saturday']
 const STT = ['Sunday', 'Tuesday', 'Thursday']
 
-const exerciseList = [
-  {
-    name: 'Sidelying ER with Dumbbell (3)',
-    type: 'priority',
-    sets: 3,
-    reps: 10
-  },
-  {
-    name: 'Sidelying Abduction with Dumbbell (3)',
-    type: 'priority',
-    sets: 3,
-    reps: 10
-  },
-  {
-    name: 'Supine Flexion with Dumbbell (3)',
-    type: 'priority',
-    sets: 3,
-    reps: 10
-  },
-
-  {
-    name: 'Shoulder IR Stretch',
-    type: 'stretch',
-    sets: 3,
-    reps: '30s'
-  },
-  {
-    name: 'Cross Body IR Stretch with Towel',
-    type: 'stretch',
-    sets: 3,
-    reps: '30s'
-  },
-
-  {
-    name: 'Standing Flexion with Dumbbell (3)',
-    type: 'priority',
-    sets: 2,
-    reps: 10
-  },
-  {
-    name: 'Standing Extension with Dumbbell (3)',
-    type: 'priority',
-    sets: 2,
-    reps: 10
-  },
-
-  { name: 'Corner Pec Minor Stretch', type: 'stretch', sets: 3, hold: '30s' },
-  { name: 'Sleeper Stretch (+ reverse)', type: 'stretch', sets: 1, reps: 8, hold: '10s' },
-
-  {
-    name: 'Seated Bicep Curls with Rotation (5) with Dumbbell',
-    type: 'strength',
-    sets: 3,
-    reps: 10
-  },
-  {
-    name: 'Standing Bent Over Triceps Extension (5) with Dumbbell',
-    type: 'strength',
-    sets: 3,
-    reps: 8
-  },
-
-  {
-    name: 'Supine Serratus Punches (5) with Dumbbell',
-    type: 'strength',
-    sets: 2,
-    reps: 10
-  },
-
-  {
-    name: 'Shoulder Extension with Resistance',
-    type: 'resistance',
-    sets: 3,
-    reps: 10
-  },
-
-  {
-    name: 'Wall Slides (flex/scap/abd)',
-    type: 'warmup',
-    sets: 2,
-    reps: 10
-  },
-  {
-    name: 'Wall Ball Circles (flex/scap/abd)',
-    type: 'warmup',
-    sets: 3,
-    reps: 12
-  },
-
-  {
-    name: 'Shoulder Flexion with Resistance',
-    type: 'resistance',
-    sets: 2,
-    reps: 10
-  },
-  {
-    name: 'Seated Horizontal Abduction with Dumbbell',
-    type: 'strength',
-    sets: 2,
-    reps: 10
-  },
-
-  {
-    name: 'Supine Bench Press (5) with Dumbbell',
-    type: 'strength',
-    sets: 3,
-    reps: 10
-  },
-
-  {
-    name: 'Shoulder ER (step) with Resistance',
-    type: 'resistance',
-    sets: 3,
-    reps: 12
-  },
-  { name: 'Standing Bent Over Row with Dumbbell', type: 'strength', sets: 2, reps: 8 },
-
-  {
-    name: 'Serratus Activation with Foam Roll',
-    type: 'stretch',
-    sets: 2,
-    hold: '30s'
-  },
-
-  {
-    name: 'Seated Abduction, Elbow Bent with Dumbbell',
-    type: 'strength',
-    sets: 3,
-    reps: 10
-  },
-
-  {
-    name: 'Shoulder IR (rotate) with Resistance',
-    type: 'resistance',
-    sets: 3,
-    reps: 15
-  },
-
-  {
-    name: 'Standing Kettlebell Suitcase Carry with Dumbbell (15)',
-    type: 'priority',
-    sets: 3,
-    reps: '20ft'
-  },
-
-  {
-    name: 'Sidelying Horizontal Abduction with Dumbbell (3)',
-    type: 'priority',
-    sets: 3,
-    reps: 10
-  },
-
-  {
-    name: 'Supine Horizontal Abduction with Dumbbell (3)',
-    type: 'priority',
-    sets: 3,
-    reps: 10
-  },
-
-  {
-    name: 'Supine Skullcrushers with Dumbbell (3)',
-    type: 'priority',
-    sets: 3,
-    reps: 12
-  },
-
-  {
-    name: 'Standing Weight Lassos (side + overhead) with Dumbbell (3)',
-    type: 'priority',
-    sets: 3,
-    reps: 10
-  },
-
-  {
-    name: 'Standing Abduction, Thumbs Up with Dumbbell (3)',
-    type: 'priority',
-    sets: 3,
-    reps: 12
-  },
-
-  {
-    name: "Standing 90 90 Farmer's Carry with Dumbbell (15)",
-    type: 'priority',
-    sets: 3,
-    reps: '20ft'
-  },
-
-  {
-    name: 'Supine Prone Shoulder Extension (facedown)',
-    type: 'wind-down',
-    sets: 3,
-    reps: 12
-  },
-
-  { name: 'Standing Wall Push Up', type: 'strength', sets: 3, reps: 10 },
-  // No chin-up bar at home. Improvised, e.g. playground equipment.
-  { name: 'Seated Chin Up', type: 'strength', sets: 2, reps: 8 },
-
-  // HAND (home program, daily)
-  { name: 'Volar Hand Self Massage', type: 'hand', sets: 3, reps: 10 },
-  { name: 'Seated Finger DIP Flexion AROM with Blocking', type: 'hand', sets: 3, reps: 10 },
-  { name: 'Finger PIP Flexion Extension with Blocking', type: 'hand', sets: 3, reps: 10 },
-  {
-    name: 'Seated Wrist Flexor Hook Fist Tendon Gliding',
-    type: 'hand',
-    sets: 3,
-    reps: 10,
-    hold: '3s'
-  },
-  { name: 'Putty Squeezes', type: 'hand', sets: 1, hold: '60s' },
-  { name: 'Finger Pinch and Pull with Putty', type: 'hand', sets: 3, reps: 10 },
-  { name: 'Quick Finger Spreading with Rubber Band', type: 'hand', sets: 3, reps: 10 },
-  { name: 'Heat Therapy', type: 'hand', target: '5 min · 1-2x/day' },
-  { name: 'Finger Wrap', type: 'hand', target: 'for typing, yard work' },
-
-  // PERSONAL GOALS
-  { name: 'Daily Steps', type: 'personal', target: 5000 },
-  { name: 'Sit Ups', type: 'personal', sets: 2, reps: 30 },
-
-  // 10K TRAINING
-  {
-    name: 'Run',
-    type: '10k',
-    target: '2k+',
-    days: STT
-  },
-  {
-    name: 'Squats',
-    type: '10k',
-    sets: 3,
-    reps: 10,
-    link: 'https://www.youtube.com/watch?v=DlS-GAF8Edg'
-  },
-  {
-    name: 'Reverse Lunges (each leg)',
-    type: '10k',
-    sets: 3,
-    reps: 10,
-    link: 'https://www.youtube.com/watch?v=ALl174GTuoY'
-  },
-  {
-    name: 'Calf Raises',
-    type: '10k',
-    sets: 3,
-    reps: 15,
-    link: 'https://www.youtube.com/watch?v=ndQc4mz4mBU'
-  },
-  {
-    name: 'Glute bridge',
-    type: '10k',
-    sets: 3,
-    reps: 10,
-    link: 'https://www.youtube.com/watch?v=tdmSB0q21ic'
-  },
-  {
-    name: 'Dead Bugs (each side)',
-    type: '10k',
-    sets: 3,
-    reps: 10,
-    link: 'https://www.youtube.com/watch?v=bxn9FBrt4-A'
-  }
-]
-
-const blocks = {
+export const exercises = {
   warmup: {
     displayName: 'Warm Up',
     lane: 0,
+    accent: 'amber',
     icon: Sunrise,
-    accent: 'amber'
-  },
-  priority: {
-    displayName: 'Priority',
-    lane: 0,
-    icon: Star,
-    accent: 'yellow'
-  },
-  strength: {
-    displayName: 'Strength',
-    lane: 1,
-    icon: Dumbbell,
-    accent: 'purple',
-    days: MWF
-  },
-  resistance: {
-    displayName: 'Resistance',
-    lane: 2,
-    icon: InfinityIcon,
-    accent: 'purple',
-    days: MWF
-  },
-  'wind-down': {
-    displayName: 'Wind Down',
-    lane: 2,
-    icon: Moon,
-    accent: 'indigo'
-  },
-  personal: {
-    displayName: 'Personal Goals',
-    lane: 1,
-    icon: Target,
-    accent: 'teal',
-    noEstimate: true
-  }
-}
-
-export const categories = {
-  warmup: {
-    displayName: 'Warm Up',
-    lane: 0,
-    icon: Sunrise,
-    accent: 'amber'
+    exercises: [
+      { name: 'Wall Slides (flex/scap/abd)', sets: 2, reps: 10 },
+      { name: 'Wall Ball Circles (flex/scap/abd)', sets: 3, reps: 12 }
+    ]
   },
   hand: {
     displayName: 'Hand',
     lane: 0,
+    accent: 'indigo',
     icon: Hand,
-    accent: 'indigo'
+    // Home program from the hand PT intake, all once a day.
+    exercises: [
+      { name: 'Volar Hand Self Massage', sets: 3, reps: 10 },
+      { name: 'Seated Finger DIP Flexion AROM with Blocking', sets: 3, reps: 10 },
+      { name: 'Finger PIP Flexion Extension with Blocking', sets: 3, reps: 10 },
+      { name: 'Seated Wrist Flexor Hook Fist Tendon Gliding', sets: 3, reps: 10, hold: '3s' },
+      { name: 'Putty Squeezes', sets: 1, hold: '60s' },
+      { name: 'Finger Pinch and Pull with Putty', sets: 3, reps: 10 },
+      { name: 'Quick Finger Spreading with Rubber Band', sets: 3, reps: 10 },
+      { name: 'Heat Therapy', target: '5 min · 1-2x/day' },
+      { name: 'Finger Wrap', target: 'for typing, yard work' }
+    ]
   },
   stretch: {
     displayName: 'Stretch',
     lane: 1,
+    accent: 'teal',
     icon: Star,
-    accent: 'teal'
+    exercises: [
+      { name: 'Shoulder IR Stretch', sets: 3, reps: '30s' },
+      { name: 'Cross Body IR Stretch with Towel', sets: 3, reps: '30s' },
+      { name: 'Corner Pec Minor Stretch', sets: 3, hold: '30s' },
+      { name: 'Sleeper Stretch (+ reverse)', sets: 1, reps: 8, hold: '10s' },
+      { name: 'Serratus Activation with Foam Roll', sets: 2, hold: '30s' }
+    ]
   },
   personal: {
     displayName: 'Personal Goals',
     lane: 2,
-    icon: Target,
     accent: 'blue',
-    noEstimate: true
+    noEstimate: true,
+    icon: Target,
+    exercises: [
+      { name: 'Daily Steps', target: 5000 },
+      { name: 'Sit Ups', sets: 2, reps: 30 }
+    ]
   },
   '10k': {
     displayName: '10k Training',
     lane: 2,
-    icon: Target,
     accent: 'red',
     noEstimate: true,
-    days: MWF
+    days: MWF,
+    icon: Target,
+    exercises: [
+      { name: 'Run', target: '2k+', days: STT },
+      { name: 'Squats', sets: 3, reps: 10, link: 'https://www.youtube.com/watch?v=DlS-GAF8Edg' },
+      {
+        name: 'Reverse Lunges (each leg)',
+        sets: 3,
+        reps: 10,
+        link: 'https://www.youtube.com/watch?v=ALl174GTuoY'
+      },
+      {
+        name: 'Calf Raises',
+        sets: 3,
+        reps: 15,
+        link: 'https://www.youtube.com/watch?v=ndQc4mz4mBU'
+      },
+      {
+        name: 'Glute bridge',
+        sets: 3,
+        reps: 10,
+        link: 'https://www.youtube.com/watch?v=tdmSB0q21ic'
+      },
+      {
+        name: 'Dead Bugs (each side)',
+        sets: 3,
+        reps: 10,
+        link: 'https://www.youtube.com/watch?v=bxn9FBrt4-A'
+      }
+    ]
   },
-
   Sidelying: {
     displayName: 'Sidelying',
     lane: 0,
-    icon: Dumbbell,
     accent: 'purple',
-    days: MWF
+    days: MWF,
+    icon: Dumbbell,
+    exercises: [
+      { name: 'ER with Dumbbell (3)', sets: 3, reps: 10, priority: true },
+      { name: 'Abduction with Dumbbell (3)', sets: 3, reps: 10, priority: true },
+      { name: 'Horizontal Abduction with Dumbbell (3)', sets: 3, reps: 10, priority: true }
+    ]
   },
   Supine: {
     displayName: 'Supine',
     lane: 0,
-    icon: Dumbbell,
     accent: 'purple',
-    days: MWF
+    days: MWF,
+    icon: Dumbbell,
+    exercises: [
+      { name: 'Flexion with Dumbbell (3)', sets: 3, reps: 10, priority: true },
+      { name: 'Serratus Punches (5) with Dumbbell', sets: 2, reps: 10 },
+      { name: 'Bench Press (5) with Dumbbell', sets: 3, reps: 10 },
+      { name: 'Horizontal Abduction with Dumbbell (3)', sets: 3, reps: 10, priority: true },
+      { name: 'Skullcrushers with Dumbbell (3)', sets: 3, reps: 12, priority: true },
+      { name: 'Prone Shoulder Extension (facedown)', sets: 3, reps: 12 }
+    ]
   },
   Standing: {
     displayName: 'Standing',
     lane: 1,
-    icon: Dumbbell,
     accent: 'purple',
-    days: MWF
+    days: MWF,
+    icon: Dumbbell,
+    exercises: [
+      { name: 'Flexion with Dumbbell (3)', sets: 2, reps: 10, priority: true },
+      { name: 'Extension with Dumbbell (3)', sets: 2, reps: 10, priority: true },
+      { name: 'Bent Over Triceps Extension (5) with Dumbbell', sets: 3, reps: 8 },
+      { name: 'Bent Over Row with Dumbbell', sets: 2, reps: 8 },
+      {
+        name: 'Kettlebell Suitcase Carry with Dumbbell (15)',
+        sets: 3,
+        reps: '20ft',
+        priority: true
+      },
+      {
+        name: 'Weight Lassos (side + overhead) with Dumbbell (3)',
+        sets: 3,
+        reps: 10,
+        priority: true
+      },
+      { name: 'Abduction, Thumbs Up with Dumbbell (3)', sets: 3, reps: 12, priority: true },
+      { name: "90 90 Farmer's Carry with Dumbbell (15)", sets: 3, reps: '20ft', priority: true },
+      { name: 'Wall Push Up', sets: 3, reps: 10 }
+    ]
   },
   Seated: {
     displayName: 'Seated',
     lane: 2,
-    icon: Dumbbell,
     accent: 'purple',
-    days: MWF
+    days: MWF,
+    icon: Dumbbell,
+    exercises: [
+      { name: 'Bicep Curls with Rotation (5) with Dumbbell', sets: 3, reps: 10 },
+      { name: 'Horizontal Abduction with Dumbbell', sets: 2, reps: 10 },
+      { name: 'Abduction, Elbow Bent with Dumbbell', sets: 3, reps: 10 },
+      // No chin-up bar at home. Improvised, e.g. playground equipment.
+      { name: 'Chin Up', sets: 2, reps: 8 }
+    ]
   },
   Resistance: {
     displayName: 'Resistance',
     lane: 0,
-    icon: InfinityIcon,
     accent: 'purple',
-    days: TTS
+    days: TTS,
+    icon: InfinityIcon,
+    exercises: [
+      { name: 'Shoulder Extension with Resistance', sets: 3, reps: 10 },
+      { name: 'Shoulder Flexion with Resistance', sets: 2, reps: 10 },
+      { name: 'Shoulder ER (step) with Resistance', sets: 3, reps: 12 },
+      { name: 'Shoulder IR (rotate) with Resistance', sets: 3, reps: 15 }
+    ]
   }
 }
-
-// Types that pick their own block. Everything else is sorted into position
-// blocks by name, so a typed exercise named "Seated ..." would otherwise land
-// in two blocks.
-const TYPED = new Set(['warmup', 'stretch', 'personal', '10k', 'hand'])
-
-export const exercises = Object.keys(categories).reduce((acc, cat) => {
-  if (TYPED.has(cat)) {
-    const blockExercises = exerciseList.filter((exercise) => exercise.type === cat)
-    if (blockExercises.length > 0) {
-      acc[cat] = { ...categories[cat], exercises: blockExercises }
-    }
-    return acc
-  }
-
-  const blockExercises = exerciseList.filter(
-    (exercise) => !TYPED.has(exercise.type) && exercise.name.includes(cat)
-  )
-  if (blockExercises.length > 0) {
-    acc[cat] = {
-      ...categories[cat],
-      exercises: blockExercises.map((ex) => ({
-        ...ex,
-        name: ex.name.includes('Stretch') ? ex.name : ex.name.replace(`${cat} `, '')
-      }))
-    }
-  }
-  return acc
-}, {})
-
-export const exercisesOld = Object.keys(blocks).reduce((acc, block) => {
-  const blockExercises = exerciseList.filter((exercise) => exercise.type === block)
-  if (blockExercises.length > 0) {
-    acc[block] = { ...blocks[block], exercises: blockExercises }
-  }
-  return acc
-}, {})
