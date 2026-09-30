@@ -28,16 +28,25 @@ export const exercises = {
     lane: 0,
     accent: 'indigo',
     icon: Hand,
-    // Home program from the hand PT intake, all once a day.
+    // Hand PT home program as revised 09-30. `perDay` is displayed but tracked
+    // as one check. The putty and band work is prescribed 3-7x a week and kept
+    // daily here.
     exercises: [
-      { name: 'Volar Hand Self Massage', sets: 3, reps: 10 },
-      { name: 'Seated Finger DIP Flexion AROM with Blocking', sets: 3, reps: 10 },
-      { name: 'Finger PIP Flexion Extension with Blocking', sets: 3, reps: 10 },
-      { name: 'Seated Wrist Flexor Hook Fist Tendon Gliding', sets: 3, reps: 10, hold: '3s' },
-      { name: 'Putty Squeezes', sets: 1, hold: '60s' },
+      { name: 'Heat Therapy', target: '5 min' },
+      { name: 'Volar Hand Self Massage', sets: 3, reps: 10, perDay: 3 },
+      {
+        name: 'Seated Wrist Flexor Hook Fist Tendon Gliding',
+        sets: 3,
+        reps: 10,
+        hold: '3s',
+        perDay: 3
+      },
+      { name: 'Seated Single Digit Intrinsic Stretch', reps: 3, hold: '20s', perDay: 3 },
+      { name: 'Putty Squeezes', sets: 3, reps: 10 },
       { name: 'Finger Pinch and Pull with Putty', sets: 3, reps: 10 },
       { name: 'Quick Finger Spreading with Rubber Band', sets: 3, reps: 10 },
-      { name: 'Heat Therapy', target: '5 min · 1-2x/day' },
+      { name: 'Seated Finger MP Flexion with Putty', sets: 3, reps: 10 },
+      { name: 'Finger Adduction with Putty', sets: 3, reps: 10 },
       { name: 'Finger Wrap', target: 'for typing, yard work' }
     ]
   },

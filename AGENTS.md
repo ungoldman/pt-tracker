@@ -97,6 +97,7 @@ export const exercises = {
       { name, target: 5000 },                // goal-style item
       { name, sets, reps, priority: true },  // star icon, counts toward the header chip
       { name, sets, reps, link },            // adds a video link after the name
+      { name, sets, reps, perDay: 3 },       // shows "3x/day", still one check
     ],
   },
 }

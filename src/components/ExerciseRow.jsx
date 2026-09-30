@@ -60,6 +60,7 @@ export default memo(function ExerciseRow({
       {ex.reps}
       {ex.reps && ex.hold ? ` · ${ex.hold} hold` : ex.hold}
       {ex.target}
+      {ex.perDay ? ` · ${ex.perDay}x/day` : ''}
     </>
   )
   const nameColor = completed
