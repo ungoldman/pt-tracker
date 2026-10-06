@@ -362,8 +362,8 @@ const App = () => {
           )}
         </div>
 
-        <Footer darkMode={darkMode} ref={timerRef} />
         <UpdateNotice darkMode={darkMode} />
+        <Footer darkMode={darkMode} ref={timerRef} />
       </div>
     </TrackerContext.Provider>
   )

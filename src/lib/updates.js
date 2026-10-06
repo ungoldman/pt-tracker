@@ -10,37 +10,54 @@ import { registerSW } from 'virtual:pwa-register'
  *
  * A new build installs in the background and then waits. It takes over when
  * the user accepts it via UpdateNotice, or by itself the next time the app is
- * opened after being fully closed. Nothing here reloads a page in use.
+ * opened after being fully closed. Nothing here reloads a page on its own.
+ * Accepting in one tab does reload any other open tab, since the worker is
+ * shared and a page must not outlive the build it was loaded from.
  *
  * In dev the plugin swaps in a no-op registerSW, so no worker ever runs there.
  */
-let ready = false
+
+// 0 until a new build is found. Bumped again on each later build and on each
+// return to the foreground, so a dismissed notice comes back.
+let notice = 0
 let accept = () => {}
 const listeners = new Set()
 
-const setReady = (value) => {
-  ready = value
+const announce = () => {
+  notice += 1
   for (const listener of listeners) listener()
 }
 
 export function startUpdates() {
+  let registration = null
   const updateSW = registerSW({
-    onNeedRefresh: () => setReady(true),
-    onRegisteredSW(_url, registration) {
+    onNeedRefresh: announce,
+    onRegisteredSW(_url, registered) {
+      registration = registered
       // An app resumed from the background doesn't navigate, so the browser
-      // doesn't look for a new worker by itself. Ask on every return.
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') registration?.update().catch(() => {})
-      })
+      // doesn't look for a new worker by itself. Ask on every return. iOS
+      // home-screen apps don't reliably fire visibilitychange, hence pageshow.
+      const onReturn = () => {
+        if (document.visibilityState !== 'visible') return
+        registration?.update().catch(() => {})
+        if (notice > 0) announce()
+      }
+      document.addEventListener('visibilitychange', onReturn)
+      window.addEventListener('pageshow', onReturn)
     }
   })
-  // Tells the waiting worker to take over. The page reloads once it has.
-  accept = () => updateSW(true)
+  accept = () => {
+    // A page no worker controls yet (the first visit, or after a hard reload)
+    // never holds a new worker in waiting: it activates straight away and
+    // there is nothing to message. A reload is all that page needs.
+    if (registration?.waiting) updateSW(true)
+    else window.location.reload()
+  }
 }
 
 export const subscribeUpdate = (listener) => {
   listeners.add(listener)
   return () => listeners.delete(listener)
 }
-export const isUpdateReady = () => ready
+export const updateNotice = () => notice
 export const acceptUpdate = () => accept()

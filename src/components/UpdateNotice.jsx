@@ -1,19 +1,23 @@
 import { X } from 'lucide-react'
 import { useState, useSyncExternalStore } from 'react'
-import { acceptUpdate, isUpdateReady, subscribeUpdate } from '../lib/updates'
+import { acceptUpdate, subscribeUpdate, updateNotice } from '../lib/updates'
 
 /**
- * Quiet notice that a newer build has been downloaded and is waiting. Update
- * switches to it (one reload, at a moment the user picks). Dismissing leaves
- * it for the next time the app is opened from closed.
+ * Quiet notice that a newer build has been downloaded. Update switches to it
+ * (one reload, at a moment the user picks). Dismissing hides it until the app
+ * is next brought to the foreground or another build arrives.
+ *
+ * Sticky, not fixed, and rendered just above the footer: it floats at the
+ * bottom of the screen while the page scrolls and comes to rest above the
+ * hold-timer controls at the end, never on top of them.
  */
 export default function UpdateNotice({ darkMode }) {
-  const ready = useSyncExternalStore(subscribeUpdate, isUpdateReady)
-  const [dismissed, setDismissed] = useState(false)
-  if (!ready || dismissed) return null
+  const notice = useSyncExternalStore(subscribeUpdate, updateNotice)
+  const [dismissed, setDismissed] = useState(0)
+  if (notice === 0 || notice === dismissed) return null
 
   return (
-    <div className="fixed inset-x-0 bottom-3 sm:bottom-20 z-40 flex justify-center px-3 pointer-events-none">
+    <div className="sticky bottom-3 sm:bottom-20 z-40 mb-3 flex justify-center px-3 pointer-events-none">
       <div
         role="status"
         className={`pointer-events-auto flex items-center gap-1 pl-3 pr-1 py-1 rounded-xl text-xs ${
@@ -36,7 +40,7 @@ export default function UpdateNotice({ darkMode }) {
         </button>
         <button
           type="button"
-          onClick={() => setDismissed(true)}
+          onClick={() => setDismissed(notice)}
           aria-label="Later"
           className={`relative hit-44 p-2 rounded-lg transition-colors ${
             darkMode ? 'hover:text-gray-100' : 'hover:text-gray-900'
