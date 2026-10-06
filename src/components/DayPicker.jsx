@@ -37,7 +37,7 @@ export default function DayPicker({ selectedDay, todayLabel, onSelect, weekSumma
       >
         {DAYS.map((day) => {
           const isSelectedDay = dayView && selectedDay === day
-          const pct = pctByDay[day] ?? 0
+          const pct = pctByDay[day]
           return (
             <button
               type="button"

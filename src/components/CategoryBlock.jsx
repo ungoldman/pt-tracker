@@ -145,7 +145,7 @@ export default function CategoryBlock({
               isComplete ? 'bg-green-500' : blockStyle.bar
             }`}
             style={{
-              width: `${stats.total > 0 ? (stats.completedCount / stats.total) * 100 : 0}%`
+              width: `${(stats.completedCount / stats.total) * 100}%`
             }}
           />
         </div>
