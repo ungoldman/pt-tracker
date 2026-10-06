@@ -19,7 +19,7 @@ export default function DayCard({ day, blocks, away, highlightToday = false }) {
       className={`h-full flex flex-col min-h-0 rounded-xl border p-2 ${
         darkMode
           ? 'bg-gray-800 border-transparent shadow-md shadow-black/30'
-          : 'bg-white border-gray-200 shadow-sm'
+          : 'bg-white border-gray-200 shadow-xs'
       } ${
         isToday ? (darkMode ? 'border-blue-500/70 bg-blue-900' : 'border-blue-300 bg-blue-50') : ''
       }`}

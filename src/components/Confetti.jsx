@@ -42,7 +42,7 @@ export default function Confetti({ onComplete }) {
       {pieces.map((piece) => (
         <div
           key={piece.id}
-          className={`absolute w-3 h-3 ${piece.color} rounded-sm shadow-lg`}
+          className={`absolute w-3 h-3 ${piece.color} rounded-xs shadow-lg`}
           style={{
             left: `${piece.left}%`,
             top: '-20px',

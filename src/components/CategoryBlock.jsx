@@ -70,7 +70,7 @@ export default function CategoryBlock({
       <div
         className={
           stickyHeader
-            ? `sticky z-10 top-[var(--header-h,0px)] lg:top-0 flow-root -mx-2 -mt-2 px-2 pt-2 rounded-t-[10px] ${
+            ? `sticky z-10 top-(--header-h,0px) lg:top-0 flow-root -mx-2 -mt-2 px-2 pt-2 rounded-t-[10px] ${
                 darkMode ? 'bg-gray-800' : 'bg-white'
               }`
             : ''
@@ -88,9 +88,9 @@ export default function CategoryBlock({
           >
             <ChevronDown
               size={16}
-              className={`flex-shrink-0 transition-transform ${isCollapsed ? '-rotate-90' : ''}`}
+              className={`shrink-0 transition-transform ${isCollapsed ? '-rotate-90' : ''}`}
             />
-            <BlockIcon size={14} className="flex-shrink-0" />
+            <BlockIcon size={14} className="shrink-0" />
             {displayName}
             {moved && (
               <span
@@ -127,7 +127,7 @@ export default function CategoryBlock({
               aria-label={`Move or skip ${displayName}`}
               aria-expanded={moveOpen}
               title="Move or skip"
-              className={`relative hit-44 flex-shrink-0 p-1 rounded transition-colors ${
+              className={`relative hit-44 shrink-0 p-1 rounded transition-colors ${
                 darkMode
                   ? 'text-gray-500 hover:text-gray-200 hover:bg-gray-700/50'
                   : 'text-gray-400 hover:text-gray-700 hover:bg-black/5'

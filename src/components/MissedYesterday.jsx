@@ -24,7 +24,7 @@ export default function MissedYesterday({ day }) {
       className={`mb-3 pl-3 pr-1 py-1 rounded-xl flex flex-wrap items-center gap-x-2 gap-y-1 text-xs ${
         darkMode
           ? 'bg-gray-800 text-gray-400 shadow-md shadow-black/30'
-          : 'bg-white text-gray-500 border border-gray-200 shadow-sm'
+          : 'bg-white text-gray-500 border border-gray-200 shadow-xs'
       }`}
     >
       <span>Pull in from {yesterday}</span>

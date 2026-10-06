@@ -14,21 +14,21 @@ export function getExerciseIcon(exerciseName, darkMode) {
   const n = exerciseName.toLowerCase()
   if (n.includes('dumbbell')) {
     return (
-      <span className="flex-shrink-0 flex items-center" title="Dumbbell">
+      <span className="shrink-0 flex items-center" title="Dumbbell">
         <Dumbbell size={14} className={darkMode ? 'text-red-400' : 'text-red-500'} />
       </span>
     )
   }
   if (n.includes('dowel')) {
     return (
-      <span className="flex-shrink-0 flex items-center" title="Dowel">
+      <span className="shrink-0 flex items-center" title="Dowel">
         <Wand2 size={14} className={darkMode ? 'text-purple-400' : 'text-purple-500'} />
       </span>
     )
   }
   if (n.includes('resistance')) {
     return (
-      <span className="flex-shrink-0 flex items-center" title="Resistance Band">
+      <span className="shrink-0 flex items-center" title="Resistance Band">
         <InfinityIcon size={14} className={darkMode ? 'text-green-400' : 'text-green-500'} />
       </span>
     )

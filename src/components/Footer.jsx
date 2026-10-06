@@ -193,7 +193,7 @@ export default function Footer({ darkMode, ref }) {
             role="dialog"
             aria-modal="true"
             aria-label="Hold timer"
-            className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-6 px-6 backdrop-blur-sm ${
+            className={`fixed inset-0 z-100 flex flex-col items-center justify-center gap-6 px-6 backdrop-blur-xs ${
               darkMode ? 'bg-gray-950/95 text-gray-100' : 'bg-white/95 text-gray-900'
             }`}
           >

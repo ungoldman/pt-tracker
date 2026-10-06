@@ -9,7 +9,7 @@ import { DAYS, SKIP } from '../lib/schedule'
  */
 export default function MovePanel({ darkMode, shownDay, moved, showDays = true, onPick, onBack }) {
   const todayLabel = getTodayLabel()
-  const action = `px-2 py-1 [@media(pointer:coarse)]:py-2.5 rounded text-[11px] transition-colors ${
+  const action = `px-2 py-1 pointer-coarse:py-2.5 rounded text-[11px] transition-colors ${
     darkMode
       ? 'text-gray-300 hover:bg-gray-700 hover:text-white'
       : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
@@ -28,7 +28,7 @@ export default function MovePanel({ darkMode, shownDay, moved, showDays = true, 
                 disabled={isHere}
                 onClick={() => onPick(day)}
                 aria-label={`Move to ${day}`}
-                className={`py-1 [@media(pointer:coarse)]:py-2 rounded text-center leading-tight transition-colors ${
+                className={`py-1 pointer-coarse:py-2 rounded text-center leading-tight transition-colors ${
                   isHere
                     ? darkMode
                       ? 'bg-gray-700 text-gray-500'

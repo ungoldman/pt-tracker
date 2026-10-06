@@ -88,11 +88,11 @@ describe('checking exercises off', () => {
     mountApp({ dark })
     click(row('Arm Circles'))
     expect(document.querySelector('.ring-green-400\\/70')).not.toBeNull()
-    expect(document.querySelectorAll('.rounded-sm.shadow-lg')).toHaveLength(30)
+    expect(document.querySelectorAll('[style*="confetti"]')).toHaveLength(30)
     tick(1000)
     expect(document.querySelector('.ring-green-400\\/70')).toBeNull()
     tick(1000)
-    expect(document.querySelectorAll('.rounded-sm.shadow-lg')).toHaveLength(0)
+    expect(document.querySelectorAll('[style*="confetti"]')).toHaveLength(0)
   })
 
   it('collapses a finished block and brings the next unfinished one up', () => {

@@ -59,7 +59,7 @@ How the tests are built:
 ## Stack
 
 JavaScript and JSX, no TypeScript. React 19 with function components and hooks.
-Vite 8, Tailwind CSS v3, Biome (lint + format), Vitest with jsdom and Testing
+Vite 8, Tailwind CSS v4, Biome (lint + format), Vitest with jsdom and Testing
 Library (tests + coverage). npm is the package
 manager and `package-lock.json` is committed. The `version` field in
 `package.json` is inert, there are no releases.

@@ -25,7 +25,7 @@ export default function AwayBlock({ category, sourceDay, to }) {
           : 'border-gray-300 bg-white/70 text-gray-400 hover:text-gray-600'
       }`}
     >
-      <BlockIcon size={14} className="flex-shrink-0" />
+      <BlockIcon size={14} className="shrink-0" />
       <span className="truncate">{name}</span>
       <span className="flex items-center gap-1 normal-case tracking-normal whitespace-nowrap">
         {skipped ? (
@@ -37,7 +37,7 @@ export default function AwayBlock({ category, sourceDay, to }) {
           </>
         )}
       </span>
-      <Undo2 size={13} className="ml-auto flex-shrink-0" />
+      <Undo2 size={13} className="ml-auto shrink-0" />
     </button>
   )
 }

@@ -18,7 +18,7 @@ export default function WeekOverview({ todayLabel, onSelectDay }) {
       className={`sm:hidden rounded-xl overflow-hidden divide-y ${
         darkMode
           ? 'bg-gray-800 divide-gray-700/60 shadow-md shadow-black/30'
-          : 'bg-white divide-gray-200 border border-gray-200 shadow-sm'
+          : 'bg-white divide-gray-200 border border-gray-200 shadow-xs'
       }`}
     >
       {DAYS.map((day) => {
@@ -35,7 +35,7 @@ export default function WeekOverview({ todayLabel, onSelectDay }) {
               isToday ? (darkMode ? 'bg-blue-900/40' : 'bg-blue-50') : ''
             }`}
           >
-            <span className="w-9 flex-shrink-0">
+            <span className="w-9 shrink-0">
               <span
                 className={`block text-sm font-semibold ${darkMode ? 'text-gray-100' : 'text-gray-800'}`}
               >
@@ -56,7 +56,7 @@ export default function WeekOverview({ todayLabel, onSelectDay }) {
                 )
                 const done = completedCount === total
                 return (
-                  <span key={sourceDay + category} className="flex-1 min-w-0 max-w-[2.5rem]">
+                  <span key={sourceDay + category} className="flex-1 min-w-0 max-w-10">
                     <style.Icon
                       size={14}
                       className={`mx-auto mb-1 ${
@@ -78,7 +78,7 @@ export default function WeekOverview({ todayLabel, onSelectDay }) {
               })}
             </span>
             <span
-              className={`w-11 flex-shrink-0 flex justify-end text-xs tabular-nums ${
+              className={`w-11 shrink-0 flex justify-end text-xs tabular-nums ${
                 pct === 100 ? 'text-green-500' : darkMode ? 'text-gray-400' : 'text-gray-500'
               }`}
             >

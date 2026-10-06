@@ -108,13 +108,13 @@ export default memo(function ExerciseRow({
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         className={`w-full flex items-center gap-2.5 pl-2 py-2 min-h-[44px] text-left cursor-pointer select-text ${
-          plan ? 'pr-[4.25rem]' : showNotesUI ? 'pr-9' : 'pr-2'
+          plan ? 'pr-17' : showNotesUI ? 'pr-9' : 'pr-2'
         }`}
       >
         {showConfetti && <Confetti onComplete={onConfettiComplete} />}
 
         <span
-          className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+          className={`shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
             completed
               ? 'bg-green-500 border-green-500 text-white'
               : darkMode
@@ -256,7 +256,7 @@ export default memo(function ExerciseRow({
               openNotes(exerciseKey)
             }}
             // 16px on phones: iOS Safari zooms the page when a smaller input takes focus.
-            className={`w-full text-base sm:text-sm rounded-md resize-none p-2 focus:outline-none focus:ring-2 ${
+            className={`w-full text-base sm:text-sm rounded-md resize-none p-2 focus:outline-hidden focus:ring-2 ${
               darkMode
                 ? 'bg-gray-800 text-gray-100 border border-gray-700 focus:ring-blue-500'
                 : 'bg-white text-gray-800 border border-gray-200 focus:ring-blue-400'

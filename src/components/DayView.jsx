@@ -111,7 +111,7 @@ export default function DayView({ day, todayLabel, blocks, away }) {
                 className={`scroll-mt-[calc(var(--header-h,0px)+8px)] lg:scroll-mt-2 rounded-xl border-t-2 p-2 ${getBlockStyle(category).top} ${
                   darkMode
                     ? 'bg-gray-800 shadow-md shadow-black/30'
-                    : 'bg-white border border-t-2 border-gray-200 shadow-sm'
+                    : 'bg-white border border-t-2 border-gray-200 shadow-xs'
                 }`}
               >
                 <CategoryBlock

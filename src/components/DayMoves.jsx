@@ -59,7 +59,7 @@ export default function DayMoves({ day, blocks, chip = false }) {
     darkMode
       ? 'text-gray-200 hover:bg-blue-700 hover:text-white'
       : 'text-gray-700 hover:bg-blue-600 hover:text-white'
-  } [@media(pointer:coarse)]:py-2.5`
+  } pointer-coarse:py-2.5`
 
   return (
     <>
@@ -104,7 +104,7 @@ export default function DayMoves({ day, blocks, chip = false }) {
       >
         {chip && clash && (
           <div className={`mb-1.5 px-1 flex items-center gap-1 ${amber}`}>
-            <TriangleAlert size={12} className="flex-shrink-0" />
+            <TriangleAlert size={12} className="shrink-0" />
             {clashText}
           </div>
         )}
@@ -116,9 +116,7 @@ export default function DayMoves({ day, blocks, chip = false }) {
         >
           {pullable().map(({ from, groups }) => (
             <div key={from} className="flex items-baseline gap-1">
-              <span className={`w-7 flex-shrink-0 px-1 font-semibold ${muted}`}>
-                {from.slice(0, 2)}
-              </span>
+              <span className={`w-7 shrink-0 px-1 font-semibold ${muted}`}>{from.slice(0, 2)}</span>
               <span className="flex flex-wrap gap-x-1">
                 {groups.map((group) => {
                   const text = groupLabel(exercises, group, from)

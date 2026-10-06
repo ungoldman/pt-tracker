@@ -50,7 +50,7 @@ function Hinted({ hint, darkMode, align = 'center', children }) {
         className={`pointer-events-none absolute top-full ${HINT_ALIGN[align]} mt-1.5 px-2 py-1 rounded-md text-xs whitespace-nowrap z-50 [@media(hover:none)]:hidden opacity-0 transition-opacity delay-200 group-hover:opacity-100 group-focus-within:opacity-100 ${
           darkMode
             ? 'bg-gray-800 text-gray-200 border border-gray-700'
-            : 'bg-white text-gray-700 border border-gray-200 shadow-sm'
+            : 'bg-white text-gray-700 border border-gray-200 shadow-xs'
         }`}
       >
         {hint}
@@ -128,13 +128,13 @@ export default function Header({
           their own full-width line via order/w-full, controls stay by the title. */}
       <div className="w-full flex flex-wrap items-center gap-x-4 gap-y-2">
         <h1
-          className={`order-1 text-xl sm:text-2xl font-bold tracking-tight flex-shrink-0 items-center gap-2 ${
+          className={`order-1 text-xl sm:text-2xl font-bold tracking-tight shrink-0 items-center gap-2 ${
             scrolled ? 'hidden lg:flex' : 'flex'
           } ${darkMode ? 'text-white' : 'text-gray-800'}`}
         >
           <Timer
             size={22}
-            className={`flex-shrink-0 translate-y-0.5 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}
+            className={`shrink-0 translate-y-0.5 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}
           />
           pt-tracker
         </h1>
@@ -204,7 +204,7 @@ export default function Header({
                 className={`pointer-events-none absolute top-full right-0 mt-1.5 px-2 py-1 rounded-md text-xs whitespace-nowrap z-50 [@media(hover:none)]:hidden opacity-0 transition-opacity delay-200 group-hover:opacity-100 ${
                   darkMode
                     ? 'bg-gray-800 text-gray-200 border border-gray-700'
-                    : 'bg-white text-gray-700 border border-gray-200 shadow-sm'
+                    : 'bg-white text-gray-700 border border-gray-200 shadow-xs'
                 }`}
               >
                 Reset checkboxes…
@@ -213,7 +213,7 @@ export default function Header({
             {resetMenuOpen && (
               <div
                 role="menu"
-                className={`absolute right-0 top-full z-50 mt-1 min-w-[11rem] rounded-lg border shadow-lg overflow-hidden ${
+                className={`absolute right-0 top-full z-50 mt-1 min-w-44 rounded-lg border shadow-lg overflow-hidden ${
                   darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
                 }`}
               >
@@ -287,7 +287,7 @@ export default function Header({
                         : 'border-yellow-300 text-yellow-700 bg-yellow-50'
                   }`}
                 >
-                  <Star size={10} className="flex-shrink-0" />
+                  <Star size={10} className="shrink-0" />
                   {priorityDone}/{priorityTotal}
                 </span>
               </Hinted>

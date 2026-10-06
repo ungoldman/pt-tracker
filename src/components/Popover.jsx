@@ -51,7 +51,7 @@ export default function Popover({ anchorRef, open, onClose, darkMode, label, chi
       role="dialog"
       aria-label={label}
       style={place}
-      className={`fixed z-[60] overflow-auto rounded-xl p-2 text-[11px] font-normal ${
+      className={`fixed z-60 overflow-auto rounded-xl p-2 text-[11px] font-normal ${
         darkMode
           ? 'bg-gray-800 border border-gray-700 shadow-xl shadow-black/50'
           : 'bg-white border border-gray-200 shadow-lg'
