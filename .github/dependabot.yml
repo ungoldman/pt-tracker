@@ -1,0 +1,23 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    groups:
+      npm:
+        patterns: ["*"]
+        # Builds the service worker, so it moves alone, never inside a batch.
+        exclude-patterns: ["vite-plugin-pwa"]
+    # A new major can change the generated worker. Take it on purpose, after
+    # reading its changelog (see AGENTS.md).
+    ignore:
+      - dependency-name: "vite-plugin-pwa"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    groups:
+      actions:
+        patterns: ["*"]
