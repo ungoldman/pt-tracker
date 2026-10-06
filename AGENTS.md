@@ -53,6 +53,7 @@ src/
     AwayBlock.jsx          placeholder for a block moved off a day or skipped
     MovePanel.jsx          day picker for moving or skipping one block
     Popover.jsx            floating panel anchored to a control, used by both move panels
+    UpdateNotice.jsx       "new version ready" notice, accepts a waiting build
     DayMoves.jsx           day-level moves: pull unfinished blocks in, send moved ones back
     MissedYesterday.jsx    offer at the top of today to pull in yesterday's unfinished blocks
     WeekOverview.jsx       week view on phones: a row per day, a progress bar per block
@@ -70,6 +71,7 @@ src/
     blockStyle.js          per-block accent color + icon
     exerciseDisplay.jsx    name formatting + equipment/priority icon badges
     audio.js               hold-timer WebAudio cues (bowl chime, temple-block rest)
+    updates.js             service worker registration and the new-version signal
 scripts/
   generate-doodles.mjs     generates the background wallpaper tile (public/doodles.svg)
 public/                    static assets: bowl recordings, web manifest, doodles.svg
@@ -190,6 +192,37 @@ Two behaviors apply at every width. In day view a block's header sticks under
 the app header while its rows scroll, offset by `--header-h`, which `Header`
 publishes. And finishing a block scrolls the next unfinished one into view. Both
 depend on day view's block list not being a scroll container below `lg`.
+
+## Deploys and the service worker
+
+Pushing to `main` deploys to GitHub Pages, which serves `index.html` with a 10
+minute max-age that a static site cannot change. The app is also installed on
+the phone's home screen, where there is no reload button. A service worker
+(`vite-plugin-pwa`, configured in `vite.config.js`) covers both: it caches the
+built app for offline use, and the browser's own check for a new worker skips
+the HTTP cache.
+
+It runs in the plugin's `prompt` mode on purpose. A new build downloads in the
+background and then waits. It takes over only when `UpdateNotice` is accepted,
+or the next time the app is opened after being fully closed. It never reloads a
+page in use, and there is no `skipWaiting` or `clientsClaim` outside that
+accept. `lib/updates.js` registers it and asks for an update check on every
+return to the foreground, since a resumed app does not navigate.
+
+Rules that keep it from biting:
+
+- No worker runs in dev. The plugin swaps in a no-op there. Test worker changes
+  against `npm run build` and `npm run preview`.
+- The worker file stays `sw.js` at the app root. A client only ever checks the
+  URL it registered, so renaming or removing it strands installed copies.
+- Its scope is `/pt-tracker/`. The rest of the domain is untouched.
+- Completion, notes, and moves are in localStorage, which the worker never
+  touches.
+- To back out, set `KILL_SERVICE_WORKER` in `vite.config.js` and deploy. That
+  ships a worker that unregisters itself and deletes its caches. Leave it
+  deployed until every installed copy has opened once.
+- `vite-plugin-pwa` is pinned to an exact version. Read its changelog before
+  moving it, a major bump can change the generated worker.
 
 ## Hold timer and audio (Footer)
 
