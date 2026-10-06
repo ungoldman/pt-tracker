@@ -72,6 +72,7 @@ src/
     exerciseDisplay.jsx    name formatting + equipment/priority icon badges
     audio.js               hold-timer WebAudio cues (bowl chime, temple-block rest)
     updates.js             service worker registration and the new-version signal
+  kill-sw.js               emergency-exit service worker, published only by the kill switch
 scripts/
   generate-doodles.mjs     generates the background wallpaper tile (public/doodles.svg)
 public/                    static assets: bowl recordings, web manifest, doodles.svg
@@ -205,9 +206,11 @@ the HTTP cache.
 It runs in the plugin's `prompt` mode on purpose. A new build downloads in the
 background and then waits. It takes over only when `UpdateNotice` is accepted,
 or the next time the app is opened after being fully closed. It never reloads a
-page in use, and there is no `skipWaiting` or `clientsClaim` outside that
-accept. `lib/updates.js` registers it and asks for an update check on every
-return to the foreground, since a resumed app does not navigate.
+page by itself, and there is no `skipWaiting` or `clientsClaim` outside that
+accept. Accepting in one tab does reload any other open tab. `lib/updates.js`
+registers it and asks for an update check on every return to the foreground,
+since a resumed app does not navigate. A page no worker controls yet (the first
+visit) never has a waiting worker, so there Update is a plain reload.
 
 Rules that keep it from biting:
 
@@ -215,12 +218,18 @@ Rules that keep it from biting:
   against `npm run build` and `npm run preview`.
 - The worker file stays `sw.js` at the app root. A client only ever checks the
   URL it registered, so renaming or removing it strands installed copies.
-- Its scope is `/pt-tracker/`. The rest of the domain is untouched.
+- Its scope is `/pt-tracker/`, and its cache is named for that scope. Cache
+  Storage is shared by the whole origin, so anything that deletes caches must
+  filter by scope.
 - Completion, notes, and moves are in localStorage, which the worker never
   touches.
 - To back out, set `KILL_SERVICE_WORKER` in `vite.config.js` and deploy. That
-  ships a worker that unregisters itself and deletes its caches. Leave it
-  deployed until every installed copy has opened once.
+  publishes `src/kill-sw.js` as `sw.js` and builds the app with no worker
+  registration. The kill worker unregisters itself and deletes only this app's
+  caches. It does not reload open pages. Leave it deployed until every
+  installed copy has opened once while online. The plugin's own `selfDestroying`
+  option is not used: it deletes every cache on the origin and force-reloads
+  open pages.
 - `vite-plugin-pwa` is pinned to an exact version. Read its changelog before
   moving it, a major bump can change the generated worker.
 
