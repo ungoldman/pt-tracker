@@ -11,7 +11,9 @@ TypeScript, and coverage machinery from that standard does not apply here.
 - run: `npm start` (Vite dev server, opens http://localhost:5173)
 - build: `npm run build` (outputs to `dist/`)
 - lint: `npm run lint` (Biome, read-only)
-- format: `npm run format` (Biome, writes `src/`)
+- format: `npm run format` (Biome, writes `src/` and `test/`)
+- test: `npm test` (lint, then the Vitest suite)
+- coverage: `npm run coverage` (the suite with the 100% gate)
 - preview a build: `npm run preview`
 
 The `pt` command (`bin/pt.js`) launches the dev server from anywhere once
@@ -20,17 +22,45 @@ The `pt` command (`bin/pt.js`) launches the dev server from anywhere once
 
 ## Verification
 
-There is no test suite. A change is not done until `npm run lint` and
-`npm run build` both pass and the behavior is confirmed in the running app. A
-missed prop or a stale hook dependency sails through the build and breaks at
-runtime, so anything touching state, section collapse, or the hold timer needs
-a real look in the browser. Driving the running app on localhost:5173 with the
-Playwright MCP works well for this.
+A change is not done until `npm test`, `npm run coverage`, and `npm run build`
+all pass. CI (`.github/workflows/tests.yml`) runs the same gate on every push
+and pull request.
+
+Coverage is held at 100% of lines, branches, functions, and statements for
+everything under `src/` except `main.jsx`, which only mounts the app. Reach it
+by testing the behavior or by deleting a branch that cannot happen, never by
+excluding a file or contriving an input.
+
+The suite runs in jsdom, which has no layout, no real service worker, and no
+audio. So the tests cannot see a control that is clipped, mispositioned, or too
+small to tap, and they cannot see what a real browser does with the worker.
+Anything visual, and anything touching `vite.config.js`, `lib/updates.js`, or
+`kill-sw.js`, still needs a look in a real browser against `npm run build` and
+`npm run preview`.
+
+How the tests are built:
+
+- They live in `test/`, one file per area, named `*.test.js` or `*.test.jsx`.
+- Component tests mount the whole `App` and drive it the way a person would,
+  through `mountApp` in `test/helpers.jsx`. It pins the date to a Tuesday and
+  fakes every timer, since completion, auto-advance, and the hold timer all run
+  on them. Step time with `tick`.
+- They run against `test/fixtures/program.js`, not the real program, so
+  revising an exercise never breaks a test. `test/setup.js` swaps it in for
+  `src/data.js`. The real program is checked for shape in `test/data.test.js`.
+  A new data shape (a new optional field, say) needs an example in the fixture.
+- Pure modules get example tests plus `fast-check` properties where an
+  invariant holds across all inputs, as with `resolveSchedule` keeping storage
+  keys intact under any moves.
+- Only the edges are faked: `AudioContext`, `fetch`, `matchMedia`, the wake
+  lock, and the plugin's `registerSW`. App code runs for real, apart from the
+  program data swap above.
 
 ## Stack
 
 JavaScript and JSX, no TypeScript. React 19 with function components and hooks.
-Vite 8, Tailwind CSS v3, Biome (lint + format). npm is the package
+Vite 8, Tailwind CSS v3, Biome (lint + format), Vitest with jsdom and Testing
+Library (tests + coverage). npm is the package
 manager and `package-lock.json` is committed. The `version` field in
 `package.json` is inert, there are no releases.
 
@@ -73,6 +103,11 @@ src/
     audio.js               hold-timer WebAudio cues (bowl chime, temple-block rest)
     updates.js             service worker registration and the new-version signal
   kill-sw.js               emergency-exit service worker, published only by the kill switch
+test/
+  setup.js                 jsdom gaps and the fixture-program swap, run before every file
+  helpers.jsx              mountApp, time stepping, queries, the fake AudioContext
+  fixtures/program.js      stand-in exercise program with one of every data shape
+  *.test.js(x)             one file per area
 scripts/
   generate-doodles.mjs     generates the background wallpaper tile (public/doodles.svg)
 public/                    static assets: bowl recordings, web manifest, doodles.svg

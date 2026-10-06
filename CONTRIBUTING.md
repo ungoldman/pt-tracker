@@ -31,11 +31,11 @@ collapse override clears on completion). Hold that bar.
 
 ### Verification
 
-There is no test suite. A change is not done until `npm run lint` and
-`npm run build` pass and the behavior is confirmed in the running app. A missed
-prop or a stale hook dependency passes the build and breaks at runtime, so
-changes to state, section collapse, or the hold timer need a real look in the
-browser, not just a green build.
+A change is not done until `npm test`, `npm run coverage`, and `npm run build`
+pass. Coverage is held at 100% on everything under `src/` except the entry
+point, and a change that drops it needs tests in the same commit. The tests run
+without a real browser, so anything visual, and anything touching the service
+worker, still needs a look in the running app.
 
 ### The app, briefly
 
