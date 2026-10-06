@@ -50,13 +50,17 @@ src/
     DayCard.jsx            one day as a card of blocks (week and 3-day views)
     DayLabel.jsx           day name + date, brightens for the selected day
     CategoryBlock.jsx      one block: collapsible header, progress bar, exercise rows
+    AwayBlock.jsx          placeholder for a block moved off a day or skipped
+    MovePanel.jsx          inline day picker for moving or skipping
+    DayMoves.jsx           day-level moves: send strength out, pull unfinished blocks in
     ExerciseRow.jsx        one exercise row: toggle, badges, note editor (memoized)
     Footer.jsx             sticky hold timer (prep, hold, rest)
     Confetti.jsx           completion confetti burst (self-contained, owns its keyframes)
   hooks/
     usePersistentState.js  useState mirrored to localStorage (init + persist)
+    useDismiss.js          close on Escape or outside press
   lib/
-    schedule.js            DAYS, getExercisesForDay, isStrengthDay
+    schedule.js            DAYS, getExercisesForDay, isStrengthDay, resolveSchedule (moves)
     stats.js               exerciseId, completionKey, isCompleted, categoryStats, dayStats
     dates.js               today's weekday + per-day date labels
     duration.js            per-block time estimates
@@ -74,7 +78,8 @@ without prop-drilling. `ExerciseRow` is the deliberate exception. It takes
 explicit props and is wrapped in `React.memo`, with `useCallback`-stable
 handlers, so a note keystroke re-renders only the row being edited. The
 schedule is static, so each day's blocks are resolved once at module load
-(`SCHEDULE_BY_DAY`).
+(`SCHEDULE_BY_DAY`). What renders is that schedule with the week's moves applied
+(`resolveSchedule`, see Moves below).
 
 ## Exercise data model
 
@@ -132,6 +137,33 @@ collapses (the intrinsic rule, always). The header control applies momentary
 bulk actions (collapse all, expand all, reset to default). Completing a block
 clears its override, so finishing a block always collapses it no matter which
 bulk action ran last.
+
+## Moves
+
+A block can be moved to another day or skipped for the week. Moves are a
+persisted map, `ptTrackerMoves`, keyed `${sourceDay}-${category}` with a
+destination day or `skip` as the value. `resolveSchedule` applies it to the
+static schedule and gives each day its `blocks` and an `away` list of what left.
+
+A moved block keeps its scheduled day as storage identity. Monday's `Standing`
+shown on Tuesday still reads and writes `Monday-Standing-*`, so a move never
+touches completion or notes and undoing it is deleting one map entry. Every
+resolved block carries `sourceDay`. Use that for keys, and the day it renders
+under only for layout. `CategoryBlock` takes them as `day` and `shownDay`.
+
+Only a block whose scheduled exercises are all day-gated gets day targets. A
+daily block can only be skipped. The per-block control shows in day and 3-day
+views. Week view has the day-level control and the placeholders. The day-level
+control works both ways: it sends the day's strength blocks out as one session,
+and it pulls unfinished movable blocks in from other days.
+
+Moves are persisted overrides, the same shape of hazard as the collapse scar
+above. The guards are that a move is always visible in both places, entries that
+no longer match the schedule are ignored, and Reset week clears them. Reset day
+clears the checks a day shows and leaves moves alone.
+
+Weeks have no identity. Keys are weekday names, so a block cannot move into next
+week.
 
 ## Hold timer and audio (Footer)
 
