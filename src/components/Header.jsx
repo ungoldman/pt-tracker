@@ -22,6 +22,8 @@ const COLLAPSE_MODES = {
 
 /**
  * Hover/focus tooltip below a control (the native title is too easy to miss).
+ * Hidden on touch screens, where a tap focuses the control and would leave the
+ * tooltip stuck open over the stats line.
  * `align` keeps the tooltip inside the viewport: 'right' for controls at the
  * right edge, 'left' for elements near the left edge, 'center' otherwise.
  */
@@ -45,7 +47,7 @@ function Hinted({ hint, darkMode, align = 'center', children }) {
       {children}
       <span
         role="tooltip"
-        className={`pointer-events-none absolute top-full ${HINT_ALIGN[align]} mt-1.5 px-2 py-1 rounded-md text-xs whitespace-nowrap z-50 opacity-0 transition-opacity delay-200 group-hover:opacity-100 group-focus-within:opacity-100 ${
+        className={`pointer-events-none absolute top-full ${HINT_ALIGN[align]} mt-1.5 px-2 py-1 rounded-md text-xs whitespace-nowrap z-50 [@media(hover:none)]:hidden opacity-0 transition-opacity delay-200 group-hover:opacity-100 group-focus-within:opacity-100 ${
           darkMode
             ? 'bg-gray-800 text-gray-200 border border-gray-700'
             : 'bg-white text-gray-700 border border-gray-200 shadow-sm'
@@ -83,6 +85,18 @@ export default function Header({
   const [scrolled, setScrolled] = useState(false)
   const [resetMenuOpen, setResetMenuOpen] = useState(false)
   const resetRef = useRef(null)
+  const rootRef = useRef(null)
+
+  // Publish the bar's height so sticky block headers and scroll targets can
+  // sit just below it (it changes with wrapping and the scrolled state).
+  useEffect(() => {
+    const publish = () =>
+      document.documentElement.style.setProperty('--header-h', `${rootRef.current.offsetHeight}px`)
+    publish()
+    const observer = new ResizeObserver(publish)
+    observer.observe(rootRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     // Hysteresis (collapse past 96px, expand under 24px) so the header's own
@@ -97,7 +111,7 @@ export default function Header({
 
   // One button language: ghost icon buttons throughout; destructive actions
   // reveal red only inside the reset menu (plus the confirm dialog).
-  const ghostButton = `flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all text-sm ${
+  const ghostButton = `relative hit-44 flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all text-sm ${
     darkMode
       ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
       : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
@@ -105,6 +119,7 @@ export default function Header({
 
   return (
     <div
+      ref={rootRef}
       className={`sticky top-0 z-50 border-b ${
         scrolled ? 'px-3 py-1.5 sm:px-6 lg:py-3' : 'p-3 sm:px-6 sm:py-3'
       } ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-gray-50 border-gray-200'}`}
@@ -186,7 +201,7 @@ export default function Header({
             {!resetMenuOpen && (
               <span
                 role="tooltip"
-                className={`pointer-events-none absolute top-full right-0 mt-1.5 px-2 py-1 rounded-md text-xs whitespace-nowrap z-50 opacity-0 transition-opacity delay-200 group-hover:opacity-100 ${
+                className={`pointer-events-none absolute top-full right-0 mt-1.5 px-2 py-1 rounded-md text-xs whitespace-nowrap z-50 [@media(hover:none)]:hidden opacity-0 transition-opacity delay-200 group-hover:opacity-100 ${
                   darkMode
                     ? 'bg-gray-800 text-gray-200 border border-gray-700'
                     : 'bg-white text-gray-700 border border-gray-200 shadow-sm'
@@ -292,10 +307,11 @@ export default function Header({
             >
               {isStrengthDay ? 'Strength day' : 'Rest day'}
             </span>
-            {/* Week progress dots: one per day, tap to jump there in day view */}
+            {/* Week progress dots: one per day, tap to jump there in day view.
+                Phones get the same thing from the day picker's chips. */}
             {/* biome-ignore lint/a11y/useSemanticElements: a fieldset is for form controls; this is a labelled group of day-navigation buttons. */}
             <span
-              className="flex items-center gap-1.5 ml-1"
+              className="hidden sm:flex items-center gap-1.5 ml-1"
               role="group"
               aria-label="Week progress"
             >

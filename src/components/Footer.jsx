@@ -1,5 +1,5 @@
 import { Square, TimerReset } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { chime, ensureAudio, knock, silence } from '../lib/audio'
 
@@ -20,8 +20,15 @@ const BREAK_SECONDS = 10
  * before the next rep, looping until stopped. The bowl marks the start of each
  * hold; three soft temple-block taps mark the end of the hold / start of rest.
  * Wall-clock based so background-tab throttling doesn't drift it.
+ *
+ * An exercise row can also start it through `ref.current.start(secs, plan)`
+ * with a `plan` of { count, label, onDone }. That run is named after the
+ * exercise, stops itself after `count` holds, and then calls `onDone`.
+ *
+ * The bar is sticky from sm up. On phones it sits at the end of the page, since
+ * rows start their own timers there and the screen is short.
  */
-export default function Footer({ darkMode }) {
+export default function Footer({ darkMode, ref }) {
   const [duration, setDuration] = useState(null) // the selected interval; null = idle
   const [phase, setPhase] = useState('idle') // 'idle' | 'prep' | 'hold' | 'break'
   const [run, setRun] = useState(0) // bumped on start so re-pressing the active duration restarts it
@@ -30,6 +37,8 @@ export default function Footer({ darkMode }) {
   const [breakLeft, setBreakLeft] = useState(0)
   const [reps, setReps] = useState(0)
   const audioRef = useRef(null)
+  const planRef = useRef(null) // { count, label, onDone } for a run started from a row
+  const repsRef = useRef(0) // reps as the hold interval sees it, to know the last one
 
   // Prep countdown: a quiet window to get into position. When it elapses the
   // bowl strikes (marking the first hold) and we hand off to the hold phase.
@@ -61,7 +70,16 @@ export default function Footer({ darkMode }) {
       if (left <= 0) {
         knock(audioRef.current)
         navigator.vibrate?.(200)
-        setReps((r) => r + 1)
+        repsRef.current += 1
+        setReps(repsRef.current)
+        const plan = planRef.current
+        if (plan?.count && repsRef.current >= plan.count) {
+          // Not stop(): that silences the audio and would cut this last knock.
+          plan.onDone?.()
+          setPhase('idle')
+          setDuration(null)
+          return
+        }
         setBreakLeft(BREAK_SECONDS)
         setPhase('break')
       } else {
@@ -91,7 +109,9 @@ export default function Footer({ darkMode }) {
     return () => clearInterval(tick)
   }, [phase, duration, run])
 
-  const start = (secs) => {
+  const start = (secs, plan = null) => {
+    planRef.current = plan
+    repsRef.current = 0
     // Create/resume the AudioContext within the user gesture so the bowl can
     // sound when the prep countdown ends. ensureAudio sets audioRef.current
     // synchronously (only the bowl fetch is async), so the knock can sound
@@ -114,6 +134,36 @@ export default function Footer({ darkMode }) {
     setDuration(null)
     silence(audioRef.current)
   }, [])
+
+  useImperativeHandle(ref, () => ({ start }))
+
+  // Keep the screen awake for the length of a run. The lock drops whenever the
+  // tab is hidden, so take it again on return.
+  const running = phase !== 'idle'
+  useEffect(() => {
+    if (!running || !navigator.wakeLock) return undefined
+    let lock = null
+    let released = false
+    const acquire = async () => {
+      try {
+        const next = await navigator.wakeLock.request('screen')
+        if (released) next.release()
+        else lock = next
+      } catch {
+        // Denied or unsupported (low battery, insecure origin): run without it.
+      }
+    }
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') acquire()
+    }
+    acquire()
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      released = true
+      document.removeEventListener('visibilitychange', onVisible)
+      lock?.release()
+    }
+  }, [running])
 
   // Esc closes the takeover modal while it's up.
   useEffect(() => {
@@ -150,7 +200,7 @@ export default function Footer({ darkMode }) {
             <span
               className={`text-sm uppercase tracking-[0.25em] ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}
             >
-              {duration}-second holds
+              {planRef.current?.label ?? `${duration}-second holds`}
             </span>
 
             {phase === 'prep' ? (
@@ -173,7 +223,10 @@ export default function Footer({ darkMode }) {
               </>
             ) : (
               <>
-                <span className="text-2xl font-medium">Hold — rep {reps + 1}</span>
+                <span className="text-2xl font-medium">
+                  Hold — rep {reps + 1}
+                  {planRef.current?.count ? ` of ${planRef.current.count}` : ''}
+                </span>
                 <span className={`${bigDigits} ${remaining <= 3 ? 'text-orange-400' : ''}`}>
                   {remaining}
                 </span>
@@ -199,7 +252,7 @@ export default function Footer({ darkMode }) {
         )}
 
       <footer
-        className={`w-full border-t sticky bottom-0 z-40 ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
+        className={`w-full border-t sm:sticky sm:bottom-0 z-40 ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
       >
         <div className="px-3 sm:px-6 py-3">
           <div
@@ -216,7 +269,7 @@ export default function Footer({ darkMode }) {
                   type="button"
                   key={secs}
                   onClick={() => start(secs)}
-                  className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
+                  className={`relative hit-44 text-sm px-3 py-1.5 rounded-lg border transition-colors ${
                     duration === secs ? activeButton : idleButton
                   }`}
                   title={`Repeating ${secs}-second timer`}
@@ -234,7 +287,7 @@ export default function Footer({ darkMode }) {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`text-xs transition-colors hover:underline ${
+                  className={`relative hit-44 text-xs transition-colors hover:underline ${
                     darkMode
                       ? 'text-gray-500 hover:text-gray-300'
                       : 'text-gray-400 hover:text-gray-600'

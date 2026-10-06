@@ -12,6 +12,22 @@ const parseSeconds = (v) => {
   return null
 }
 
+// Shorter holds are part of the rep's tempo, not something to run a timer on.
+const MIN_TIMED_HOLD = 10
+
+/**
+ * Hold-timer plan for an exercise built on timed holds, as { seconds, count },
+ * or null when it has none worth timing. `count` is the number of holds.
+ */
+export function holdPlan(ex) {
+  const sets = ex.sets || 1
+  const hold = parseSeconds(ex.hold)
+  const seconds = hold ?? parseSeconds(ex.reps)
+  if (seconds == null || seconds < MIN_TIMED_HOLD) return null
+  const count = hold != null && typeof ex.reps === 'number' ? sets * ex.reps : sets
+  return { seconds, count }
+}
+
 /** Estimated seconds for one exercise; 0 for untimeable goals (steps, jog). */
 export function exerciseSeconds(ex) {
   const sets = ex.sets || 1

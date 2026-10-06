@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import DayCard from './components/DayCard'
 import DayPicker from './components/DayPicker'
 import DayView from './components/DayView'
 import Footer from './components/Footer'
 import Header from './components/Header'
+import WeekOverview from './components/WeekOverview'
 import { TrackerContext } from './context/TrackerContext'
 import { exercises } from './data'
 import { usePersistentState } from './hooks/usePersistentState'
@@ -122,6 +123,25 @@ const App = () => {
   )
 
   const clearConfetti = useCallback(() => setConfettiKey(null), [])
+
+  // The hold timer lives in Footer so its ticking never re-renders the list.
+  // Rows start it through this handle. When a counted run finishes it checks
+  // the exercise off, reading the latest state since the run outlives a render.
+  const timerRef = useRef(null)
+  const latest = useRef({})
+  useEffect(() => {
+    latest.current = { completed, toggleComplete }
+  })
+  const startHold = useCallback((day, category, id, plan, label) => {
+    timerRef.current?.start(plan.seconds, {
+      count: plan.count,
+      label,
+      onDone: () => {
+        const { completed: now, toggleComplete: toggle } = latest.current
+        if (!now[completionKey(day, category, id)]) toggle(day, category, id)
+      }
+    })
+  }, [])
 
   // `to` is a day or SKIP. Null, or the block's own day, puts it back.
   const moveBlock = useCallback(
@@ -274,6 +294,7 @@ const App = () => {
     discardNote,
     handleNoteChange,
     schedule,
+    startHold,
     moveBlock,
     strengthClash
   }
@@ -299,32 +320,36 @@ const App = () => {
         />
 
         <div className="w-full p-3 sm:p-6 flex-1 min-h-0 flex flex-col lg:overflow-hidden">
+          {viewMode !== 'week' && (
+            <DayPicker
+              selectedDay={selectedDay}
+              todayLabel={todayLabel}
+              onSelect={jumpToDay}
+              weekSummary={weekSummary}
+            />
+          )}
           {viewMode === 'week' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 lg:gap-1 flex-1 min-h-0">
-              {DAYS.map((day) => (
-                <DayCard
-                  key={day}
-                  day={day}
-                  blocks={schedule[day].blocks}
-                  away={schedule[day].away}
-                  highlightToday
-                />
-              ))}
-            </div>
-          ) : viewMode === 'day' ? (
             <>
-              <DayPicker
-                selectedDay={selectedDay}
-                todayLabel={todayLabel}
-                onSelect={setSelectedDay}
-              />
-              <DayView
-                day={selectedDay}
-                todayLabel={todayLabel}
-                blocks={schedule[selectedDay].blocks}
-                away={schedule[selectedDay].away}
-              />
+              <WeekOverview todayLabel={todayLabel} onSelectDay={jumpToDay} />
+              <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 lg:gap-1 flex-1 min-h-0">
+                {DAYS.map((day) => (
+                  <DayCard
+                    key={day}
+                    day={day}
+                    blocks={schedule[day].blocks}
+                    away={schedule[day].away}
+                    highlightToday
+                  />
+                ))}
+              </div>
             </>
+          ) : viewMode === 'day' ? (
+            <DayView
+              day={selectedDay}
+              todayLabel={todayLabel}
+              blocks={schedule[selectedDay].blocks}
+              away={schedule[selectedDay].away}
+            />
           ) : (
             <div className="flex flex-col md:flex-row w-full gap-4 flex-1 min-h-0 items-stretch">
               {threeDayWindow.map((day) => (
@@ -336,7 +361,7 @@ const App = () => {
           )}
         </div>
 
-        <Footer darkMode={darkMode} />
+        <Footer darkMode={darkMode} ref={timerRef} />
       </div>
     </TrackerContext.Provider>
   )

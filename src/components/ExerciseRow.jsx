@@ -1,13 +1,16 @@
-import { BellRing, Check, FileText } from 'lucide-react'
+import { BellRing, Check, FileText, Timer } from 'lucide-react'
 import { memo } from 'react'
+import { holdPlan } from '../lib/duration'
 import { formatExerciseName, getExerciseIcon, getPriorityIcon } from '../lib/exerciseDisplay'
 import Confetti from './Confetti'
 
 /**
  * One exercise as a dense flat list row: completion toggle, badges, name,
- * sets/reps right-aligned on one line (day/3-day) or stacked (narrow week
- * columns), plus a note affordance with an expandable editor in day/3-day
- * view. Presentational — all state reads and mutations come in as props.
+ * sets/reps right-aligned on one line (day/3-day from sm up) or stacked under
+ * the name (phones and narrow week columns), plus a note affordance with an
+ * expandable editor and, for exercises built on timed holds, a button that
+ * starts the hold timer with that exercise's own length and count, both in
+ * day/3-day view. Presentational — all state reads and mutations come in as props.
  * Memoized so note keystrokes and confetti only re-render the affected row.
  */
 export default memo(function ExerciseRow({
@@ -29,7 +32,8 @@ export default memo(function ExerciseRow({
   openNotes,
   closeNotes,
   discardNote,
-  handleNoteChange
+  handleNoteChange,
+  startHold
 }) {
   const nameBlock = ex.link ? (
     <>
@@ -54,6 +58,8 @@ export default memo(function ExerciseRow({
   )
 
   const showNotesUI = viewMode === 'day' || viewMode === 'three'
+  const plan = showNotesUI ? holdPlan(ex) : null
+  const stacked = viewMode === 'week'
   const repsText = (
     <>
       {ex.sets ? `${ex.sets} x ` : ''}
@@ -102,7 +108,7 @@ export default memo(function ExerciseRow({
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         className={`w-full flex items-center gap-2.5 pl-2 py-2 min-h-[44px] text-left cursor-pointer select-text ${
-          showNotesUI ? 'pr-9' : 'pr-2'
+          plan ? 'pr-[4.25rem]' : showNotesUI ? 'pr-9' : 'pr-2'
         }`}
       >
         {showConfetti && <Confetti onComplete={onConfettiComplete} />}
@@ -120,32 +126,52 @@ export default memo(function ExerciseRow({
         </span>
         {getPriorityIcon(ex.priority, darkMode)}
         {getExerciseIcon(ex.name, darkMode)}
-        {viewMode === 'week' ? (
-          <span className="flex-1 min-w-0">
-            <span className={`block text-sm font-medium leading-tight ${nameColor}`}>
-              {nameBlock}
-              {hasNote && (
-                <span
-                  className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500 ml-1.5 align-middle"
-                  title="Has a note"
-                />
-              )}
-            </span>
-            <span className={`block text-xs mt-0.5 font-medium tabular-nums ${repsColor}`}>
-              {repsText}
-            </span>
+        {/* One line from sm up, stacked on phones and in week columns, where
+            a long name beside its sets would wrap to three lines. */}
+        <span
+          className={`flex-1 min-w-0 flex flex-col ${
+            stacked ? '' : 'sm:flex-row sm:items-center sm:gap-2.5'
+          }`}
+        >
+          <span
+            className={`text-sm font-medium leading-tight ${nameColor} ${
+              stacked ? '' : 'sm:flex-1 sm:min-w-0'
+            }`}
+          >
+            {nameBlock}
+            {stacked && hasNote && (
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500 ml-1.5 align-middle"
+                title="Has a note"
+              />
+            )}
           </span>
-        ) : (
-          <>
-            <span className={`flex-1 min-w-0 text-sm font-medium leading-tight ${nameColor}`}>
-              {nameBlock}
-            </span>
-            <span className={`text-xs font-medium whitespace-nowrap tabular-nums ${repsColor}`}>
-              {repsText}
-            </span>
-          </>
-        )}
+          <span
+            className={`text-xs mt-0.5 font-medium tabular-nums ${repsColor} ${
+              stacked ? '' : 'sm:mt-0 sm:whitespace-nowrap'
+            }`}
+          >
+            {repsText}
+          </span>
+        </span>
       </div>
+
+      {plan && !isExpanded && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            startHold(day, category, exId, plan, formatExerciseName(ex.name))
+          }}
+          className={`hit-44 absolute right-9 top-1/2 -translate-y-1/2 p-2 ${
+            darkMode ? 'text-gray-500 hover:text-blue-300' : 'text-gray-400 hover:text-blue-600'
+          }`}
+          aria-label={`Start hold timer: ${plan.count} x ${plan.seconds}s`}
+          title={`Start hold timer: ${plan.count} x ${plan.seconds}s`}
+        >
+          <Timer size={14} />
+        </button>
+      )}
 
       {showNotesUI && !isExpanded && (
         <button
@@ -154,7 +180,8 @@ export default memo(function ExerciseRow({
             e.stopPropagation()
             openNotes(exerciseKey)
           }}
-          className="absolute right-1 top-1/2 -translate-y-1/2 p-2"
+          className="hit-44 absolute right-1 top-1/2 -translate-y-1/2 p-2"
+          aria-label={hasNote ? 'View note' : 'Add a note'}
           title={hasNote ? 'View note' : 'Add a note'}
         >
           {hasNote ? (
@@ -228,7 +255,8 @@ export default memo(function ExerciseRow({
               e.stopPropagation()
               openNotes(exerciseKey)
             }}
-            className={`w-full text-sm rounded-md resize-none p-2 focus:outline-none focus:ring-2 ${
+            // 16px on phones: iOS Safari zooms the page when a smaller input takes focus.
+            className={`w-full text-base sm:text-sm rounded-md resize-none p-2 focus:outline-none focus:ring-2 ${
               darkMode
                 ? 'bg-gray-800 text-gray-100 border border-gray-700 focus:ring-blue-500'
                 : 'bg-white text-gray-800 border border-gray-200 focus:ring-blue-400'

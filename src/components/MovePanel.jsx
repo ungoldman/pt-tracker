@@ -2,26 +2,21 @@ import { getDateForDay, getTodayLabel } from '../lib/dates'
 import { DAYS, SKIP } from '../lib/schedule'
 
 /**
- * Inline destination picker for a block or a strength session: a row of day
- * chips, plus skip and move back. Inline rather than a popover because the day
- * columns scroll and would clip one. `shownDay` is where the thing sits now,
- * `moved` adds the way back, and `showDays` is off for daily blocks, which can
- * only be skipped.
+ * Destination picker for one block, shown in its Popover: a row of day chips,
+ * plus skip and move back. `shownDay` is where the block sits now, `moved`
+ * adds the way back, and `showDays` is off for daily blocks, which can only be
+ * skipped.
  */
 export default function MovePanel({ darkMode, shownDay, moved, showDays = true, onPick, onBack }) {
   const todayLabel = getTodayLabel()
-  const action = `px-2 py-1 rounded text-[11px] transition-colors ${
+  const action = `px-2 py-1 [@media(pointer:coarse)]:py-2.5 rounded text-[11px] transition-colors ${
     darkMode
       ? 'text-gray-300 hover:bg-gray-700 hover:text-white'
       : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
   }`
 
   return (
-    <div
-      className={`mb-1.5 p-1.5 rounded-lg border text-[11px] font-normal normal-case tracking-normal ${
-        darkMode ? 'border-gray-700 bg-gray-900/40' : 'border-gray-200 bg-gray-50'
-      }`}
-    >
+    <div>
       {showDays && (
         <div className="grid grid-cols-7 gap-1 mb-1">
           {DAYS.map((day) => {
@@ -33,7 +28,7 @@ export default function MovePanel({ darkMode, shownDay, moved, showDays = true, 
                 disabled={isHere}
                 onClick={() => onPick(day)}
                 aria-label={`Move to ${day}`}
-                className={`py-1 rounded text-center leading-tight transition-colors ${
+                className={`py-1 [@media(pointer:coarse)]:py-2 rounded text-center leading-tight transition-colors ${
                   isHere
                     ? darkMode
                       ? 'bg-gray-700 text-gray-500'

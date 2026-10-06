@@ -1,3 +1,5 @@
+import { categoryStats } from './stats'
+
 export const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 /**
@@ -84,4 +86,35 @@ export function strengthClashes(exercises, resolved) {
     if (neighbors.length > 0) clashes[day] = neighbors
   })
   return clashes
+}
+
+/**
+ * A day's unfinished movable blocks, grouped the way they move: strength
+ * blocks as one session per day they were scheduled on, then every other
+ * block alone. Grouping by scheduled day keeps a session that was moved onto
+ * a day separate from that day's own, so pulling one never drags the other.
+ */
+export function unfinishedGroups(exercises, blocks, completed) {
+  const unfinished = blocks.filter(({ category, sourceDay, exercises: scheduled }) => {
+    const { completedCount, total } = categoryStats(completed, sourceDay, category, scheduled)
+    return completedCount < total && isGated(exercises[category], scheduled)
+  })
+  const sessions = new Map()
+  const singles = []
+  unfinished.forEach((block) => {
+    if (!exercises[block.category]?.strength) singles.push([block])
+    else sessions.set(block.sourceDay, [...(sessions.get(block.sourceDay) ?? []), block])
+  })
+  return [...sessions.values(), ...singles]
+}
+
+/**
+ * Label for a group from unfinishedGroups, as listed under `day`. A group
+ * scheduled on another day says so.
+ */
+export function groupLabel(exercises, group, day) {
+  const [{ category, sourceDay }] = group
+  const name =
+    group.length > 1 ? `Strength (${group.length})` : exercises[category]?.displayName || category
+  return sourceDay === day ? name : `${name} from ${sourceDay.slice(0, 3)}`
 }
