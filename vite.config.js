@@ -24,6 +24,21 @@ const killWorker = () => ({
 
 export default defineConfig({
   base: '/pt-tracker/',
+  test: {
+    environment: 'jsdom',
+    include: ['test/**/*.test.{js,jsx}'],
+    setupFiles: ['test/setup.js'],
+    restoreMocks: true,
+    unstubGlobals: true,
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.{js,jsx}'],
+      // The entry only mounts the app and starts the worker registration.
+      exclude: ['src/main.jsx'],
+      reporter: ['text'],
+      thresholds: { lines: 100, branches: 100, functions: 100, statements: 100 }
+    }
+  },
   plugins: [
     react(),
     VitePWA({
