@@ -10,7 +10,8 @@ import {
   Sun,
   Timer
 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useDismiss } from '../hooks/useDismiss'
 
 // Section-visibility cycle: what each mode shows and what a click does next.
 const COLLAPSE_MODES = {
@@ -91,21 +92,8 @@ export default function Header({
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => {
-    if (!resetMenuOpen) return undefined
-    const onDown = (e) => {
-      if (!resetRef.current?.contains(e.target)) setResetMenuOpen(false)
-    }
-    const onKey = (e) => {
-      if (e.key === 'Escape') setResetMenuOpen(false)
-    }
-    document.addEventListener('pointerdown', onDown)
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('pointerdown', onDown)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [resetMenuOpen])
+  const closeResetMenu = useCallback(() => setResetMenuOpen(false), [])
+  useDismiss(resetRef, resetMenuOpen, closeResetMenu)
 
   // One button language: ghost icon buttons throughout; destructive actions
   // reveal red only inside the reset menu (plus the confirm dialog).
