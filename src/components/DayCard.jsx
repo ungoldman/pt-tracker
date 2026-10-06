@@ -1,13 +1,16 @@
 import { useTracker } from '../context/TrackerContext'
 import { getTodayLabel } from '../lib/dates'
+import AwayBlock from './AwayBlock'
 import CategoryBlock from './CategoryBlock'
 import DayLabel from './DayLabel'
+import DayMoves from './DayMoves'
 
 /**
  * A whole day as a scrollable card of blocks, used by the week and 3-day views.
- * `highlightToday` tints the card when `day` is today.
+ * `highlightToday` tints the card when `day` is today. `away` is what was moved
+ * off or skipped, shown as placeholders under the blocks.
  */
-export default function DayCard({ day, blocks, highlightToday = false }) {
+export default function DayCard({ day, blocks, away, highlightToday = false }) {
   const { darkMode, viewMode } = useTracker()
   const isToday = highlightToday && day === getTodayLabel()
 
@@ -22,7 +25,7 @@ export default function DayCard({ day, blocks, highlightToday = false }) {
       }`}
     >
       <div
-        className={`mb-2 -mx-2 px-4 pb-2 border-b flex items-baseline justify-between ${
+        className={`mb-2 -mx-2 px-4 pb-2 border-b flex flex-wrap items-baseline justify-between gap-x-1 ${
           isToday
             ? darkMode
               ? 'border-blue-500/70'
@@ -32,14 +35,26 @@ export default function DayCard({ day, blocks, highlightToday = false }) {
               : 'border-gray-200'
         }`}
       >
-        <h2 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+        <h2
+          className={`flex-1 min-w-0 text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}
+        >
           <DayLabel day={day} darkMode={darkMode} viewMode={viewMode} />
         </h2>
+        <DayMoves day={day} blocks={blocks} />
       </div>
 
       <div className="flex-1 overflow-auto min-h-0 space-y-3">
-        {blocks.map(({ category, exercises: exList }) => (
-          <CategoryBlock key={category} day={day} category={category} exList={exList} />
+        {blocks.map(({ category, sourceDay, exercises: exList }) => (
+          <CategoryBlock
+            key={`${sourceDay}-${category}`}
+            day={sourceDay}
+            shownDay={day}
+            category={category}
+            exList={exList}
+          />
+        ))}
+        {away.map(({ category, sourceDay, to }) => (
+          <AwayBlock key={category} category={category} sourceDay={sourceDay} to={to} />
         ))}
       </div>
     </div>

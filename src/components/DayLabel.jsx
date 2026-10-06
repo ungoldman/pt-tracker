@@ -17,7 +17,9 @@ export default function DayLabel({ day, isSelectedDay = false, darkMode, viewMod
   return (
     <span className="flex items-baseline justify-between w-full gap-2">
       <span>{day}</span>
-      <span className={`text-[11px] ${dateColor}`}>{formatDateLabel(getDateForDay(day))}</span>
+      <span className={`text-[11px] whitespace-nowrap ${dateColor}`}>
+        {formatDateLabel(getDateForDay(day))}
+      </span>
     </span>
   )
 }

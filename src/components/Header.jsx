@@ -279,7 +279,7 @@ export default function Header({
             )}
             {/* Day-type badge */}
             <span
-              title={isStrengthDay ? 'Strength training day (M/W/F)' : 'Rest day'}
+              title={isStrengthDay ? 'Strength training day' : 'Rest day'}
               className={`text-[11px] whitespace-nowrap px-2 py-0.5 rounded-full border ${
                 isStrengthDay
                   ? darkMode

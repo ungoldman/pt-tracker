@@ -29,3 +29,59 @@ export function getExercisesForDay(exercises, day) {
 export function isStrengthDay(exercises, blocks) {
   return blocks.some(({ category }) => exercises[category]?.strength)
 }
+
+/** Move value for a block dropped from the week rather than sent to a day. */
+export const SKIP = 'skip'
+
+/** Moves are keyed by the block's scheduled day, the same day its completion keys use. */
+export const moveKey = (sourceDay, category) => `${sourceDay}-${category}`
+
+/**
+ * Only a block whose scheduled exercises are all day-gated can move to another
+ * day. Moving a daily exercise would land it on a day that already has it.
+ */
+export const isGated = (block, scheduled) => scheduled.every(({ ex }) => ex.days || block?.days)
+
+/**
+ * Applies `moves` ({ [moveKey]: day | SKIP }) to the static schedule:
+ *   { [day]: { blocks: [{ category, sourceDay, exercises }], away: [{ category, sourceDay, to }] } }
+ *
+ * A moved block keeps `sourceDay` as its storage identity, so moving it never
+ * touches completion or notes and two instances of one block can share a day.
+ * `away` lists what left `day`. Entries that no longer match the schedule are
+ * ignored, so a stale move can't hide or invent a block.
+ */
+export function resolveSchedule(baseByDay, moves, categoryOrder) {
+  const resolved = Object.fromEntries(DAYS.map((day) => [day, { blocks: [], away: [] }]))
+  DAYS.forEach((sourceDay) => {
+    baseByDay[sourceDay].forEach(({ category, exercises }) => {
+      const to = moves[moveKey(sourceDay, category)]
+      const valid = to === SKIP || (DAYS.includes(to) && to !== sourceDay)
+      if (!valid) {
+        resolved[sourceDay].blocks.push({ category, sourceDay, exercises })
+        return
+      }
+      resolved[sourceDay].away.push({ category, sourceDay, to })
+      if (to !== SKIP) resolved[to].blocks.push({ category, sourceDay, exercises })
+    })
+  })
+  // Data order, with a day's own block ahead of one moved in beside it.
+  DAYS.forEach((day) => {
+    const rank = ({ category, sourceDay }) =>
+      categoryOrder.indexOf(category) * 2 + (sourceDay === day ? 0 : 1)
+    resolved[day].blocks.sort((a, b) => rank(a) - rank(b))
+  })
+  return resolved
+}
+
+/** Strength days that sit next to another strength day, as { [day]: [neighbors] }. */
+export function strengthClashes(exercises, resolved) {
+  const strong = DAYS.map((day) => isStrengthDay(exercises, resolved[day].blocks))
+  const clashes = {}
+  DAYS.forEach((day, i) => {
+    if (!strong[i]) return
+    const neighbors = [DAYS[i - 1], DAYS[i + 1]].filter((d) => d && strong[DAYS.indexOf(d)])
+    if (neighbors.length > 0) clashes[day] = neighbors
+  })
+  return clashes
+}

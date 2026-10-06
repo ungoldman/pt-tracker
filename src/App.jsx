@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import DayCard from './components/DayCard'
 import DayPicker from './components/DayPicker'
 import DayView from './components/DayView'
@@ -8,14 +8,23 @@ import { TrackerContext } from './context/TrackerContext'
 import { exercises } from './data'
 import { usePersistentState } from './hooks/usePersistentState'
 import { getTodayLabel } from './lib/dates'
-import { DAYS, getExercisesForDay, isStrengthDay } from './lib/schedule'
+import {
+  DAYS,
+  getExercisesForDay,
+  isStrengthDay,
+  moveKey,
+  resolveSchedule,
+  strengthClashes
+} from './lib/schedule'
 import { completionKey, dayStats } from './lib/stats'
 
 // The exercise data never changes at runtime, so resolve each day's schedule
-// once at module load instead of re-filtering on every render.
+// once at module load instead of re-filtering on every render. This is the
+// schedule as prescribed. Moves are applied on top of it (see `schedule`).
 const SCHEDULE_BY_DAY = Object.fromEntries(
   DAYS.map((day) => [day, getExercisesForDay(exercises, day)])
 )
+const CATEGORY_ORDER = Object.keys(exercises)
 
 // First-run defaults (localStorage wins once the user has a saved value):
 // follow the OS theme, and start phones in day view rather than a 7-up week.
@@ -31,6 +40,13 @@ const App = () => {
   const [completed, setCompleted] = usePersistentState('ptTrackerCompleted', {})
   const [notes, setNotes] = usePersistentState('ptTrackerNotes', {})
   const [viewMode, setViewMode] = usePersistentState('ptTrackerViewMode', DEFAULT_VIEW)
+  // Blocks moved to another day or skipped, { [moveKey]: day | SKIP }. Persisted
+  // because a move has to outlive a reload, which makes it the same hazard the
+  // collapse overrides were. So a move is always visible (a "from" tag where
+  // the block lands, a placeholder where it left) and resetWeek clears them all.
+  const [moves, setMoves] = usePersistentState('ptTrackerMoves', {})
+  const schedule = useMemo(() => resolveSchedule(SCHEDULE_BY_DAY, moves, CATEGORY_ORDER), [moves])
+  const strengthClash = useMemo(() => strengthClashes(exercises, schedule), [schedule])
   // Collapse overrides live only in memory. The intrinsic rule (a completed
   // block collapses, everything else is open) is always the baseline; an
   // override is a deliberate deviation from it — a manual peek or a bulk
@@ -107,6 +123,19 @@ const App = () => {
 
   const clearConfetti = useCallback(() => setConfettiKey(null), [])
 
+  // `to` is a day or SKIP. Null, or the block's own day, puts it back.
+  const moveBlock = useCallback(
+    (sourceDay, category, to) => {
+      setMoves((prev) => {
+        const next = { ...prev }
+        if (!to || to === sourceDay) delete next[moveKey(sourceDay, category)]
+        else next[moveKey(sourceDay, category)] = to
+        return next
+      })
+    },
+    [setMoves]
+  )
+
   const handleNoteChange = useCallback(
     (day, category, id, value) => {
       const key = completionKey(day, category, id)
@@ -158,13 +187,20 @@ const App = () => {
       setCompleted({})
       setJustCompleted(new Set())
       setNotes({})
+      setMoves({})
     }
   }
 
   const resetDay = (day) => {
     if (window.confirm(`Are you sure you want to reset all checkboxes for ${day}?`)) {
+      // Clears what the day shows, which after a move is not what its name prefixes.
+      const prefixes = schedule[day].blocks.map(({ sourceDay, category }) =>
+        completionKey(sourceDay, category, '')
+      )
       const stripDay = (map) =>
-        Object.fromEntries(Object.entries(map).filter(([key]) => !key.startsWith(`${day}-`)))
+        Object.fromEntries(
+          Object.entries(map).filter(([key]) => !prefixes.some((prefix) => key.startsWith(prefix)))
+        )
       setCompleted(stripDay)
       setNotes(stripDay)
       setJustCompleted(new Set())
@@ -189,8 +225,8 @@ const App = () => {
     } else {
       const overrides = {}
       DAYS.forEach((day) => {
-        SCHEDULE_BY_DAY[day].forEach(({ category }) => {
-          overrides[collapseKey(day, category)] = next === 'all'
+        schedule[day].blocks.forEach(({ sourceDay, category }) => {
+          overrides[collapseKey(sourceDay, category)] = next === 'all'
         })
       })
       setCollapsedCategories(overrides)
@@ -204,12 +240,12 @@ const App = () => {
     return [DAYS[prevIdx], DAYS[todayIdx], DAYS[nextIdx]]
   }
 
-  const todayBlocks = SCHEDULE_BY_DAY[todayLabel]
-  const stats = dayStats(completed, todayBlocks, todayLabel)
+  const todayBlocks = schedule[todayLabel].blocks
+  const stats = dayStats(completed, todayBlocks)
   const threeDayWindow = getThreeDayWindow()
   const weekSummary = DAYS.map((day) => ({
     day,
-    pct: dayStats(completed, SCHEDULE_BY_DAY[day], day).pct
+    pct: dayStats(completed, schedule[day].blocks).pct
   }))
 
   const jumpToDay = useCallback(
@@ -236,7 +272,10 @@ const App = () => {
     openNotes,
     closeNotes,
     discardNote,
-    handleNoteChange
+    handleNoteChange,
+    schedule,
+    moveBlock,
+    strengthClash
   }
 
   return (
@@ -263,7 +302,13 @@ const App = () => {
           {viewMode === 'week' ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 lg:gap-1 flex-1 min-h-0">
               {DAYS.map((day) => (
-                <DayCard key={day} day={day} blocks={SCHEDULE_BY_DAY[day]} highlightToday />
+                <DayCard
+                  key={day}
+                  day={day}
+                  blocks={schedule[day].blocks}
+                  away={schedule[day].away}
+                  highlightToday
+                />
               ))}
             </div>
           ) : viewMode === 'day' ? (
@@ -276,14 +321,15 @@ const App = () => {
               <DayView
                 day={selectedDay}
                 todayLabel={todayLabel}
-                blocks={SCHEDULE_BY_DAY[selectedDay]}
+                blocks={schedule[selectedDay].blocks}
+                away={schedule[selectedDay].away}
               />
             </>
           ) : (
             <div className="flex flex-col md:flex-row w-full gap-4 flex-1 min-h-0 items-stretch">
               {threeDayWindow.map((day) => (
                 <div key={day} className="flex-1 min-w-0 h-full">
-                  <DayCard day={day} blocks={SCHEDULE_BY_DAY[day]} />
+                  <DayCard day={day} blocks={schedule[day].blocks} away={schedule[day].away} />
                 </div>
               ))}
             </div>

@@ -32,19 +32,20 @@ export function categoryStats(completed, day, category, scheduled) {
 }
 
 /**
- * Aggregate stats for a day's scheduled blocks. Counts only scheduled
+ * Aggregate stats for a day's resolved blocks. Counts only scheduled
  * exercises, so orphaned localStorage keys (removed categories/exercises, or
- * other days sharing the weekday label) can't inflate the totals.
+ * other days sharing the weekday label) can't inflate the totals. Each block
+ * is keyed by its `sourceDay`, which differs from the day it shows on once moved.
  */
-export function dayStats(completed, blocks, day) {
+export function dayStats(completed, blocks) {
   let totalToday = 0
   let completedToday = 0
   let priorityTotal = 0
   let priorityDone = 0
-  blocks.forEach(({ category, exercises }) => {
+  blocks.forEach(({ category, sourceDay, exercises }) => {
     exercises.forEach(({ ex }) => {
       totalToday += 1
-      const done = isCompleted(completed, day, category, exerciseId(ex))
+      const done = isCompleted(completed, sourceDay, category, exerciseId(ex))
       if (done) completedToday += 1
       if (ex.priority) {
         priorityTotal += 1
