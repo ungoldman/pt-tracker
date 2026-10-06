@@ -45,14 +45,17 @@ src/
     TrackerContext.js      shared state + handlers for the day/block/row tree
   components/
     Header.jsx             sticky top bar: stats chips, day-type badge, week dots, controls
-    DayPicker.jsx          day selector for day view (compact grid on phones, pills above)
+    DayPicker.jsx          day selector (progress chips on phones, pills from sm up)
     DayView.jsx            one day's blocks in fixed lane columns (day view)
     DayCard.jsx            one day as a card of blocks (week and 3-day views)
     DayLabel.jsx           day name + date, brightens for the selected day
     CategoryBlock.jsx      one block: collapsible header, progress bar, exercise rows
     AwayBlock.jsx          placeholder for a block moved off a day or skipped
-    MovePanel.jsx          inline day picker for moving or skipping
-    DayMoves.jsx           day-level moves: send strength out, pull unfinished blocks in
+    MovePanel.jsx          day picker for moving or skipping one block
+    Popover.jsx            floating panel anchored to a control, used by both move panels
+    DayMoves.jsx           day-level moves: pull unfinished blocks in, send moved ones back
+    MissedYesterday.jsx    offer at the top of today to pull in yesterday's unfinished blocks
+    WeekOverview.jsx       week view on phones: a row per day, a progress bar per block
     ExerciseRow.jsx        one exercise row: toggle, badges, note editor (memoized)
     Footer.jsx             sticky hold timer (prep, hold, rest)
     Confetti.jsx           completion confetti burst (self-contained, owns its keyframes)
@@ -154,8 +157,10 @@ under only for layout. `CategoryBlock` takes them as `day` and `shownDay`.
 Only a block whose scheduled exercises are all day-gated gets day targets. A
 daily block can only be skipped. The per-block control shows in day and 3-day
 views. Week view has the day-level control and the placeholders. The day-level
-control works both ways: it sends the day's strength blocks out as one session,
-and it pulls unfinished movable blocks in from other days.
+control pulls unfinished movable blocks in from other days and sends back what
+was moved in. It never sends a day's blocks out to a third day. Strength blocks
+move as one session per scheduled day, so a session parked on another day stays
+separate from that day's own.
 
 Moves are persisted overrides, the same shape of hazard as the collapse scar
 above. The guards are that a move is always visible in both places, entries that
@@ -165,10 +170,36 @@ clears the checks a day shows and leaves moves alone.
 Weeks have no identity. Keys are weekday names, so a block cannot move into next
 week.
 
+## Phones
+
+Below `sm` the layout changes shape rather than just reflowing, because the
+phone is what gets used mid-exercise with one hand busy.
+
+- Day navigation is the `DayPicker` chips alone. They carry each day's progress,
+  so the header's week dots and day view's headline are hidden there, and the
+  day-moves button sits at the end of the chip row.
+- Rows stack the sets under the name. Week view is `WeekOverview`, not seven
+  stacked cards.
+- The hold-timer bar is not sticky. It sits at the end of the page.
+- Small controls get a 44px hit area on touch screens from the `hit-44` class
+  in `index.css`, which leaves their look alone. The element must be positioned.
+- Tooltips are hidden where there is no hover, since a tap would leave one stuck.
+- The note textarea is 16px. Anything smaller makes iOS Safari zoom on focus.
+
+Two behaviors apply at every width. In day view a block's header sticks under
+the app header while its rows scroll, offset by `--header-h`, which `Header`
+publishes. And finishing a block scrolls the next unfinished one into view. Both
+depend on day view's block list not being a scroll container below `lg`.
+
 ## Hold timer and audio (Footer)
 
 The hold timer cycles prep, hold, then a rest break, looping until stopped, all
-wall-clock based so a backgrounded tab does not drift. Audio is WebAudio, in
+wall-clock based so a backgrounded tab does not drift. It holds a screen wake
+lock while running. An exercise with timed holds of 10s or more gets a timer
+button on its row (`holdPlan` in `lib/duration.js`). That run uses the
+exercise's own hold length and count, stops itself after the last hold, and
+checks the exercise off. Timer state stays inside `Footer`, reached through a
+ref from `App`, so its ticking never re-renders the list. Audio is WebAudio, in
 `src/lib/audio.js`. The interval chime plays the singing-bowl
 recordings from `public/` with a synthesized bowl as fallback. The rest cue is a
 synthesized triple temple-block tap with no shipped asset. If you retune a cue,
