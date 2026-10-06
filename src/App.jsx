@@ -4,6 +4,7 @@ import DayPicker from './components/DayPicker'
 import DayView from './components/DayView'
 import Footer from './components/Footer'
 import Header from './components/Header'
+import UpdateNotice from './components/UpdateNotice'
 import WeekOverview from './components/WeekOverview'
 import { TrackerContext } from './context/TrackerContext'
 import { exercises } from './data'
@@ -362,6 +363,7 @@ const App = () => {
         </div>
 
         <Footer darkMode={darkMode} ref={timerRef} />
+        <UpdateNotice darkMode={darkMode} />
       </div>
     </TrackerContext.Provider>
   )
