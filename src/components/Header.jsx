@@ -213,7 +213,7 @@ export default function Header({
             {resetMenuOpen && (
               <div
                 role="menu"
-                className={`absolute right-0 top-full mt-1 min-w-[11rem] rounded-lg border shadow-lg overflow-hidden ${
+                className={`absolute right-0 top-full z-50 mt-1 min-w-[11rem] rounded-lg border shadow-lg overflow-hidden ${
                   darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
                 }`}
               >
