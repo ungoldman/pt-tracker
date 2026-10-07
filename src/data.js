@@ -1,4 +1,13 @@
-import { Dumbbell, Hand, Infinity as InfinityIcon, Star, Sunrise, Target } from 'lucide-react'
+import {
+  Dumbbell,
+  Footprints,
+  Hand,
+  Infinity as InfinityIcon,
+  PersonStanding,
+  Star,
+  Sunrise,
+  Target
+} from 'lucide-react'
 
 // Blocks keyed by name, in display order. Each carries its layout identity:
 // `lane` (fixed day-view column), `icon`, and `accent` (color token, resolved
@@ -63,26 +72,24 @@ export const exercises = {
       { name: 'Serratus Activation with Foam Roll', sets: 2, hold: '30s' }
     ]
   },
-  personal: {
-    displayName: 'Personal Goals',
-    lane: 2,
-    accent: 'blue',
-    noEstimate: true,
-    icon: Target,
-    exercises: [
-      { name: 'Daily Steps', target: 5000 },
-      { name: 'Sit Ups', sets: 2, reps: 30 }
-    ]
-  },
-  '10k': {
-    displayName: '10k Training',
+  cardio: {
+    displayName: 'Cardio',
     lane: 2,
     accent: 'red',
     noEstimate: true,
-    days: MWF,
-    icon: Target,
+    icon: Footprints,
     exercises: [
-      { name: 'Run', target: '2k+', days: STT },
+      { name: 'Daily Steps', target: 5000 },
+      { name: 'Run', target: '2k+', days: STT }
+    ]
+  },
+  legs: {
+    displayName: 'Legs',
+    lane: 2,
+    accent: 'yellow',
+    days: MWF,
+    icon: PersonStanding,
+    exercises: [
       { name: 'Squats', sets: 3, reps: 10, link: 'https://www.youtube.com/watch?v=DlS-GAF8Edg' },
       {
         name: 'Reverse Lunges (each leg)',
@@ -101,11 +108,21 @@ export const exercises = {
         sets: 3,
         reps: 10,
         link: 'https://www.youtube.com/watch?v=tdmSB0q21ic'
-      },
+      }
+    ]
+  },
+  core: {
+    displayName: 'Core',
+    lane: 2,
+    accent: 'blue',
+    icon: Target,
+    exercises: [
+      { name: 'Sit Ups', sets: 2, reps: 30 },
       {
         name: 'Dead Bugs (each side)',
         sets: 3,
         reps: 10,
+        days: MWF,
         link: 'https://www.youtube.com/watch?v=bxn9FBrt4-A'
       }
     ]
