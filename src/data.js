@@ -37,9 +37,10 @@ export const exercises = {
     lane: 0,
     accent: 'indigo',
     icon: Hand,
-    // Hand PT home program as revised 10-16. `perDay` is displayed but tracked
-    // as one check. The putty and band work is prescribed 3-7x a week and kept
-    // daily here.
+    // Hand PT home program as revised 10-16, plus the 10-29 splint, foam roll,
+    // and heat. `perDay` is displayed but tracked as one check. The putty and
+    // band work is prescribed 3-7x a week and kept daily here. Heat is
+    // prescribed only when sore but tracked daily.
     exercises: [
       { name: 'Volar Hand Self Massage', sets: 3, reps: 10, perDay: 3 },
       { name: 'Hand AROM PIP Side Blocking', reps: 10, hold: '2s', perDay: 3 },
@@ -57,7 +58,10 @@ export const exercises = {
       { name: 'Finger Pinch and Pull with Putty', sets: 3, reps: 10 },
       { name: 'Quick Finger Spreading with Rubber Band', sets: 3, reps: 10 },
       { name: 'Seated Finger MP Flexion with Putty', sets: 3, reps: 10 },
-      { name: 'Finger Adduction with Putty', sets: 3, reps: 10 }
+      { name: 'Finger Adduction with Putty', sets: 3, reps: 10 },
+      { name: 'Hand Foam Roll' },
+      { name: 'Splint While Typing' },
+      { name: 'Heat When Sore' }
     ]
   },
   stretch: {
