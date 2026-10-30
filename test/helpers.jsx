@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import App from '../src/App'
 
-/** A Tuesday. The app keys everything off the weekday, so tests pin the date. */
+/** A Tuesday. History is keyed by date, so tests pin it. */
 export const TUESDAY = new Date('2026-10-06T12:00:00')
 
 /** Freeze `Date` only, leaving real timers running for Testing Library. */
@@ -113,17 +113,24 @@ export const click = (el) => fireEvent.click(el)
 /** The clickable row for an exercise, by its displayed name. */
 export const row = (name, index = 0) => screen.getAllByText(name)[index].closest('[role="button"]')
 
-/** The desktop day pill, which reads as the day name followed by its date. */
-export const pill = (day) =>
-  screen.getByRole('button', { name: new RegExp(`^${day}\\s?[A-Z][a-z]{2} \\d+$`) })
-
 export const button = (name, index = 0) => screen.getAllByRole('button', { name })[index]
 
-/** Completed storage keys, read back from localStorage. */
-export const savedChecks = () =>
-  Object.entries(JSON.parse(localStorage.getItem('ptTrackerCompleted')))
-    .filter(([, done]) => done)
-    .map(([key]) => key.replace(/-[0-9a-z]+$/, ''))
-    .sort()
+/** The saved history, read back from localStorage. */
+export const savedHistory = () => JSON.parse(localStorage.getItem('ptTrackerHistory'))
 
-export const savedMoves = () => JSON.parse(localStorage.getItem('ptTrackerMoves'))
+/** Seed history before mounting. */
+export const seedHistory = (history) =>
+  localStorage.setItem('ptTrackerHistory', JSON.stringify(history))
+
+/** Start a session from the picker by name and size. */
+export const startSession = (name, size = 'full') =>
+  click(screen.getByRole('button', { name: new RegExp(`^Start ${name}, ${size},`) }))
+
+/** Open a session from Today's full list, in cards or as a list. */
+export function openSession(name, { size = 'full', list = false } = {}) {
+  click(screen.getByRole('button', { name: 'Pick something else' }))
+  const more = screen.queryByRole('button', { name: /^All sessions/ })
+  if (more) click(more)
+  startSession(name, size)
+  if (list) click(screen.getByRole('button', { name: 'List' }))
+}

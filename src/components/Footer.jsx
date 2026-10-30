@@ -21,12 +21,12 @@ const BREAK_SECONDS = 10
  * hold; three soft temple-block taps mark the end of the hold / start of rest.
  * Wall-clock based so background-tab throttling doesn't drift it.
  *
- * An exercise row can also start it through `ref.current.start(secs, plan)`
+ * An exercise card can also start it through `ref.current.start(secs, plan)`
  * with a `plan` of { count, label, onDone }. That run is named after the
  * exercise, stops itself after `count` holds, and then calls `onDone`.
  *
- * The bar is sticky from sm up. On phones it sits at the end of the page, since
- * rows start their own timers there and the screen is short.
+ * The free-running bar shows from lg up only. On phones the tab bar holds the
+ * foot of the screen, and every prescribed hold starts from its own card.
  */
 export default function Footer({ darkMode, ref }) {
   const [duration, setDuration] = useState(null) // the selected interval; null = idle
@@ -252,7 +252,7 @@ export default function Footer({ darkMode, ref }) {
         )}
 
       <footer
-        className={`w-full border-t sm:sticky sm:bottom-0 z-40 ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
+        className={`hidden lg:block w-full border-t lg:sticky lg:bottom-0 z-40 ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
       >
         <div className="px-3 sm:px-6 py-3">
           <div

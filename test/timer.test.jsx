@@ -1,6 +1,16 @@
 import { act, fireEvent, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { button, click, fakeAudio, flush, mountApp, row, savedChecks, tick } from './helpers'
+import {
+  button,
+  click,
+  fakeAudio,
+  flush,
+  mountApp,
+  openSession,
+  row,
+  savedHistory,
+  tick
+} from './helpers'
 
 let audio
 
@@ -14,6 +24,11 @@ beforeEach(() => {
 const dialog = () => screen.queryByRole('dialog', { name: 'Hold timer' })
 const reading = () => dialog().textContent.replace(/\s+/g, ' ')
 const startFooter = (label) => click(screen.getByRole('button', { name: label }))
+// What the open push session has checked off.
+const checked = () =>
+  Object.entries(savedHistory()['2026-10-06'].sessions.push.done)
+    .filter(([, done]) => done)
+    .map(([key]) => key.replace(/-[0-9a-z]+$/, ''))
 
 describe('the hold timer from the footer', () => {
   it.each([false, true])('runs prep, hold, and rest until stopped (dark: %s)', async (dark) => {
@@ -71,10 +86,21 @@ describe('the hold timer from the footer', () => {
   })
 })
 
-describe('the hold timer from an exercise row', () => {
+describe('the hold timer from an exercise card', () => {
+  // Push day's cards, to the one named.
+  const toCard = (name) => {
+    openSession('Push day')
+    while (
+      document.querySelector('article[aria-hidden="false"]').getAttribute('aria-label') !== name
+    ) {
+      click(button('Next exercise'))
+    }
+  }
+
   it('runs that exercise’s own holds, then stops and checks it off', async () => {
     mountApp()
-    click(button('Start hold timer: 2 x 10s'))
+    toCard('Sleeper Stretch')
+    click(button('Start holds, 2 × 10s'))
     await flush()
     expect(reading()).toContain('Sleeper Stretch')
     tick(5000)
@@ -83,33 +109,54 @@ describe('the hold timer from an exercise row', () => {
     expect(reading()).toContain('Rest — next up rep 2')
     tick(10000)
     expect(reading()).toContain('Hold — rep 2 of 2')
-    expect(savedChecks()).toEqual([])
+    expect(checked()).toEqual([])
     tick(10000)
     expect(dialog()).toBeNull()
-    expect(savedChecks()).toEqual(['Tuesday-mobility'])
+    expect(checked()).toEqual(['mobility'])
+    expect(screen.queryByRole('button', { name: /^Start holds/ })).toBeNull()
   })
 
-  it('leaves an exercise that is already checked alone', () => {
+  it('leaves an exercise checked by hand during the run alone', () => {
     mountApp()
-    click(row('Sleeper Stretch'))
-    click(button('Start hold timer: 2 x 10s'))
+    toCard('Sleeper Stretch')
+    click(button('Start holds, 2 × 10s'))
+    click(button('Tap when done'))
     // One tick per phase: each phase change needs a render before the next.
     for (const ms of [5000, 10000, 10000, 10000]) tick(ms)
     expect(dialog()).toBeNull()
-    expect(savedChecks()).toEqual(['Tuesday-mobility'])
+    expect(checked()).toEqual(['mobility'])
   })
 
   it('does not check anything off when stopped early', () => {
     mountApp()
-    click(button('Start hold timer: 3 x 30s'))
+    toCard('Doorway Stretch')
+    click(button('Start holds, 3 × 30s'))
     tick(5000)
     click(screen.getByRole('button', { name: 'Stop' }))
-    expect(savedChecks()).toEqual([])
-    // A fresh footer run carries no count or name over from the row.
+    expect(checked()).toEqual([])
+    // A fresh footer run carries no count or name over from the card.
     startFooter('10s')
     tick(5000)
     expect(reading()).toContain('10-second holds')
     expect(reading()).not.toContain(' of ')
+  })
+
+  it('starts from a row in the list too', async () => {
+    mountApp()
+    openSession('Push day', { list: true })
+    click(button('Start hold timer: 2 x 10s'))
+    await flush()
+    expect(reading()).toContain('Sleeper Stretch')
+  })
+
+  it('checks off a daily exercise the same way', () => {
+    mountApp()
+    click(button(/^Hand passes/))
+    click(screen.getByRole('region', { name: 'Once a day' }).querySelector('button'))
+    click(button('Start holds, 2 × 30s'))
+    for (const ms of [5000, 30000, 10000, 30000]) tick(ms)
+    expect(dialog()).toBeNull()
+    expect(Object.values(savedHistory()['2026-10-06'].daily)).toEqual([true])
   })
 })
 

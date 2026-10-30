@@ -1,7 +1,7 @@
 # Agent Guidelines
 
-pt-tracker is a private Vite + React app for tracking my daily shoulder PT. One
-user, runs locally, not published. It loosely follows my package-standard
+pt-tracker is a private Vite + React app for tracking my shoulder and hand PT
+home programs. One user, runs locally, not published. It loosely follows my package-standard
 conventions, but it is an app rather than an npm library, so the release,
 TypeScript, and coverage machinery from that standard does not apply here.
 
@@ -69,35 +69,31 @@ manager and `package-lock.json` is committed. The `version` field in
 ```
 src/
   main.jsx                 entry, mounts App
-  App.jsx                  container: persistent state, handlers, context provider, view switch
-  data.js                  exercise blocks (content, see the data model below)
+  App.jsx                  container: persistent state, handlers, context provider, tab and player switch
+  data.js                  exercise blocks, the daily routine, sessions, and day limits
   context/
-    TrackerContext.js      shared state + handlers for the day/block/row tree
+    TrackerContext.js      shared state + handlers for the tab, player, and row tree
   components/
-    Header.jsx             sticky top bar: stats chips, day-type badge, week dots, controls
-    DayPicker.jsx          day selector (progress chips on phones, pills from sm up)
-    DayView.jsx            one day's blocks in fixed lane columns (day view)
-    DayCard.jsx            one day as a card of blocks (week and 3-day views)
-    DayLabel.jsx           day name + date, brightens for the selected day
-    CategoryBlock.jsx      one block: collapsible header, progress bar, exercise rows
-    AwayBlock.jsx          placeholder for a block moved off a day or skipped
-    MovePanel.jsx          day picker for moving or skipping one block
-    Popover.jsx            floating panel anchored to a control, used by both move panels
-    UpdateNotice.jsx       "new version ready" notice, accepts a waiting build
-    DayMoves.jsx           day-level moves: pull unfinished blocks in, send moved ones back
-    MissedYesterday.jsx    offer at the top of today to pull in yesterday's unfinished blocks
-    WeekOverview.jsx       week view on phones: a row per day, a progress bar per block
+    Header.jsx             title, week count, theme, resets, and the tab bar
+    TodayTab.jsx           Up next, today's sessions, daily goals, the full picker on request
+    HandTab.jsx            hand passes, the once-a-day hand work, as-needed items
+    WeekTab.jsx            week strip, a chosen day's detail, what the week has left
+    Player.jsx             one run (session, hand pass, once-a-day work) as cards or a list
+    SessionPicker.jsx      every session ranked for a day, full or short
+    DayLog.jsx             a day's sessions with Resume or Open
+    WeekStrip.jsx          Monday to Sunday, one mark per session, days open on tap
+    ItemGroup.jsx          a block's exercises as rows under its accent header
     ExerciseRow.jsx        one exercise row: toggle, badges, note editor (memoized)
-    Footer.jsx             sticky hold timer (prep, hold, rest)
+    Footer.jsx             hold timer (prep, hold, rest) and its free-running bar
+    UpdateNotice.jsx       "new version ready" notice, accepts a waiting build
     Confetti.jsx           completion confetti burst (self-contained, owns its keyframes)
   hooks/
     usePersistentState.js  useState mirrored to localStorage (init + persist)
     useDismiss.js          close on Escape or outside press
   lib/
-    schedule.js            DAYS, getExercisesForDay, isStrengthDay, resolveSchedule (moves)
-    stats.js               exerciseId, completionKey, isCompleted, categoryStats, dayStats
-    dates.js               today's weekday + per-day date labels
-    duration.js            per-block time estimates
+    plan.js                dates, session items, credit, ranking, Up next, daily parts (pure)
+    stats.js               exerciseId, the storage hash of an exercise name
+    duration.js            time estimates and hold plans
     blockStyle.js          per-block accent color + icon
     exerciseDisplay.jsx    name formatting + equipment/priority icon badges
     audio.js               hold-timer WebAudio cues (bowl chime, temple-block rest)
@@ -106,7 +102,7 @@ src/
 test/
   setup.js                 jsdom gaps and the fixture-program swap, run before every file
   helpers.jsx              mountApp, time stepping, queries, the fake AudioContext
-  fixtures/program.js      stand-in exercise program with one of every data shape
+  fixtures/program.js      stand-in program with one of every data shape
   *.test.js(x)             one file per area
 scripts/
   generate-doodles.mjs     generates the background wallpaper tile (public/doodles.svg)
@@ -114,120 +110,141 @@ public/                    static assets: bowl recordings, web manifest, doodles
 ```
 
 `App.jsx` owns the persistent state and handlers and exposes them through
-`TrackerContext`, so the day, block, and row components read what they need
+`TrackerContext`, so the tabs, the player, and the rows read what they need
 without prop-drilling. `ExerciseRow` is the deliberate exception. It takes
 explicit props and is wrapped in `React.memo`, with `useCallback`-stable
-handlers, so a note keystroke re-renders only the row being edited. The
-schedule is static, so each day's blocks are resolved once at module load
-(`SCHEDULE_BY_DAY`). What renders is that schedule with the week's moves applied
-(`resolveSchedule`, see Moves below).
+handlers, so a note keystroke re-renders only the row being edited. Everything
+that decides what to offer lives in `lib/plan.js` as pure functions over the
+history, so it is tested without the UI.
 
-## Exercise data model
+## Program data model
 
 ```js
 export const exercises = {
   Standing: {
-    displayName: 'Standing',   // header label
-    lane: 1,                   // fixed day-view column
+    displayName: 'Standing',   // header and card label
     icon: Dumbbell,            // lucide icon
     accent: 'purple',          // color token, see lib/blockStyle.js
-    days: MWF,                 // optional: whole block runs only these days
-    strength: true,            // optional: marks the day as a strength day in the header
     minutes: 10,               // optional: override the computed time estimate
     noEstimate: true,          // optional: hide the time estimate entirely
     exercises: [
-      { name, sets, reps },                  // omit days → daily
-      { name, sets, reps, days: MWF },       // per-exercise schedule wins over block
+      { name, sets, reps },                  // plain
       { name, sets, reps, hold: '3s' },      // reps with a hold each
       { name, sets, hold: '30s' },           // holds instead of reps
       { name, target: 5000 },                // goal-style item
-      { name, sets, reps, priority: true },  // star icon, counts toward the header chip
-      { name, sets, reps, link },            // adds a video link after the name
-      { name, sets, reps, perDay: 3 },       // shows "3x/day", still one check
+      { name, target: '2k+', perWeek: 3 },   // goal counted across the week
+      { name, sets, reps, priority: true },  // star icon, makes the short session
+      { name, sets, reps, link },            // adds a video link
+      { name, sets, reps, perDay: 3 },       // a daily item done in passes
+      { name, ambient: true },               // worn or used as needed, never a task
     ],
   },
 }
+
+export const daily = ['hand', 'cardio']
+
+export const limits = { sessionsPerDay: 2, strengthPerDay: 2 }
+
+export const sessions = [
+  {
+    id: 'standing',            // storage identity, keep stable
+    name: 'Standing shoulder',
+    warmup: 'warmup',          // optional block done first, left out of a short session
+    blocks: ['Standing'],      // the work
+    perWeek: 2,                // weekly target
+    strength: true,            // optional: dumbbell work, see the rest rules below
+    stretches: ['Shoulder IR Stretch', 'Snow Angels on Foam Roll'], // warm-down, by name
+  },
+]
 ```
 
-Blocks render in key order. Scheduling resolves in order: a per-exercise `days`
-wins, else the block's `days`, else daily. The dumbbell blocks (`Sidelying`,
-`Supine`, `Standing`, `Seated`) are gated to Mon/Wed/Fri for 48h recovery
-between sessions, and `Resistance` runs Tue/Thu/Sat. Warm up, hand, and
-stretches run daily.
+Blocks hold content only. When something is done comes from `daily` and
+`sessions`. A daily block's exercises split four ways (`dailyParts`): `perDay`
+items run as passes, `target` items are goals, `ambient` items are marks, and
+the rest run once a day. A short session is the starred work, or the first half
+when fewer than two are starred, plus the first stretch. `test/data.test.js`
+checks every block is used somewhere and every stretch name resolves.
 
-Block keys and exercise names are both storage identity (see below). The
-position blocks store names without the position word (`Flexion with Dumbbell
-(3)` in `Standing`), because that is what the old name-matching layout hashed.
+Block keys and exercise names are storage identity (see below), as is a
+session's `id`. The position blocks store names without the position word
+(`Flexion with Dumbbell (3)` in `Standing`), because that is what the old
+name-matching layout hashed.
+
+## Planning
+
+A session counts its size (1 for full, 0.5 for short) times the share of its
+exercises checked off, so stopping early counts what was done and only
+finishing everything earns the whole size. A week runs Monday to Sunday and
+its credit resets on Monday. How long since a session was last done reads from
+the whole history, so it carries across weeks.
+
+`rankSessions` orders a day's sessions by the share of each weekly target
+still open, then by how long since each was done. Strength rests the day after
+strength earned credit, and once a day has `strengthPerDay` strength sessions.
+A resting session drops out of the offer but can still be picked from the full
+list. Past `sessionsPerDay`, Up next stops offering sessions.
+
+`upNext` picks the one thing Today leads with, in order: finish an open
+session, catch up a hand pass that is due (one by 11:00, two by 16:00), the top
+session while the day has room, any pass left, the once-a-day work, rest. The
+pass times are a habit cue rather than a rule. Only the next pass can be
+started, so they stay spread through the day.
 
 ## State and persistence
 
-Durable state goes through `usePersistentState`: dark mode, completed, notes,
-view mode. Completion and notes are keyed `${day}-${category}-${exerciseId}`,
-where `day` is the weekday name and `exerciseId` is a short hash of the exercise
-name (FNV-1a, see `stats.js`). Keying off the name hash rather than array
-position means reordering or inserting exercises keeps existing checkmarks
-intact. Renaming an exercise or its block drops its state, which is an accepted
-trade. A data refactor that should not drop state can be checked by diffing
-every resolved completion key before and after.
+Durable state goes through `usePersistentState`: dark mode, history, notes.
+`ptTrackerHistory` is one map keyed by local date (`YYYY-MM-DD`):
 
-Ephemeral or derived UI state stays in plain `useState` and is never persisted.
-This rule has a scar behind it: section-collapse overrides used to be persisted,
-and stale entries silently shadowed the intrinsic "completed blocks collapse"
-behavior across reloads. Section collapse now works like this. A completed block
-collapses (the intrinsic rule, always). The header control applies momentary
-bulk actions (collapse all, expand all, reset to default). Completing a block
-clears its override, so finishing a block always collapses it no matter which
-bulk action ran last.
+```js
+{ '2026-10-29': {
+    daily: { [itemKey]: true },             // or a pass count for a perDay item
+    sessions: { [id]: { size, total, done: { [itemKey]: true }, finished } }
+} }
+```
 
-## Moves
+`itemKey` is `${category}-${exerciseId}`, where `exerciseId` is a short hash of
+the exercise name (FNV-1a, see `stats.js`). Keying off the name hash rather than
+array position means reordering or inserting exercises keeps existing checks.
+Renaming an exercise, its block, or a session's `id` drops its state, which is
+an accepted trade. An entry records `total` when started, so its credit does
+not shift when the program is revised. History older than ten weeks is pruned
+on load.
 
-A block can be moved to another day or skipped for the week. Moves are a
-persisted map, `ptTrackerMoves`, keyed `${sourceDay}-${category}` with a
-destination day or `skip` as the value. `resolveSchedule` applies it to the
-static schedule and gives each day its `blocks` and an `away` list of what left.
+`ptTrackerExerciseNotes` holds one note per exercise, keyed by `itemKey`, so a
+note follows the exercise wherever it shows up. The first run of this model
+folded the old per-weekday `ptTrackerNotes` into it, latest day winning. The
+older keys (`ptTrackerCompleted`, `ptTrackerMoves`, `ptTrackerViewMode`) are no
+longer read and are left in place.
 
-A moved block keeps its scheduled day as storage identity. Monday's `Standing`
-shown on Tuesday still reads and writes `Monday-Standing-*`, so a move never
-touches completion or notes and undoing it is deleting one map entry. Every
-resolved block carries `sourceDay`. Use that for keys, and the day it renders
-under only for layout. `CategoryBlock` takes them as `day` and `shownDay`.
+Ephemeral or derived UI state stays in plain `useState` and is never persisted:
+the tab, the day the week tab shows, the open run, and the player's card. This
+rule has a scar behind it: section-collapse overrides used to be persisted, and
+stale entries silently shadowed the intended behavior across reloads.
 
-Only a block whose scheduled exercises are all day-gated gets day targets. A
-daily block can only be skipped. The per-block control shows in day and 3-day
-views. Week view has the day-level control and the placeholders. The day-level
-control pulls unfinished movable blocks in from other days and sends back what
-was moved in. It never sends a day's blocks out to a third day. Strength blocks
-move as one session per scheduled day, so a session parked on another day stays
-separate from that day's own.
+## Phones and desktop
 
-Moves are persisted overrides, the same shape of hazard as the collapse scar
-above. The guards are that a move is always visible in both places, entries that
-no longer match the schedule are ignored, and Reset week clears them. Reset day
-clears the checks a day shows and leaves moves alone.
+The phone is what gets used mid-exercise with one hand busy, so the layout is
+one job per screen.
 
-Weeks have no identity. Keys are weekday names, so a block cannot move into next
-week.
-
-## Phones
-
-Below `sm` the layout changes shape rather than just reflowing, because the
-phone is what gets used mid-exercise with one hand busy.
-
-- Day navigation is the `DayPicker` chips alone. They carry each day's progress,
-  so the header's week dots and day view's headline are hidden there, and the
-  day-moves button sits at the end of the chip row.
-- Rows stack the sets under the name. Week view is `WeekOverview`, not seven
-  stacked cards.
-- The hold-timer bar is not sticky. It sits at the end of the page.
+- The tabs sit in a bar at the foot of the screen, and hide while a run is
+  open. From `lg` up they move into the header and each tab lays out in two
+  columns.
+- The player shows one card at a time in a horizontal scroll-snap track. A tap
+  on the card's target checks it and moves on after `ADVANCE_MS`, so a second
+  tap cannot land on the next card. Swipes and the arrows move without
+  checking. A swipe is read only after `SETTLE_MS` of quiet, because the smooth
+  scroll an arrow starts fires scroll events on the way and reading one of
+  those pulls the card back. From `lg` up the run is listed beside the card,
+  and the arrow keys step through it.
+- The free-running hold-timer bar shows from `lg` up only. On phones every
+  prescribed hold starts from its own card.
 - Small controls get a 44px hit area on touch screens from the `hit-44` class
   in `index.css`, which leaves their look alone. The element must be positioned.
-- Tooltips are hidden where there is no hover, since a tap would leave one stuck.
 - The note textarea is 16px. Anything smaller makes iOS Safari zoom on focus.
 
-Two behaviors apply at every width. In day view a block's header sticks under
-the app header while its rows scroll, offset by `--header-h`, which `Header`
-publishes. And finishing a block scrolls the next unfinished one into view. Both
-depend on day view's block list not being a scroll container below `lg`.
+The tests cannot see any of this, since jsdom has no layout and no smooth
+scrolling. Check card movement on a phone or in Chrome after touching the
+player.
 
 ## Deploys and the service worker
 
@@ -256,8 +273,7 @@ Rules that keep it from biting:
 - Its scope is `/pt-tracker/`, and its cache is named for that scope. Cache
   Storage is shared by the whole origin, so anything that deletes caches must
   filter by scope.
-- Completion, notes, and moves are in localStorage, which the worker never
-  touches.
+- History and notes are in localStorage, which the worker never touches.
 - To back out, set `KILL_SERVICE_WORKER` in `vite.config.js` and deploy. That
   publishes `src/kill-sw.js` as `sw.js` and builds the app with no worker
   registration. The kill worker unregisters itself and deletes only this app's
@@ -273,7 +289,7 @@ Rules that keep it from biting:
 The hold timer cycles prep, hold, then a rest break, looping until stopped, all
 wall-clock based so a backgrounded tab does not drift. It holds a screen wake
 lock while running. An exercise with timed holds of 10s or more gets a timer
-button on its row (`holdPlan` in `lib/duration.js`). That run uses the
+button on its card and its row (`holdPlan` in `lib/duration.js`). That run uses the
 exercise's own hold length and count, stops itself after the last hold, and
 checks the exercise off. Timer state stays inside `Footer`, reached through a
 ref from `App`, so its ticking never re-renders the list. Audio is WebAudio, in

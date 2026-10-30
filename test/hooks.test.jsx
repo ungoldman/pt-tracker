@@ -25,6 +25,15 @@ describe('usePersistentState', () => {
     expect(renderHook(() => usePersistentState('k', 'fallback')).result.current[0]).toBe('fallback')
   })
 
+  it('calls a function default only when nothing is saved', () => {
+    const make = vi.fn(() => 'made')
+    expect(renderHook(() => usePersistentState('k', make)).result.current[0]).toBe('made')
+    expect(make).toHaveBeenCalledTimes(1)
+    localStorage.setItem('j', '"saved"')
+    expect(renderHook(() => usePersistentState('j', make)).result.current[0]).toBe('saved')
+    expect(make).toHaveBeenCalledTimes(1)
+  })
+
   it('keeps working when storage refuses the write', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new Error('quota')

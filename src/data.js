@@ -9,22 +9,16 @@ import {
   Target
 } from 'lucide-react'
 
-// Blocks keyed by name, in display order. Each carries its layout identity:
-// `lane` (fixed day-view column), `icon`, and `accent` (color token, resolved
-// by lib/blockStyle). Scheduling: a per-exercise `days` wins, else the block's
-// `days`, else daily. The `strength` blocks run Mon/Wed/Fri for ~48h shoulder
-// recovery between sessions, and Resistance runs on the days between.
+// Blocks keyed by name, in display order. Each carries an `icon` and an
+// `accent` (color token, resolved by lib/blockStyle). What runs when is not
+// here but in `daily` and `sessions` below, which name blocks by key.
 //
 // Completion and notes are keyed by block name plus a hash of the exercise
 // name (see lib/stats), so renaming either one drops its saved state.
-const MWF = ['Monday', 'Wednesday', 'Friday']
-const TTS = ['Tuesday', 'Thursday', 'Saturday']
-const STT = ['Sunday', 'Tuesday', 'Thursday']
 
 export const exercises = {
   warmup: {
     displayName: 'Warm Up',
-    lane: 0,
     accent: 'amber',
     icon: Sunrise,
     exercises: [
@@ -34,7 +28,6 @@ export const exercises = {
   },
   hand: {
     displayName: 'Hand',
-    lane: 0,
     accent: 'indigo',
     icon: Hand,
     // Hand PT home program as revised 10-16, plus the 10-29 splint, foam roll,
@@ -60,13 +53,12 @@ export const exercises = {
       { name: 'Seated Finger MP Flexion with Putty', sets: 3, reps: 10 },
       { name: 'Finger Adduction with Putty', sets: 3, reps: 10 },
       { name: 'Hand Foam Roll' },
-      { name: 'Splint While Typing' },
-      { name: 'Heat When Sore' }
+      { name: 'Splint While Typing', ambient: true },
+      { name: 'Heat When Sore', ambient: true }
     ]
   },
   stretch: {
     displayName: 'Stretch',
-    lane: 1,
     accent: 'teal',
     icon: Star,
     exercises: [
@@ -80,20 +72,17 @@ export const exercises = {
   },
   cardio: {
     displayName: 'Cardio',
-    lane: 2,
     accent: 'red',
     noEstimate: true,
     icon: Footprints,
     exercises: [
       { name: 'Daily Steps', target: 5000 },
-      { name: 'Run', target: '2k+', days: STT }
+      { name: 'Run', target: '2k+', perWeek: 3 }
     ]
   },
   legs: {
     displayName: 'Legs',
-    lane: 2,
     accent: 'yellow',
-    days: MWF,
     icon: PersonStanding,
     exercises: [
       { name: 'Squats', sets: 3, reps: 10, link: 'https://www.youtube.com/watch?v=DlS-GAF8Edg' },
@@ -119,7 +108,6 @@ export const exercises = {
   },
   core: {
     displayName: 'Core',
-    lane: 2,
     accent: 'blue',
     icon: Target,
     exercises: [
@@ -128,17 +116,13 @@ export const exercises = {
         name: 'Dead Bugs (each side)',
         sets: 3,
         reps: 10,
-        days: MWF,
         link: 'https://www.youtube.com/watch?v=bxn9FBrt4-A'
       }
     ]
   },
   Sidelying: {
     displayName: 'Sidelying',
-    strength: true,
-    lane: 0,
     accent: 'purple',
-    days: MWF,
     icon: Dumbbell,
     exercises: [
       { name: 'ER with Dumbbell (3)', sets: 3, reps: 10, priority: true },
@@ -148,10 +132,7 @@ export const exercises = {
   },
   Supine: {
     displayName: 'Supine',
-    strength: true,
-    lane: 0,
     accent: 'purple',
-    days: MWF,
     icon: Dumbbell,
     exercises: [
       { name: 'Flexion with Dumbbell (3)', sets: 3, reps: 10, priority: true },
@@ -164,10 +145,7 @@ export const exercises = {
   },
   Standing: {
     displayName: 'Standing',
-    strength: true,
-    lane: 1,
     accent: 'purple',
-    days: MWF,
     icon: Dumbbell,
     exercises: [
       { name: 'Flexion with Dumbbell (3)', sets: 2, reps: 10, priority: true },
@@ -193,10 +171,7 @@ export const exercises = {
   },
   Seated: {
     displayName: 'Seated',
-    strength: true,
-    lane: 2,
     accent: 'purple',
-    days: MWF,
     icon: Dumbbell,
     exercises: [
       { name: 'Bicep Curls with Rotation (5) with Dumbbell', sets: 3, reps: 10 },
@@ -208,9 +183,7 @@ export const exercises = {
   },
   Resistance: {
     displayName: 'Resistance',
-    lane: 1,
     accent: 'purple',
-    days: TTS,
     icon: InfinityIcon,
     exercises: [
       { name: 'Shoulder Extension with Resistance', sets: 3, reps: 10 },
@@ -221,3 +194,66 @@ export const exercises = {
     ]
   }
 }
+
+// Done every day, outside the session choice. An exercise with `perWeek`
+// shows up daily but counts toward a weekly number instead.
+export const daily = ['hand', 'cardio']
+
+// A day past `sessionsPerDay` sessions stops offering more unless asked, and
+// one with `strengthPerDay` strength sessions rests the shoulder for the rest
+// of it. Enough for a day, short of the whole week in one go.
+export const limits = { sessionsPerDay: 2, strengthPerDay: 2 }
+
+// One session is one sitting. Each day offers a few, ranked by what the week
+// still owes (see lib/plan). `perWeek` is the weekly target. `strength` marks
+// dumbbell work, which is not offered the day after another strength session.
+// `warmup` is a block done first and left out of a short session. `stretches`
+// names exercises from any block, done as a warm-down.
+export const sessions = [
+  {
+    id: 'sidelying',
+    name: 'Sidelying and seated shoulder',
+    warmup: 'warmup',
+    blocks: ['Sidelying', 'Seated'],
+    perWeek: 2,
+    strength: true,
+    stretches: ['Sleeper Stretch (+ reverse)', 'Cross Body IR Stretch with Towel']
+  },
+  {
+    id: 'lying',
+    name: 'Lying shoulder',
+    warmup: 'warmup',
+    blocks: ['Supine'],
+    perWeek: 2,
+    strength: true,
+    stretches: ['Corner Pec Minor Stretch', 'Serratus Activation with Foam Roll']
+  },
+  {
+    id: 'standing',
+    name: 'Standing shoulder',
+    warmup: 'warmup',
+    blocks: ['Standing'],
+    perWeek: 2,
+    strength: true,
+    stretches: ['Shoulder IR Stretch', 'Snow Angels on Foam Roll']
+  },
+  {
+    id: 'legs',
+    name: 'Legs and core',
+    blocks: ['legs', 'core'],
+    perWeek: 2,
+    stretches: ['Sleeper Stretch (+ reverse)', 'Shoulder IR Stretch']
+  },
+  {
+    id: 'bands',
+    name: 'Bands',
+    blocks: ['Resistance'],
+    perWeek: 2,
+    stretches: [
+      'Cross Body IR Stretch with Towel',
+      'Corner Pec Minor Stretch',
+      'Serratus Activation with Foam Roll',
+      'Snow Angels on Foam Roll'
+    ]
+  }
+]

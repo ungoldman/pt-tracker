@@ -6,17 +6,18 @@ import Confetti from './Confetti'
 
 /**
  * One exercise as a dense flat list row: completion toggle, badges, name,
- * sets/reps right-aligned on one line (day/3-day from sm up) or stacked under
- * the name (phones and narrow week columns), plus a note affordance with an
- * expandable editor and, for exercises built on timed holds, a button that
- * starts the hold timer with that exercise's own length and count, both in
- * day/3-day view. Presentational — all state reads and mutations come in as props.
- * Memoized so note keystrokes and confetti only re-render the affected row.
+ * sets/reps right-aligned on one line from sm up or stacked under the name on
+ * phones, plus a note affordance with an expandable editor and, for exercises
+ * built on timed holds, a button that starts the hold timer with that
+ * exercise's own length and count. `scope` is what the check belongs to, a
+ * session or the day's routine. Presentational, all state reads and mutations
+ * come in as props. Memoized so note keystrokes and confetti only re-render
+ * the affected row.
  */
 export default memo(function ExerciseRow({
   ex,
   exId,
-  day,
+  scope,
   category,
   exerciseKey,
   completed,
@@ -25,7 +26,7 @@ export default memo(function ExerciseRow({
   isExpanded,
   hasNote,
   darkMode,
-  viewMode,
+  weekCount,
   showConfetti,
   onConfettiComplete,
   toggleComplete,
@@ -57,9 +58,7 @@ export default memo(function ExerciseRow({
     formatExerciseName(ex.name)
   )
 
-  const showNotesUI = viewMode === 'day' || viewMode === 'three'
-  const plan = showNotesUI ? holdPlan(ex) : null
-  const stacked = viewMode === 'week'
+  const plan = holdPlan(ex)
   const repsText = (
     <>
       {ex.sets ? `${ex.sets} x ` : ''}
@@ -67,6 +66,7 @@ export default memo(function ExerciseRow({
       {ex.reps && ex.hold ? ` · ${ex.hold} hold` : ex.hold}
       {ex.target}
       {ex.perDay ? ` · ${ex.perDay}x/day` : ''}
+      {ex.perWeek ? ` · ${weekCount} of ${ex.perWeek} this week` : ''}
     </>
   )
   const nameColor = completed
@@ -90,12 +90,12 @@ export default memo(function ExerciseRow({
   const handleToggle = () => {
     const selection = window.getSelection?.()
     if (selection && !selection.isCollapsed) return
-    toggleComplete(day, category, exId)
+    toggleComplete(scope, category, exId)
   }
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      toggleComplete(day, category, exId)
+      toggleComplete(scope, category, exId)
     }
   }
 
@@ -108,7 +108,7 @@ export default memo(function ExerciseRow({
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         className={`w-full flex items-center gap-2.5 pl-2 py-2 min-h-[44px] text-left cursor-pointer select-text ${
-          plan ? 'pr-17' : showNotesUI ? 'pr-9' : 'pr-2'
+          plan ? 'pr-17' : 'pr-9'
         }`}
       >
         {showConfetti && <Confetti onComplete={onConfettiComplete} />}
@@ -126,30 +126,14 @@ export default memo(function ExerciseRow({
         </span>
         {getPriorityIcon(ex.priority, darkMode)}
         {getExerciseIcon(ex.name, darkMode)}
-        {/* One line from sm up, stacked on phones and in week columns, where
-            a long name beside its sets would wrap to three lines. */}
-        <span
-          className={`flex-1 min-w-0 flex flex-col ${
-            stacked ? '' : 'sm:flex-row sm:items-center sm:gap-2.5'
-          }`}
-        >
-          <span
-            className={`text-sm font-medium leading-tight ${nameColor} ${
-              stacked ? '' : 'sm:flex-1 sm:min-w-0'
-            }`}
-          >
+        {/* One line from sm up, stacked on phones, where a long name beside
+            its sets would wrap to three lines. */}
+        <span className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center sm:gap-2.5">
+          <span className={`text-sm font-medium leading-tight sm:flex-1 sm:min-w-0 ${nameColor}`}>
             {nameBlock}
-            {stacked && hasNote && (
-              <span
-                className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500 ml-1.5 align-middle"
-                title="Has a note"
-              />
-            )}
           </span>
           <span
-            className={`text-xs mt-0.5 font-medium tabular-nums ${repsColor} ${
-              stacked ? '' : 'sm:mt-0 sm:whitespace-nowrap'
-            }`}
+            className={`text-xs mt-0.5 font-medium tabular-nums sm:mt-0 sm:whitespace-nowrap ${repsColor}`}
           >
             {repsText}
           </span>
@@ -161,7 +145,7 @@ export default memo(function ExerciseRow({
           type="button"
           onClick={(e) => {
             e.stopPropagation()
-            startHold(day, category, exId, plan, formatExerciseName(ex.name))
+            startHold(scope, category, exId, plan, formatExerciseName(ex.name))
           }}
           className={`hit-44 absolute right-9 top-1/2 -translate-y-1/2 p-2 ${
             darkMode ? 'text-gray-500 hover:text-blue-300' : 'text-gray-400 hover:text-blue-600'
@@ -173,7 +157,7 @@ export default memo(function ExerciseRow({
         </button>
       )}
 
-      {showNotesUI && !isExpanded && (
+      {!isExpanded && (
         <button
           type="button"
           onClick={(e) => {
@@ -197,7 +181,7 @@ export default memo(function ExerciseRow({
         </button>
       )}
 
-      {showNotesUI && isExpanded && (
+      {isExpanded && (
         <div
           className={`border-t text-xs px-3 pb-3 pt-2 ${
             darkMode ? 'border-gray-700 bg-gray-900/40' : 'border-gray-100 bg-white/60'
@@ -249,7 +233,7 @@ export default memo(function ExerciseRow({
           </div>
           <textarea
             value={noteText}
-            onChange={(e) => handleNoteChange(day, category, exId, e.target.value)}
+            onChange={(e) => handleNoteChange(category, exId, e.target.value)}
             onClick={(e) => e.stopPropagation()}
             onFocus={(e) => {
               e.stopPropagation()

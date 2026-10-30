@@ -1,12 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import { DAYS, getExercisesForDay } from '../src/lib/schedule'
 import { exerciseId } from '../src/lib/stats'
 
 // The real program. Its content changes often, so this checks its shape and
 // the invariants storage depends on, never specific exercises.
-const { exercises } = await vi.importActual('../src/data')
+const { exercises, daily, sessions } = await vi.importActual('../src/data')
 const ACCENTS = ['amber', 'yellow', 'purple', 'indigo', 'teal', 'red', 'blue']
-const validDays = (days) => days === undefined || days.every((day) => DAYS.includes(day))
+const names = new Set(Object.values(exercises).flatMap((b) => b.exercises.map((ex) => ex.name)))
 
 describe('the program in data.js', () => {
   const blocks = Object.entries(exercises)
@@ -17,15 +16,10 @@ describe('the program in data.js', () => {
 
   it.each(blocks)('%s is a well-formed block', (_key, block) => {
     expect(block.displayName).toBeTypeOf('string')
-    expect(Number.isInteger(block.lane) && block.lane >= 0).toBe(true)
     expect(ACCENTS).toContain(block.accent)
     expect(block.icon).toBeDefined()
-    expect(validDays(block.days)).toBe(true)
     expect(block.exercises.length).toBeGreaterThan(0)
-    for (const ex of block.exercises) {
-      expect(ex.name).toBeTypeOf('string')
-      expect(validDays(ex.days)).toBe(true)
-    }
+    for (const ex of block.exercises) expect(ex.name).toBeTypeOf('string')
   })
 
   // Completion and notes are keyed by block plus a hash of the exercise name,
@@ -35,7 +29,33 @@ describe('the program in data.js', () => {
     expect(new Set(ids).size).toBe(ids.length)
   })
 
-  it('schedules something on every day', () => {
-    for (const day of DAYS) expect(getExercisesForDay(exercises, day).length).toBeGreaterThan(0)
+  it('names real blocks in the daily routine', () => {
+    for (const key of daily) expect(exercises[key]).toBeDefined()
+  })
+
+  it.each(sessions.map((s) => [s.id, s]))('%s is a well-formed session', (_id, session) => {
+    expect(session.name).toBeTypeOf('string')
+    expect(session.perWeek).toBeGreaterThan(0)
+    if (session.warmup) expect(exercises[session.warmup]).toBeDefined()
+    for (const key of session.blocks) expect(exercises[key]).toBeDefined()
+    for (const name of session.stretches ?? []) expect(names.has(name)).toBe(true)
+  })
+
+  it('gives every session its own id', () => {
+    expect(new Set(sessions.map((s) => s.id)).size).toBe(sessions.length)
+  })
+
+  // Every block is done somewhere, daily or in a session, or it is dead weight.
+  it('covers every block', () => {
+    const used = new Set([
+      ...daily,
+      ...sessions.flatMap((s) => [s.warmup, ...s.blocks]),
+      ...Object.entries(exercises)
+        .filter(([, b]) =>
+          b.exercises.some((ex) => sessions.some((s) => s.stretches?.includes(ex.name)))
+        )
+        .map(([key]) => key)
+    ])
+    for (const key of Object.keys(exercises)) expect(used.has(key)).toBe(true)
   })
 })

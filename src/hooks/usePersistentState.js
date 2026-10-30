@@ -5,15 +5,17 @@ import { useEffect, useState } from 'react'
  * every change. Robust to private-mode / quota / parse errors (falls back to
  * the default rather than throwing). Replaces the repeated
  * useState(() => JSON.parse(localStorage…)) + useEffect(setItem) pattern.
+ * A function default is called only when nothing is saved, like useState's.
  */
 export function usePersistentState(key, defaultValue) {
   const [value, setValue] = useState(() => {
-    if (typeof window === 'undefined') return defaultValue
+    const fallback = () => (typeof defaultValue === 'function' ? defaultValue() : defaultValue)
+    if (typeof window === 'undefined') return fallback()
     try {
       const saved = localStorage.getItem(key)
-      return saved !== null ? JSON.parse(saved) : defaultValue
+      return saved !== null ? JSON.parse(saved) : fallback()
     } catch {
-      return defaultValue
+      return fallback()
     }
   })
 

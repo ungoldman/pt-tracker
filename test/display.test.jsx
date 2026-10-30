@@ -12,8 +12,8 @@ describe('getBlockStyle', () => {
   })
 
   it('gives a block with no icon the default one', () => {
-    expect(getBlockStyle('Bands').Icon).toBe(getBlockStyle('missing').Icon)
-    expect(getBlockStyle('Bands').textLight).toBe('text-indigo-600')
+    expect(getBlockStyle('Pull').Icon).toBe(getBlockStyle('missing').Icon)
+    expect(getBlockStyle('Pull').textLight).toBe('text-indigo-600')
   })
 
   it('falls back for an unknown block or accent', () => {

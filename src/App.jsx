@@ -1,114 +1,151 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import DayCard from './components/DayCard'
-import DayPicker from './components/DayPicker'
-import DayView from './components/DayView'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Footer from './components/Footer'
+import HandTab from './components/HandTab'
 import Header from './components/Header'
+import Player from './components/Player'
+import TodayTab from './components/TodayTab'
 import UpdateNotice from './components/UpdateNotice'
-import WeekOverview from './components/WeekOverview'
+import WeekTab from './components/WeekTab'
 import { TrackerContext } from './context/TrackerContext'
-import { exercises } from './data'
+import { daily, exercises, limits, sessions } from './data'
 import { usePersistentState } from './hooks/usePersistentState'
-import { getTodayLabel } from './lib/dates'
+import { estimateMinutes } from './lib/duration'
 import {
-  DAYS,
-  getExercisesForDay,
-  isStrengthDay,
-  moveKey,
-  resolveSchedule,
-  strengthClashes
-} from './lib/schedule'
-import { completionKey, dayStats } from './lib/stats'
+  dailyParts,
+  dailyPasses,
+  dateKey,
+  dayLoad,
+  doneCount,
+  entryCredit,
+  itemKey,
+  parseKey,
+  passes,
+  prune,
+  rankSessions,
+  sessionItems,
+  upNext,
+  weekCount,
+  weekCredit,
+  weekOf,
+  weekStrip,
+  weekTotals
+} from './lib/plan'
 
-// The exercise data never changes at runtime, so resolve each day's schedule
-// once at module load instead of re-filtering on every render. This is the
-// schedule as prescribed. Moves are applied on top of it (see `schedule`).
-const SCHEDULE_BY_DAY = Object.fromEntries(
-  DAYS.map((day) => [day, getExercisesForDay(exercises, day)])
-)
-const CATEGORY_ORDER = Object.keys(exercises)
-
-// First-run defaults (localStorage wins once the user has a saved value):
-// follow the OS theme, and start phones in day view rather than a 7-up week.
+// First-run default (localStorage wins once the user has a saved value):
+// follow the OS theme.
 const PREFERS_DARK = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false
-const DEFAULT_VIEW = 'day'
 
-// Collapse overrides are per block per day, independent of completion keys.
-const collapseKey = (day, category) => `${day}-${category}`
+const SESSION_BY_ID = Object.fromEntries(sessions.map((s) => [s.id, s]))
+const NAMES = Object.fromEntries(sessions.map((s) => [s.id, s.name]))
+const PARTS = dailyParts(exercises, daily)
+const PASS_MINUTES = estimateMinutes(PARTS.pass.map(({ ex }) => ex))
+
+const byBlock = (items) =>
+  Object.values(
+    items.reduce((groups, { category, ex }) => {
+      groups[category] ??= { category, label: exercises[category].displayName, list: [] }
+      groups[category].list.push(ex)
+      return groups
+    }, {})
+  )
+const GOALS = byBlock(PARTS.goals)
+const AMBIENT = byBlock(PARTS.ambient)
+
+const round = (n) => Math.round(n * 10) / 10
+const weekday = (key) => parseKey(key).toLocaleDateString('en-US', { weekday: 'long' })
+
+// Notes used to be kept per weekday. They are about the exercise, so the
+// first run of this version folds them into one note each, latest day winning.
+function migrateNotes() {
+  try {
+    const old = JSON.parse(localStorage.getItem('ptTrackerNotes')) ?? {}
+    return Object.fromEntries(
+      Object.entries(old)
+        .filter(([, text]) => text)
+        .map(([key, text]) => [key.slice(key.indexOf('-') + 1), text])
+    )
+  } catch {
+    return {}
+  }
+}
+
+const sizes = (session, size) => {
+  const items = sessionItems(exercises, session, size)
+  return { count: items.length, minutes: estimateMinutes(items.map(({ ex }) => ex)) }
+}
+
+// A session's items, each labelled by its part: warm-up, the work, warm-down.
+const labelled = (session, size) =>
+  sessionItems(exercises, session, size).map((item) => ({
+    ...item,
+    label:
+      item.category === session.warmup
+        ? 'Warm-up'
+        : session.blocks.includes(item.category)
+          ? undefined
+          : 'Warm-down'
+  }))
 
 const App = () => {
-  // localStorage-backed state (init from storage, persist on change via the hook)
   const [darkMode, setDarkMode] = usePersistentState('ptTrackerDarkMode', PREFERS_DARK)
-  const [completed, setCompleted] = usePersistentState('ptTrackerCompleted', {})
-  const [notes, setNotes] = usePersistentState('ptTrackerNotes', {})
-  const [viewMode, setViewMode] = usePersistentState('ptTrackerViewMode', DEFAULT_VIEW)
-  // Blocks moved to another day or skipped, { [moveKey]: day | SKIP }. Persisted
-  // because a move has to outlive a reload, which makes it the same hazard the
-  // collapse overrides were. So a move is always visible (a "from" tag where
-  // the block lands, a placeholder where it left) and resetWeek clears them all.
-  const [moves, setMoves] = usePersistentState('ptTrackerMoves', {})
-  const schedule = useMemo(() => resolveSchedule(SCHEDULE_BY_DAY, moves, CATEGORY_ORDER), [moves])
-  const strengthClash = useMemo(() => strengthClashes(exercises, schedule), [schedule])
-  // Collapse overrides live only in memory. The intrinsic rule (a completed
-  // block collapses, everything else is open) is always the baseline; an
-  // override is a deliberate deviation from it — a manual peek or a bulk
-  // action. Persisting them is what used to let stale entries silently shadow
-  // the intrinsic rule, so they reset on reload and whenever a block's
-  // completion changes (see toggleComplete).
-  const [collapsedCategories, setCollapsedCategories] = useState({})
-
+  const [history, setHistory] = usePersistentState('ptTrackerHistory', {})
+  const [notes, setNotes] = usePersistentState('ptTrackerExerciseNotes', migrateNotes)
+  // The screen, the day the week screen shows (null for today), and the run
+  // open in the player. Momentary, so all stay in memory.
+  const [tab, setTab] = useState('today')
+  const [shownDay, setShownDay] = useState(null)
+  const [player, setPlayer] = useState(null)
   const [confettiKey, setConfettiKey] = useState(null)
   const [justCompleted, setJustCompleted] = useState(new Set())
-  const todayLabel = getTodayLabel()
-  const [selectedDay, setSelectedDay] = useState(todayLabel)
   const [expandedNotes, setExpandedNotes] = useState(new Set())
-  // Which bulk action the header control offers next. Cosmetic and momentary:
-  // the modes are actions, not a persisted rule, so this resets on reload.
-  const [collapseMode, setCollapseMode] = useState('done')
 
-  const toggleDarkMode = () => setDarkMode(!darkMode)
+  const now = new Date()
+  const today = dateKey(now)
+  // Checks land on the day of the open run, else today.
+  const activeDate = player?.date ?? today
+  const day = history[activeDate] ?? {}
 
+  // Keep storage small. Recency only needs the last few weeks.
   useEffect(() => {
-    // Keyboard shortcuts for view switching (ignored while typing a note).
-    const handleKeyPress = (e) => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
-      switch (e.key.toLowerCase()) {
-        case 'w':
-          setViewMode('week')
-          break
-        case 'd':
-          setViewMode('day')
-          break
-        case 't':
-          setViewMode('three')
-          break
-        default:
-      }
-    }
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [setViewMode])
+    setHistory((prev) => {
+      const next = prune(prev, today)
+      return Object.keys(next).length === Object.keys(prev).length ? prev : next
+    })
+  }, [today, setHistory])
+
+  const updateDay = useCallback(
+    (date, fn) => setHistory((prev) => ({ ...prev, [date]: fn(prev[date] ?? {}) })),
+    [setHistory]
+  )
+
+  // `daily` holds a check, `pass:N` the Nth pass of a per-day item, and any
+  // other scope is a session's id.
+  const isDone = useCallback(
+    (scope, key) => {
+      if (scope === 'daily') return passes(day.daily?.[key]) >= 1
+      if (scope.startsWith('pass:')) return passes(day.daily?.[key]) >= Number(scope.slice(5))
+      return !!day.sessions?.[scope]?.done?.[key]
+    },
+    [day]
+  )
 
   const toggleComplete = useCallback(
-    (day, category, id) => {
-      const key = completionKey(day, category, id)
-      const isCurrentlyCompleted = completed[key]
-
-      setCompleted((prev) => ({ ...prev, [key]: !prev[key] }))
-
-      // A completion change re-derives this block's collapse from scratch: drop
-      // any override so finishing it always collapses and reopening it always
-      // expands, no matter what bulk action was last applied.
-      setCollapsedCategories((prev) => {
-        const catKey = collapseKey(day, category)
-        if (!(catKey in prev)) return prev
-        const next = { ...prev }
-        delete next[catKey]
-        return next
+    (scope, category, id) => {
+      const key = `${category}-${id}`
+      const wasDone = isDone(scope, key)
+      updateDay(activeDate, (d) => {
+        if (scope === 'daily') return { ...d, daily: { ...d.daily, [key]: !wasDone } }
+        if (scope.startsWith('pass:')) {
+          const n = Number(scope.slice(5))
+          return { ...d, daily: { ...d.daily, [key]: wasDone ? n - 1 : n } }
+        }
+        const entry = d.sessions[scope]
+        const done = { ...entry.done, [key]: !wasDone }
+        // Checking the last one off finishes the session.
+        const finished = entry.finished || doneCount({ done }) === entry.total
+        return { ...d, sessions: { ...d.sessions, [scope]: { ...entry, done, finished } } }
       })
-
-      // Confetti only when completing (not uncompleting), cleared after the burst.
-      if (!isCurrentlyCompleted) {
+      if (!wasDone) {
         setConfettiKey(key)
         setJustCompleted((prev) => new Set(prev).add(key))
         setTimeout(() => {
@@ -120,48 +157,65 @@ const App = () => {
         }, 1000)
       }
     },
-    [completed, setCompleted]
+    [activeDate, isDone, updateDay]
   )
 
   const clearConfetti = useCallback(() => setConfettiKey(null), [])
 
   // The hold timer lives in Footer so its ticking never re-renders the list.
-  // Rows start it through this handle. When a counted run finishes it checks
+  // Cards start it through this handle. When a counted run finishes it checks
   // the exercise off, reading the latest state since the run outlives a render.
   const timerRef = useRef(null)
   const latest = useRef({})
   useEffect(() => {
-    latest.current = { completed, toggleComplete }
+    latest.current = { isDone, toggleComplete }
   })
-  const startHold = useCallback((day, category, id, plan, label) => {
+  const startHold = useCallback((scope, category, id, plan, label) => {
     timerRef.current?.start(plan.seconds, {
       count: plan.count,
       label,
       onDone: () => {
-        const { completed: now, toggleComplete: toggle } = latest.current
-        if (!now[completionKey(day, category, id)]) toggle(day, category, id)
+        const { isDone: done, toggleComplete: toggle } = latest.current
+        if (!done(scope, `${category}-${id}`)) toggle(scope, category, id)
       }
     })
   }, [])
 
-  // `to` is a day or SKIP. Null, or the block's own day, puts it back.
-  const moveBlock = useCallback(
-    (sourceDay, category, to) => {
-      setMoves((prev) => {
-        const next = { ...prev }
-        if (!to || to === sourceDay) delete next[moveKey(sourceDay, category)]
-        else next[moveKey(sourceDay, category)] = to
-        return next
+  const handOn = (key) => ({
+    ...dailyPasses(exercises, daily, history[key]),
+    size: PARTS.pass.length
+  })
+
+  const startSession = (date) => (id, size) => {
+    const total = sessionItems(exercises, SESSION_BY_ID[id], size).length
+    updateDay(date, (d) => ({
+      ...d,
+      sessions: { ...d.sessions, [id]: { size, total, done: {}, finished: false } }
+    }))
+    setPlayer({ kind: 'session', id, date })
+  }
+
+  // Leaving a session with nothing checked takes it back. Finishing marks it
+  // finished, credited for what was done. Closing leaves it open to resume.
+  const closePlayer = (finish) => {
+    if (player.kind === 'session') {
+      const { id, date } = player
+      updateDay(date, (d) => {
+        const entry = d.sessions[id]
+        if (!entry.finished && !doneCount(entry)) {
+          const { [id]: _, ...rest } = d.sessions
+          return { ...d, sessions: rest }
+        }
+        return finish
+          ? { ...d, sessions: { ...d.sessions, [id]: { ...entry, finished: true } } }
+          : d
       })
-    },
-    [setMoves]
-  )
+    }
+    setPlayer(null)
+  }
 
   const handleNoteChange = useCallback(
-    (day, category, id, value) => {
-      const key = completionKey(day, category, id)
-      setNotes((prev) => ({ ...prev, [key]: value }))
-    },
+    (category, id, value) => setNotes((prev) => ({ ...prev, [`${category}-${id}`]: value })),
     [setNotes]
   )
 
@@ -189,179 +243,213 @@ const App = () => {
     [setNotes, closeNotes]
   )
 
-  // Effective collapse = an explicit override, else the intrinsic rule: a
-  // fully-completed block is collapsed, everything else is open. Bulk actions
-  // and manual toggles set overrides; completion clears them (toggleComplete),
-  // so finishing a block always collapses it whatever the last bulk action was.
-  const toggleCategoryCollapse = (day, category, currentlyCollapsed) => {
-    setCollapsedCategories((prev) => ({
-      ...prev,
-      [collapseKey(day, category)]: !currentlyCollapsed
-    }))
-  }
-
-  const isCategoryCollapsed = (day, category, isComplete = false) =>
-    collapsedCategories[collapseKey(day, category)] ?? isComplete
-
-  const resetWeek = () => {
-    if (window.confirm('Are you sure you want to reset all checkboxes for the week?')) {
-      setCompleted({})
-      setJustCompleted(new Set())
-      setNotes({})
-      setMoves({})
-    }
-  }
-
-  const resetDay = (day) => {
-    if (window.confirm(`Are you sure you want to reset all checkboxes for ${day}?`)) {
-      // Clears what the day shows, which after a move is not what its name prefixes.
-      const prefixes = schedule[day].blocks.map(({ sourceDay, category }) =>
-        completionKey(sourceDay, category, '')
-      )
-      const stripDay = (map) =>
-        Object.fromEntries(
-          Object.entries(map).filter(([key]) => !prefixes.some((prefix) => key.startsWith(prefix)))
-        )
-      setCompleted(stripDay)
-      setNotes(stripDay)
-      setJustCompleted(new Set())
-    }
-  }
-
-  const cycleViewMode = () => {
-    setViewMode((prev) => (prev === 'week' ? 'day' : prev === 'day' ? 'three' : 'week'))
-  }
-
-  // The header control cycles through three momentary bulk actions:
-  //   all  — collapse every block now (override every block closed);
-  //   none — expand every block now (override every block open);
-  //   done — reset to the intrinsic rule (clear overrides: completed collapse).
-  // These arrange things once; they don't persist and don't override the
-  // completion rule — finishing a block still collapses it (toggleComplete).
-  const cycleCollapseMode = () => {
-    const next = { done: 'all', all: 'none', none: 'done' }[collapseMode]
-    setCollapseMode(next)
-    if (next === 'done') {
-      setCollapsedCategories({})
-    } else {
-      const overrides = {}
-      DAYS.forEach((day) => {
-        schedule[day].blocks.forEach(({ sourceDay, category }) => {
-          overrides[collapseKey(sourceDay, category)] = next === 'all'
-        })
-      })
-      setCollapsedCategories(overrides)
-    }
-  }
-
-  const getThreeDayWindow = () => {
-    const todayIdx = DAYS.indexOf(todayLabel)
-    const prevIdx = (todayIdx - 1 + DAYS.length) % DAYS.length
-    const nextIdx = (todayIdx + 1) % DAYS.length
-    return [DAYS[prevIdx], DAYS[todayIdx], DAYS[nextIdx]]
-  }
-
-  const todayBlocks = schedule[todayLabel].blocks
-  const stats = dayStats(completed, todayBlocks)
-  const threeDayWindow = getThreeDayWindow()
-  const weekSummary = DAYS.map((day) => ({
-    day,
-    pct: dayStats(completed, schedule[day].blocks).pct
-  }))
-
-  const jumpToDay = useCallback(
-    (day) => {
-      setSelectedDay(day)
-      setViewMode('day')
-    },
-    [setViewMode]
+  const weekCountOf = useCallback(
+    (key) => weekCount(history, activeDate, key),
+    [history, activeDate]
   )
 
-  // Shared state + handlers for the day/block/row tree (see TrackerContext).
+  const resetDay = () => {
+    if (window.confirm('Reset everything checked today?')) {
+      setHistory(({ [today]: _, ...rest }) => rest)
+      setPlayer(null)
+    }
+  }
+
+  const resetWeek = () => {
+    if (window.confirm('Reset everything checked this week?')) {
+      const week = new Set(weekOf(today))
+      setHistory((prev) => Object.fromEntries(Object.entries(prev).filter(([k]) => !week.has(k))))
+      setPlayer(null)
+    }
+  }
+
+  // A session dropped from the program since it was logged has nothing to show.
+  const loggedOn = (key) =>
+    Object.entries(history[key]?.sessions ?? {})
+      .filter(([id]) => SESSION_BY_ID[id])
+      .map(([id, entry]) => ({ session: SESSION_BY_ID[id], entry, count: doneCount(entry) }))
+      // What is still open leads.
+      .sort((a, b) => Number(a.entry.finished) - Number(b.entry.finished))
+
   const tracker = {
     darkMode,
-    viewMode,
-    completed,
     notes,
     expandedNotes,
     confettiKey,
     justCompleted,
-    isCategoryCollapsed,
-    toggleCategoryCollapse,
+    isDone,
+    weekCountOf,
     toggleComplete,
     clearConfetti,
     openNotes,
     closeNotes,
     discardNote,
     handleNoteChange,
-    schedule,
-    startHold,
-    moveBlock,
-    strengthClash
+    startHold
   }
+
+  let screen
+  if (player) {
+    const hand = handOn(player.date)
+    const run = {
+      session: () => {
+        const session = SESSION_BY_ID[player.id]
+        const entry = history[player.date].sessions[player.id]
+        const credit = round(weekCredit(history, player.date, player.id))
+        return {
+          title: player.date === today ? session.name : `${session.name}, ${weekday(player.date)}`,
+          scope: player.id,
+          items: labelled(session, entry.size),
+          summary: (
+            <>
+              <p>
+                Counts {round(entryCredit(entry))} toward {session.name}, now {credit} of{' '}
+                {session.perWeek} this week.
+              </p>
+              {session.strength && <p className="mt-1">Shoulder weights rest the next day.</p>}
+            </>
+          )
+        }
+      },
+      pass: () => ({
+        title: `Hand pass ${player.pass}`,
+        scope: `pass:${player.pass}`,
+        items: PARTS.pass,
+        summary: (
+          <p>
+            Pass {player.pass} of {hand.perDay} today.
+          </p>
+        )
+      }),
+      once: () => ({
+        title: 'Putty and band work',
+        scope: 'daily',
+        items: PARTS.once,
+        summary: <p>The once-a-day hand work.</p>
+      })
+    }[player.kind]()
+    screen = (
+      <Player
+        key={`${player.kind}-${player.id ?? player.pass ?? ''}-${player.date}`}
+        {...run}
+        onDone={() => closePlayer(true)}
+        onClose={() => closePlayer(false)}
+      />
+    )
+  } else if (tab === 'today') {
+    const ranked = rankSessions(sessions, history, today, limits)
+    const plenty = dayLoad(sessions, history, today).sessions >= limits.sessionsPerDay
+    const hand = handOn(today)
+    const onceLeft = PARTS.once.filter(
+      ({ category, ex }) => !history[today]?.daily?.[itemKey(category, ex)]
+    ).length
+    const next = upNext({ ranked, plenty, hand, onceLeft, hour: now.getHours() })
+    const detail = {
+      resume: () => {
+        const entry = history[today].sessions[next.id]
+        return `${doneCount(entry)} of ${entry.total} done`
+      },
+      pass: () => `${PARTS.pass.length} exercises, about ${PASS_MINUTES} min`,
+      session: () => {
+        const { count, minutes } = sizes(SESSION_BY_ID[next.id], 'full')
+        return `${count} exercises, about ${minutes} min`
+      },
+      once: () => `${PARTS.once.length} exercises, once a day`,
+      rest: () => 'Rest is part of the program.'
+    }[next.kind]()
+    screen = (
+      <TodayTab
+        next={next}
+        names={NAMES}
+        nextDetail={detail}
+        // Up next already shows the session to resume.
+        logged={loggedOn(today).filter(({ session }) => session.id !== next.id)}
+        hand={hand}
+        goals={GOALS}
+        ranked={ranked}
+        sizes={sizes}
+        actions={{
+          open: (id) => setPlayer({ kind: 'session', id, date: today }),
+          start: startSession(today),
+          pass: () => setPlayer({ kind: 'pass', pass: hand.done + 1, date: today }),
+          once: () => setPlayer({ kind: 'once', date: today }),
+          handTab: () => setTab('hand')
+        }}
+      />
+    )
+  } else if (tab === 'hand') {
+    const hand = handOn(today)
+    const onceDone = PARTS.once.filter(
+      ({ category, ex }) => history[today]?.daily?.[itemKey(category, ex)]
+    ).length
+    screen = (
+      <HandTab
+        hand={hand}
+        passMinutes={PASS_MINUTES}
+        once={{ count: PARTS.once.length, done: onceDone }}
+        ambient={AMBIENT}
+        onPass={() => setPlayer({ kind: 'pass', pass: hand.done + 1, date: today })}
+        onOnce={() => setPlayer({ kind: 'once', date: today })}
+      />
+    )
+  } else {
+    const shown = shownDay ?? today
+    const left = sessions
+      .map((s) => ({
+        name: s.name,
+        remaining: round(s.perWeek - Math.min(s.perWeek, weekCredit(history, today, s.id)))
+      }))
+      .filter(({ remaining }) => remaining > 0)
+      // A part-done session still takes a whole sitting to finish.
+      .map(({ name, remaining }) => ({ name, remaining: `${Math.ceil(remaining)} more` }))
+    screen = (
+      <WeekTab
+        strip={weekStrip(sessions, history, today)}
+        today={today}
+        shown={shown}
+        dayName={shownDay && weekday(shownDay)}
+        logged={loggedOn(shown)}
+        hand={handOn(shown)}
+        ranked={rankSessions(sessions, history, shown, limits)}
+        sizes={sizes}
+        left={left}
+        actions={{
+          select: (key) => setShownDay(key === today ? null : key),
+          open: (id) => setPlayer({ kind: 'session', id, date: shown }),
+          start: startSession(shown)
+        }}
+      />
+    )
+  }
+
+  const titles = { today: weekday(today), hand: 'Hand', week: 'Week' }
 
   return (
     <TrackerContext.Provider value={tracker}>
-      <div className={`flex flex-col min-h-screen ${darkMode ? 'app-bg-dark' : 'app-bg-light'}`}>
+      <div
+        className={`flex min-h-screen flex-col ${
+          darkMode ? 'app-bg-dark text-gray-100' : 'app-bg-light text-gray-900'
+        }`}
+      >
         <Header
           darkMode={darkMode}
-          toggleDarkMode={toggleDarkMode}
-          stats={stats}
-          isStrengthDay={isStrengthDay(exercises, todayBlocks)}
-          weekSummary={weekSummary}
-          todayLabel={todayLabel}
-          onSelectDay={jumpToDay}
-          viewMode={viewMode}
-          cycleViewMode={cycleViewMode}
-          collapseMode={collapseMode}
-          cycleCollapseMode={cycleCollapseMode}
+          toggleDarkMode={() => setDarkMode(!darkMode)}
+          title={titles[tab]}
+          week={weekTotals(sessions, history, today)}
+          tab={tab}
+          onTab={(id) => {
+            setTab(id)
+            setShownDay(null)
+          }}
+          showTabs={!player}
           resetDay={resetDay}
           resetWeek={resetWeek}
-          selectedDay={selectedDay}
         />
-
-        <div className="w-full p-3 sm:p-6 flex-1 min-h-0 flex flex-col lg:overflow-hidden">
-          {viewMode !== 'week' && (
-            <DayPicker
-              selectedDay={selectedDay}
-              todayLabel={todayLabel}
-              onSelect={jumpToDay}
-              weekSummary={weekSummary}
-            />
-          )}
-          {viewMode === 'week' ? (
-            <>
-              <WeekOverview todayLabel={todayLabel} onSelectDay={jumpToDay} />
-              <div className="hidden sm:grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 lg:gap-1 flex-1 min-h-0">
-                {DAYS.map((day) => (
-                  <DayCard
-                    key={day}
-                    day={day}
-                    blocks={schedule[day].blocks}
-                    away={schedule[day].away}
-                    highlightToday
-                  />
-                ))}
-              </div>
-            </>
-          ) : viewMode === 'day' ? (
-            <DayView
-              day={selectedDay}
-              todayLabel={todayLabel}
-              blocks={schedule[selectedDay].blocks}
-              away={schedule[selectedDay].away}
-            />
-          ) : (
-            <div className="flex flex-col md:flex-row w-full gap-4 flex-1 min-h-0 items-stretch">
-              {threeDayWindow.map((day) => (
-                <div key={day} className="flex-1 min-w-0 h-full">
-                  <DayCard day={day} blocks={schedule[day].blocks} away={schedule[day].away} />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
+        <main
+          className={`mx-auto flex w-full max-w-xl flex-1 flex-col lg:max-w-5xl ${player ? '' : 'px-4 pt-4 pb-28 lg:px-6 lg:pt-6 lg:pb-10'}`}
+        >
+          {screen}
+        </main>
         <UpdateNotice darkMode={darkMode} />
         <Footer darkMode={darkMode} ref={timerRef} />
       </div>
