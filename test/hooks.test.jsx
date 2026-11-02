@@ -4,6 +4,28 @@ import { describe, expect, it, vi } from 'vitest'
 import { useDismiss } from '../src/hooks/useDismiss'
 import { usePersistentState } from '../src/hooks/usePersistentState'
 
+function WindowlessProbe({ onRead }) {
+  const real = globalThis.window
+  vi.stubGlobal('window', undefined)
+  const [read] = usePersistentState('k', 'server')
+  vi.stubGlobal('window', real)
+  onRead(read)
+  return null
+}
+
+function Panel({ open, onDismiss, twoRefs = false }) {
+  const a = useRef(null)
+  const b = useRef(null)
+  useDismiss(twoRefs ? [a, b] : a, open, onDismiss)
+  return (
+    <>
+      <div ref={a}>inside</div>
+      <div ref={twoRefs ? b : null}>second</div>
+      <div>outside</div>
+    </>
+  )
+}
+
 describe('usePersistentState', () => {
   it('starts from the default and writes every change', () => {
     const { result } = renderHook(() => usePersistentState('k', { n: 1 }))
@@ -45,35 +67,14 @@ describe('usePersistentState', () => {
 
   it('uses the default where there is no window', () => {
     // Read during the initial state callback, as it would be on a server.
-    const real = globalThis.window
-    let value
-    function Probe() {
-      vi.stubGlobal('window', undefined)
-      const [read] = usePersistentState('k', 'server')
-      vi.stubGlobal('window', real)
-      value = read
-      return null
-    }
+    const onRead = vi.fn()
     localStorage.setItem('k', '"saved"')
-    render(<Probe />)
-    expect(value).toBe('server')
+    render(<WindowlessProbe onRead={onRead} />)
+    expect(onRead).toHaveBeenCalledWith('server')
   })
 })
 
 describe('useDismiss', () => {
-  function Panel({ open, onDismiss, twoRefs = false }) {
-    const a = useRef(null)
-    const b = useRef(null)
-    useDismiss(twoRefs ? [a, b] : a, open, onDismiss)
-    return (
-      <>
-        <div ref={a}>inside</div>
-        <div ref={twoRefs ? b : null}>second</div>
-        <div>outside</div>
-      </>
-    )
-  }
-
   it('dismisses on Escape or a press outside, not inside', () => {
     const onDismiss = vi.fn()
     render(<Panel open onDismiss={onDismiss} />)
