@@ -1,7 +1,7 @@
 {
   "name": "pt-tracker",
   "short_name": "pt-tracker",
-  "description": "Daily shoulder PT tracker",
+  "description": "Daily shoulder and hand PT tracker",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0c1322",
