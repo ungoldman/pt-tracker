@@ -8,8 +8,8 @@ import { acceptUpdate, subscribeUpdate, updateNotice } from '../lib/updates'
  * is next brought to the foreground or another build arrives.
  *
  * Sticky, not fixed, and rendered just above the footer: it floats at the
- * bottom of the screen while the page scrolls and comes to rest above the
- * hold-timer controls at the end, never on top of them.
+ * bottom of the screen while the page scrolls, clear of the phone's tab bar, and
+ * comes to rest above the hold-timer controls at the end, never on top of them.
  */
 export default function UpdateNotice({ darkMode }) {
   const notice = useSyncExternalStore(subscribeUpdate, updateNotice)
@@ -17,7 +17,7 @@ export default function UpdateNotice({ darkMode }) {
   if (notice === 0 || notice === dismissed) return null
 
   return (
-    <div className="sticky bottom-3 sm:bottom-20 z-40 mb-3 flex justify-center px-3 pointer-events-none">
+    <div className="sticky bottom-24 lg:bottom-20 z-40 mb-3 flex justify-center px-3 pointer-events-none">
       <div
         role="status"
         className={`pointer-events-auto flex items-center gap-1 pl-3 pr-1 py-1 rounded-xl text-xs ${
