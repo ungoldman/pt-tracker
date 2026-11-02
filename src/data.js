@@ -73,7 +73,6 @@ export const exercises = {
   cardio: {
     displayName: 'Cardio',
     accent: 'red',
-    noEstimate: true,
     icon: Footprints,
     exercises: [
       { name: 'Daily Steps', target: 5000 },

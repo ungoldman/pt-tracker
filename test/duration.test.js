@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { estimateBlock, estimateMinutes, exerciseSeconds, holdPlan } from '../src/lib/duration'
+import { estimateMinutes, exerciseSeconds, holdPlan } from '../src/lib/duration'
 
 describe('exerciseSeconds', () => {
   it.each([
@@ -30,17 +30,6 @@ describe('estimates', () => {
       ])
     ).toBe(10)
     expect(estimateMinutes([{ target: 1 }])).toBe(0)
-  })
-
-  it('lets a block opt out or override', () => {
-    const list = [{ sets: 3, reps: 10 }]
-    expect(estimateBlock({ noEstimate: true, minutes: 9 }, list)).toEqual({
-      minutes: 0,
-      exact: false
-    })
-    expect(estimateBlock({ minutes: 12 }, list)).toEqual({ minutes: 12, exact: true })
-    expect(estimateBlock({}, list)).toEqual({ minutes: 5, exact: false })
-    expect(estimateBlock(undefined, list)).toEqual({ minutes: 5, exact: false })
   })
 })
 

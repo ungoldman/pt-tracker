@@ -7,54 +7,38 @@ import { exercises } from '../data'
 const ACCENTS = {
   amber: {
     textLight: 'text-amber-600',
-    textDark: 'text-amber-400',
-    bar: 'bg-amber-500/80',
-    top: 'border-t-amber-400/80'
+    textDark: 'text-amber-400'
   },
   yellow: {
     textLight: 'text-yellow-600',
-    textDark: 'text-yellow-400',
-    bar: 'bg-yellow-500/80',
-    top: 'border-t-yellow-400/80'
+    textDark: 'text-yellow-400'
   },
   purple: {
     textLight: 'text-purple-600',
-    textDark: 'text-purple-400',
-    bar: 'bg-purple-500/80',
-    top: 'border-t-purple-400/80'
+    textDark: 'text-purple-400'
   },
   indigo: {
     textLight: 'text-indigo-600',
-    textDark: 'text-indigo-400',
-    bar: 'bg-indigo-500/80',
-    top: 'border-t-indigo-400/80'
+    textDark: 'text-indigo-400'
   },
   teal: {
     textLight: 'text-teal-600',
-    textDark: 'text-teal-400',
-    bar: 'bg-teal-500/80',
-    top: 'border-t-teal-400/80'
+    textDark: 'text-teal-400'
   },
   red: {
     textLight: 'text-red-600',
-    textDark: 'text-red-400',
-    bar: 'bg-red-500/80',
-    top: 'border-t-red-400/80'
+    textDark: 'text-red-400'
   },
   blue: {
     textLight: 'text-blue-600',
-    textDark: 'text-blue-400',
-    bar: 'bg-blue-500/80',
-    top: 'border-t-blue-400/80'
+    textDark: 'text-blue-400'
   }
 }
 
 const FALLBACK = {
   Icon: CircleDot,
   textLight: 'text-blue-600',
-  textDark: 'text-blue-400',
-  bar: 'bg-blue-500/70',
-  top: 'border-t-blue-400/70'
+  textDark: 'text-blue-400'
 }
 
 /** Resolve a block's icon + accent classes from its data.js definition. */

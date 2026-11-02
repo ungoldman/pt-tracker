@@ -29,7 +29,6 @@ export const exercises = {
     displayName: 'Goals',
     accent: 'blue',
     icon: Target,
-    noEstimate: true,
     exercises: [
       { name: 'Daily Steps', target: 5000 },
       { name: 'Run', target: '2k+', perWeek: 3 }

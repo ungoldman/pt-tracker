@@ -2,7 +2,7 @@ import { CalendarDays, Hand, Moon, RotateCcw, Sun } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
 import { useDismiss } from '../hooks/useDismiss'
 
-export const TABS = [
+const TABS = [
   ['today', 'Today', Sun],
   ['hand', 'Hand', Hand],
   ['week', 'Week', CalendarDays]

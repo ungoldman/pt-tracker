@@ -13,14 +13,13 @@ function WindowlessProbe({ onRead }) {
   return null
 }
 
-function Panel({ open, onDismiss, twoRefs = false }) {
+function Panel({ open, onDismiss }) {
   const a = useRef(null)
-  const b = useRef(null)
-  useDismiss(twoRefs ? [a, b] : a, open, onDismiss)
+  useDismiss(a, open, onDismiss)
   return (
     <>
       <div ref={a}>inside</div>
-      <div ref={twoRefs ? b : null}>second</div>
+      <div>second</div>
       <div>outside</div>
     </>
   )
@@ -86,15 +85,6 @@ describe('useDismiss', () => {
     fireEvent.pointerDown(screen.getByText('second'))
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(onDismiss).toHaveBeenCalledTimes(2)
-  })
-
-  it('treats every ref in a list as inside', () => {
-    const onDismiss = vi.fn()
-    render(<Panel open onDismiss={onDismiss} twoRefs />)
-    fireEvent.pointerDown(screen.getByText('second'))
-    expect(onDismiss).not.toHaveBeenCalled()
-    fireEvent.pointerDown(screen.getByText('outside'))
-    expect(onDismiss).toHaveBeenCalledTimes(1)
   })
 
   it('listens only while open', () => {

@@ -129,8 +129,6 @@ export const exercises = {
     displayName: 'Standing',   // header and card label
     icon: Dumbbell,            // lucide icon
     accent: 'purple',          // color token, see lib/blockStyle.js
-    minutes: 10,               // optional: override the computed time estimate
-    noEstimate: true,          // optional: hide the time estimate entirely
     exercises: [
       { name, sets, reps },                  // plain
       { name, sets, reps, hold: '3s' },      // reps with a hold each
