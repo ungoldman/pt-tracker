@@ -302,7 +302,7 @@ describe('dailyParts', () => {
 describe('upNext', () => {
   const rankedOn = (history) => rankSessions(sessions, history, TODAY, limits)
   const hand = (done) => ({ done, perDay: 3 })
-  const base = { ranked: rankedOn({}), plenty: false, hand: hand(0), onceLeft: 1, hour: 9 }
+  const base = { ranked: rankedOn({}), plenty: false, hand: hand(0), onceLeft: 1, hour: 9, now: 0 }
 
   it('finishes an open session first', () => {
     const ranked = rankedOn({ [TODAY]: on('odds', entry('full', 4, 1, false)) })
@@ -313,6 +313,26 @@ describe('upNext', () => {
     expect(upNext(base)).toEqual({ kind: 'pass', pass: 1 })
     expect(upNext({ ...base, hand: hand(1), hour: 12 })).toEqual({ kind: 'pass', pass: 2 })
     expect(upNext({ ...base, hand: hand(2), hour: 18 })).toEqual({ kind: 'pass', pass: 3 })
+  })
+
+  it('leaves a gap after a pass, however overdue the next one is', () => {
+    const at = new Date('2026-10-06T18:50:00').getTime()
+    const hour = 18
+    const later = { ...base, hand: { ...hand(1), lastPass: at }, hour, now: at + 60_000 }
+    expect(upNext(later).kind).toBe('session')
+    expect(upNext({ ...later, plenty: true })).toEqual({ kind: 'once' })
+    expect(upNext({ ...later, plenty: true, onceLeft: 0 })).toEqual({
+      kind: 'wait',
+      pass: 2,
+      at: at + 2 * 60 * 60 * 1000
+    })
+    expect(upNext({ ...later, now: at + 2 * 60 * 60 * 1000 })).toEqual({ kind: 'pass', pass: 2 })
+  })
+
+  it('rests when the gap runs past midnight', () => {
+    const at = new Date('2026-10-06T23:00:00').getTime()
+    const late = { ...base, plenty: true, onceLeft: 0, hour: 23, now: at + 60_000 }
+    expect(upNext({ ...late, hand: { ...hand(1), lastPass: at } })).toEqual({ kind: 'rest' })
   })
 
   it('then offers the top session, with two others', () => {

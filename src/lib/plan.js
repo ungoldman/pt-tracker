@@ -205,16 +205,26 @@ export function dailyParts(program, blocks) {
 // place are what a habit hangs on, so passes are tied to the time of day.
 const PASS_DUE = [11, 16]
 
+// Least time between hand passes. A chosen spacing, not a prescribed one.
+const PASS_GAP_MS = 2 * 60 * 60 * 1000
+
 /**
  * The one thing to do next on a day, in order: finish an open session, catch
  * up a hand pass that is due, take the top session while the day has room,
- * then any hand pass left, then the once-a-day work, then rest.
+ * then any hand pass left, then the once-a-day work, then rest. A pass is not
+ * offered within PASS_GAP_MS of the last one, however late the day, so they
+ * stay spread out. Until then the rest of the list goes ahead of it, and `wait`
+ * says when it comes back if that is still today.
  */
-export function upNext({ ranked, plenty, hand, onceLeft, hour }) {
+export function upNext({ ranked, plenty, hand, onceLeft, hour, now }) {
   const open = ranked.find((r) => r.started && !r.finished)
   if (open) return { kind: 'resume', id: open.session.id }
   const due = 1 + PASS_DUE.filter((h) => hour >= h).length
-  if (hand && hand.done < Math.min(due, hand.perDay)) return { kind: 'pass', pass: hand.done + 1 }
+  const backAt = (hand?.lastPass ?? -PASS_GAP_MS) + PASS_GAP_MS
+  const ready = now >= backAt
+  if (hand && ready && hand.done < Math.min(due, hand.perDay)) {
+    return { kind: 'pass', pass: hand.done + 1 }
+  }
   const offers = ranked.filter((r) => !r.started && !r.resting)
   if (!plenty && offers.length) {
     return {
@@ -223,8 +233,13 @@ export function upNext({ ranked, plenty, hand, onceLeft, hour }) {
       others: offers.slice(1, 3).map((r) => r.session.id)
     }
   }
-  if (hand && hand.done < hand.perDay) return { kind: 'pass', pass: hand.done + 1 }
+  const left = hand && hand.done < hand.perDay
+  if (left && ready) return { kind: 'pass', pass: hand.done + 1 }
   if (onceLeft > 0) return { kind: 'once' }
+  // An hour earlier than this one means the gap runs past midnight.
+  if (left && new Date(backAt).getHours() >= hour) {
+    return { kind: 'wait', pass: hand.done + 1, at: backAt }
+  }
   return { kind: 'rest' }
 }
 

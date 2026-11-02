@@ -137,7 +137,8 @@ const App = () => {
         if (scope === 'daily') return { ...d, daily: { ...d.daily, [key]: !wasDone } }
         if (scope.startsWith('pass:')) {
           const n = Number(scope.slice(5))
-          return { ...d, daily: { ...d.daily, [key]: wasDone ? n - 1 : n } }
+          const lastPass = wasDone ? d.lastPass : Date.now()
+          return { ...d, lastPass, daily: { ...d.daily, [key]: wasDone ? n - 1 : n } }
         }
         const entry = d.sessions[scope]
         const done = { ...entry.done, [key]: !wasDone }
@@ -183,7 +184,8 @@ const App = () => {
 
   const handOn = (key) => ({
     ...dailyPasses(exercises, daily, history[key]),
-    size: PARTS.pass.length
+    size: PARTS.pass.length,
+    lastPass: history[key]?.lastPass
   })
 
   const startSession = (date) => (id, size) => {
@@ -343,7 +345,14 @@ const App = () => {
     const onceLeft = PARTS.once.filter(
       ({ category, ex }) => !history[today]?.daily?.[itemKey(category, ex)]
     ).length
-    const next = upNext({ ranked, plenty, hand, onceLeft, hour: now.getHours() })
+    const next = upNext({
+      ranked,
+      plenty,
+      hand,
+      onceLeft,
+      hour: now.getHours(),
+      now: now.getTime()
+    })
     const detail = {
       resume: () => {
         const entry = history[today].sessions[next.id]
@@ -355,6 +364,8 @@ const App = () => {
         return `${count} exercises, about ${minutes} min`
       },
       once: () => `${PARTS.once.length} exercises, once a day`,
+      wait: () =>
+        `From ${new Date(next.at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`,
       rest: () => 'Rest is part of the program.'
     }[next.kind]()
     screen = (

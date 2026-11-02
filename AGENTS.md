@@ -192,7 +192,9 @@ list. Past `sessionsPerDay`, Up next stops offering sessions.
 session, catch up a hand pass that is due (one by 11:00, two by 16:00), the top
 session while the day has room, any pass left, the once-a-day work, rest. The
 pass times are a habit cue rather than a rule. Only the next pass can be
-started, so they stay spread through the day.
+started, and Up next leaves two hours after a pass before offering another,
+however overdue it is, so they stay spread through the day. The Hand tab can
+still start one early.
 
 The screens call a pass a hand session, the word hand therapy uses, while the
 code and storage keep `pass`, so `session` in the code always means a weekly
@@ -206,6 +208,7 @@ Durable state goes through `usePersistentState`: dark mode, history, notes.
 ```js
 { '2026-10-29': {
     daily: { [itemKey]: true },             // or a pass count for a perDay item
+    lastPass: 1793577600000,                // when a pass item was last checked
     sessions: { [id]: { size, total, done: { [itemKey]: true }, finished } }
 } }
 ```

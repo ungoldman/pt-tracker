@@ -63,7 +63,22 @@ describe('today', () => {
       'Session 1 of 3 today.'
     )
     click(button('Back to today'))
+    expect(savedHistory()[TODAY].lastPass).toBe(Date.now() - 600)
+    expect(within(upNext()).getByRole('heading').textContent).toBe('Push day')
+  })
+
+  it('says when the next hand session is, with nothing else left', () => {
+    seedHistory({
+      [TODAY]: {
+        daily: { [GLIDE]: 1, [REACH]: true },
+        lastPass: new Date('2026-10-06T12:00:00').getTime(),
+        sessions: { odds: finished('full', 1), mobility: finished() }
+      }
+    })
+    mountApp()
     expect(within(upNext()).getByRole('heading').textContent).toBe('Hand session 2')
+    expect(upNext().textContent).toContain('From 2:00 PM')
+    expect(within(upNext()).queryByRole('button')).toBeNull()
   })
 
   it('offers the top session once the passes are on time', () => {

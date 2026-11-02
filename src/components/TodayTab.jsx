@@ -35,6 +35,7 @@ export default function TodayTab({
     pass: { title: `Hand session ${next.pass}`, button: 'Start session', run: actions.pass },
     session: { title: names[next.id], button: 'Start', run: () => actions.start(next.id, 'full') },
     once: { title: 'Putty and band work', button: 'Start', run: actions.once },
+    wait: { title: `Hand session ${next.pass}`, button: null },
     rest: { title: 'Nothing else due today', button: null }
   }[next.kind]
 
