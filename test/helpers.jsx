@@ -14,8 +14,7 @@ export function freezeDate(date = TUESDAY) {
 /**
  * Stub `matchMedia` and the window width. `dark` is the OS theme (the app
  * reads it once at import, so `mountApp` also saves the preference), `reduced`
- * is prefers-reduced-motion, and `width` drives both the lg breakpoint query
- * and the day view's column count.
+ * is prefers-reduced-motion, and `width` drives the lg breakpoint query.
  */
 export function setMedia({ dark = false, reduced = false, width = 390 } = {}) {
   window.innerWidth = width

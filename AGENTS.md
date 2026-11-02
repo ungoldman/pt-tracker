@@ -1,14 +1,14 @@
 # Agent Guidelines
 
 pt-tracker is a private Vite + React app for tracking my shoulder and hand PT
-home programs. One user, runs locally, not published. It loosely follows my package-standard
+home programs. One user, deployed to GitHub Pages and installed on my phone. It loosely follows my package-standard
 conventions, but it is an app rather than an npm library, so the release,
 TypeScript, and coverage machinery from that standard does not apply here.
 
 ## Commands
 
 - install: `npm install`
-- run: `npm start` (Vite dev server, opens http://localhost:5173)
+- run: `npm start` (Vite dev server, opens http://localhost:5173/pt-tracker/)
 - build: `npm run build` (outputs to `dist/`)
 - lint: `npm run lint` (Biome, read-only)
 - format: `npm run format` (Biome, writes `src/` and `test/`)
@@ -50,8 +50,7 @@ How the tests are built:
   `src/data.js`. The real program is checked for shape in `test/data.test.js`.
   A new data shape (a new optional field, say) needs an example in the fixture.
 - Pure modules get example tests plus `fast-check` properties where an
-  invariant holds across all inputs, as with `resolveSchedule` keeping storage
-  keys intact under any moves.
+  invariant holds across all inputs, as with the date arithmetic in `plan.js`.
 - Only the edges are faked: `AudioContext`, `fetch`, `matchMedia`, the wake
   lock, and the plugin's `registerSW`. App code runs for real, apart from the
   program data swap above.

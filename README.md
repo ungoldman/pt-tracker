@@ -1,12 +1,12 @@
 # pt-tracker
 
-A small Vite + React app for tracking daily physical therapy exercises, grouped
-into blocks with a weekly schedule.
+A small Vite + React app for tracking daily physical therapy exercises, planned
+as weekly sessions and daily hand work.
 
 ## Install
 
 1. `npm install`
-2. `npm start` to open `http://localhost:5173`
+2. `npm start` to open `http://localhost:5173/pt-tracker/`
 
 Optional: `npm link` once (from the repo root), then `pt` launches it from anywhere.
 

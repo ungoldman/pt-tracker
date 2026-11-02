@@ -5,8 +5,8 @@
  * Load the bowl recordings into WebAudio buffers on first user gesture.
  * Both are real Tibetan singing bowl strikes from Wikimedia Commons
  * (CC BY-SA 4.0), trimmed/faded to decay fully inside their rep window:
- *   /bowl10.m4a — 4.5" bowl (brighter, ~9.7s) for the 10s interval
- *   /bowl30.m4a — 11" bowl (deeper, ~16.4s) for the 30s interval
+ *   /bowl10.m4a: 4.5" bowl (brighter, ~9.7s) for the 10s interval
+ *   /bowl30.m4a: 11" bowl (deeper, ~16.4s) for the 30s interval
  * Sources: https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_4.5inch.flac
  *          https://commons.wikimedia.org/wiki/File:Tibetan_Singing_Bowl_hit_11inch.flac
  */

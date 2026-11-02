@@ -1,7 +1,7 @@
 /**
  * Durable per-exercise identity: a short, position-independent hash of the
  * name (FNV-1a → base36). Reordering or inserting exercises no longer shifts
- * keys; only renaming an exercise changes its id (acceptable — a renamed or
+ * keys; only renaming an exercise changes its id (acceptable, a renamed or
  * reweighted move is effectively a new prescription).
  */
 function hashString(str) {

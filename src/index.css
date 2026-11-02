@@ -46,7 +46,7 @@
   background-color: #0c1322;
 }
 /* The wallpaper layer: doodle tile as a mask over a paint layer, so each
-   mode's contrast is one opacity knob. Kept low — it's a background element
+   mode's contrast is one opacity knob. Kept low: it's a background element
    and must never compete with the cards. */
 .app-bg-light::before,
 .app-bg-dark::before {
