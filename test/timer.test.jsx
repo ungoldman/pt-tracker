@@ -7,7 +7,6 @@ import {
   flush,
   mountApp,
   openSession,
-  row,
   savedHistory,
   tick
 } from './helpers'
@@ -43,19 +42,19 @@ describe('the hold timer from the footer', () => {
     tick(2000)
     expect(reading()).toContain('3')
     tick(3000)
-    expect(reading()).toContain('Hold — rep 1')
+    expect(reading()).toContain('Hold, rep 1')
     expect(navigator.vibrate).toHaveBeenCalledTimes(1)
 
     tick(7000)
     expect(reading()).toContain('3')
     expect(dialog().querySelector('.text-orange-400')).not.toBeNull()
     tick(3000)
-    expect(reading()).toContain('Rest — next up rep 2')
+    expect(reading()).toContain('Rest, then rep 2')
     tick(4000)
     expect(reading()).toContain('6')
 
     tick(6000)
-    expect(reading()).toContain('Hold — rep 2')
+    expect(reading()).toContain('Hold, rep 2')
     expect(reading()).toContain('10')
 
     click(screen.getByRole('button', { name: 'Stop' }))
@@ -81,7 +80,7 @@ describe('the hold timer from the footer', () => {
     tick(5000)
     tick(10000)
     tick(10000)
-    expect(reading()).toContain('Hold — rep 2')
+    expect(reading()).toContain('Hold, rep 2')
     expect(audio.log).toHaveLength(0)
   })
 })
@@ -104,11 +103,11 @@ describe('the hold timer from an exercise card', () => {
     await flush()
     expect(reading()).toContain('Sleeper Stretch')
     tick(5000)
-    expect(reading()).toContain('Hold — rep 1 of 2')
+    expect(reading()).toContain('Hold, rep 1 of 2')
     tick(10000)
-    expect(reading()).toContain('Rest — next up rep 2')
+    expect(reading()).toContain('Rest, then rep 2')
     tick(10000)
-    expect(reading()).toContain('Hold — rep 2 of 2')
+    expect(reading()).toContain('Hold, rep 2 of 2')
     expect(checked()).toEqual([])
     tick(10000)
     expect(dialog()).toBeNull()
@@ -120,7 +119,7 @@ describe('the hold timer from an exercise card', () => {
     mountApp()
     toCard('Sleeper Stretch')
     click(button('Start holds, 2 × 10s'))
-    click(button('Tap when done'))
+    click(button('Mark done'))
     // One tick per phase: each phase change needs a render before the next.
     for (const ms of [5000, 10000, 10000, 10000]) tick(ms)
     expect(dialog()).toBeNull()
@@ -151,7 +150,7 @@ describe('the hold timer from an exercise card', () => {
 
   it('checks off a daily exercise the same way', () => {
     mountApp()
-    click(button(/^Hand passes/))
+    click(button(/^Hand sessions/))
     click(screen.getByRole('region', { name: 'Once a day' }).querySelector('button'))
     click(button('Start holds, 2 × 30s'))
     for (const ms of [5000, 30000, 10000, 30000]) tick(ms)
@@ -178,6 +177,16 @@ describe('the screen wake lock', () => {
       document.dispatchEvent(new Event('visibilitychange'))
     })
   }
+
+  it('is held while a run of exercises is open', async () => {
+    const locks = lockUp()
+    mountApp()
+    click(button('Start session'))
+    await flush()
+    expect(locks).toHaveLength(1)
+    click(button('Close'))
+    expect(locks[0].release).toHaveBeenCalledTimes(1)
+  })
 
   it('is held for the length of a run and taken again after the tab returns', async () => {
     const locks = lockUp()

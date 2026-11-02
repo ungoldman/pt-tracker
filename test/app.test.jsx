@@ -44,26 +44,26 @@ const card = () => document.querySelector('article[aria-hidden="false"]').getAtt
 const progress = () => screen.getByRole('heading', { level: 2, name: /, \d+ of \d+$/ }).textContent
 const tab = (name) =>
   click(within(screen.getByRole('navigation', { name: 'Screens' })).getByRole('button', { name }))
-const tapDone = () => click(button(/^(Tap when done|Done, tap to undo)$/))
+const tapDone = () => click(button('Mark done'))
 
 describe('today', () => {
   it.each([false, true])('puts a due hand pass up next (dark: %s)', (dark) => {
     mountApp({ dark })
     expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Tuesday')
-    expect(within(upNext()).getByRole('heading').textContent).toBe('Hand pass 1')
+    expect(within(upNext()).getByRole('heading').textContent).toBe('Hand session 1')
     expect(upNext().textContent).toContain('1 exercises, about 5 min')
-    click(button('Start pass'))
-    expect(screen.getByRole('region', { name: 'Hand pass 1' })).not.toBeNull()
+    click(button('Start session'))
+    expect(screen.getByRole('region', { name: 'Hand session 1' })).not.toBeNull()
     expect(card()).toBe('Tendon Glide')
     expect(screen.getByText('3 times a day')).not.toBeNull()
     tapDone()
     expect(savedHistory()[TODAY].daily[GLIDE]).toBe(1)
     tick(600)
     expect(screen.getByRole('article', { name: 'Summary' }).textContent).toContain(
-      'Pass 1 of 3 today.'
+      'Session 1 of 3 today.'
     )
     click(button('Back to today'))
-    expect(within(upNext()).getByRole('heading').textContent).toBe('Hand pass 2')
+    expect(within(upNext()).getByRole('heading').textContent).toBe('Hand session 2')
   })
 
   it('offers the top session once the passes are on time', () => {
@@ -112,7 +112,7 @@ describe('today', () => {
       [TODAY]: { ...passesDone(2), sessions: { odds: finished('full', 1), mobility: finished() } }
     })
     mountApp()
-    expect(within(upNext()).getByRole('heading').textContent).toBe('Hand pass 3')
+    expect(within(upNext()).getByRole('heading').textContent).toBe('Hand session 3')
   })
 
   it('then the once-a-day work, then rest', () => {
@@ -137,12 +137,12 @@ describe('today', () => {
     mountApp()
     const also = screen.getByRole('region', { name: 'Also today' })
     expect(within(also).getByText('0 of 3')).not.toBeNull()
-    expect(row('Run').textContent).toBe('Run2k+ · 1 of 3 this week')
+    expect(row('Run').textContent).toBe('Run2k+, 1 of 3 this week')
     click(row('Daily Steps'))
     expect(savedHistory()[TODAY].daily[STEPS]).toBe(true)
     fireEvent.keyDown(row('Daily Steps'), { key: 'Enter' })
     expect(savedHistory()[TODAY].daily[STEPS]).toBe(false)
-    click(button(/^Hand passes/))
+    click(button(/^Hand sessions/))
     expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Hand')
   })
 
@@ -164,6 +164,12 @@ describe('today', () => {
     expect(
       within(screen.getByRole('region', { name: 'Also today' })).getByText('3 of 3').className
     ).toContain('green')
+  })
+
+  it('shows the full choice outright on a wide screen', () => {
+    mountApp({ width: 1400 })
+    expect(screen.queryByRole('button', { name: 'Pick something else' })).toBeNull()
+    expect(screen.getByRole('region', { name: 'Pick a session' })).not.toBeNull()
   })
 
   it('keeps the full choice one tap away', () => {
@@ -215,10 +221,21 @@ describe('the player', () => {
   it('undoes a check without moving on', () => {
     openPush()
     tapDone()
+    tick(400)
     tapDone()
     tick(600)
     expect(card()).toBe('Arm Circles')
     expect(progress()).toBe('Push day, 0 of 7')
+  })
+
+  it('reads a double tap as one check', () => {
+    openPush()
+    tapDone()
+    tick(100)
+    tapDone()
+    expect(progress()).toBe('Push day, 1 of 7')
+    tick(600)
+    expect(card()).toBe('Wall Slides')
   })
 
   it('steps with the arrows and follows a swipe', () => {
@@ -363,9 +380,10 @@ describe('the player', () => {
   it('takes a pass back one step when unchecked', () => {
     seedHistory({ [TODAY]: passesDone(1) })
     mountApp()
-    click(button('Start pass'))
+    click(button('Start session'))
     tapDone()
     expect(savedHistory()[TODAY].daily[GLIDE]).toBe(2)
+    tick(400)
     tapDone()
     expect(savedHistory()[TODAY].daily[GLIDE]).toBe(1)
   })
@@ -385,6 +403,49 @@ describe('the player', () => {
     click(steps.getByRole('button', { name: 'Curl' }))
     expect(card()).toBe('Curl')
     expect(steps.getByRole('button', { name: 'Arm Circles' }).querySelector('svg')).not.toBeNull()
+  })
+
+  it('shows a saved note on its card', () => {
+    localStorage.setItem('ptTrackerExerciseNotes', JSON.stringify({ [ARMS]: 'elbows in' }))
+    openPush()
+    expect(screen.getByText('elbows in').tagName).toBe('P')
+    click(button('Note'))
+    expect(screen.getByText('elbows in').tagName).toBe('TEXTAREA')
+  })
+
+  it('says what comes next, and what the card needs', () => {
+    openPush()
+    expect(screen.getByText('Next: Wall Slides')).not.toBeNull()
+    for (let n = 0; n < 2; n += 1) click(button('Next exercise'))
+    expect(document.querySelector('article[aria-hidden="false"]').textContent).toContain(
+      'Push, dumbbell'
+    )
+  })
+
+  it('marks the card done with Space, unless a control has focus', () => {
+    openPush()
+    fireEvent.keyDown(button('Close'), { key: ' ' })
+    expect(savedHistory()[TODAY].sessions.push.done).toEqual({})
+    fireEvent.keyDown(document.body, { key: ' ' })
+    expect(savedHistory()[TODAY].sessions.push.done).toEqual({ [ARMS]: true })
+    tick(1000)
+    expect(card()).toBe('Wall Slides')
+  })
+
+  it('does nothing on Space at the summary', () => {
+    openPush()
+    for (let n = 0; n < 7; n += 1) click(button('Next exercise'))
+    fireEvent.keyDown(document.body, { key: ' ' })
+    expect(card()).toBe('Summary')
+  })
+
+  it('claims nothing at the summary of an empty run, and goes back to the first open card', () => {
+    openPush()
+    for (let n = 0; n < 7; n += 1) click(button('Next exercise'))
+    expect(screen.getByRole('heading', { name: 'Nothing checked off yet' })).not.toBeNull()
+    expect(screen.queryByText(/^Counts /)).toBeNull()
+    click(button('Keep going'))
+    expect(card()).toBe('Arm Circles')
   })
 
   it('steps with the arrow keys, except while typing a note', () => {
@@ -499,14 +560,16 @@ describe('the hand tab', () => {
     seedHistory({ [TODAY]: passesDone(1) })
     mountApp({ dark })
     tab('Hand')
-    const passes = within(screen.getByRole('list', { name: 'Passes' })).getAllByRole('listitem')
+    const passes = within(screen.getByRole('list', { name: 'Hand sessions' })).getAllByRole(
+      'listitem'
+    )
     expect(passes.map((li) => li.textContent)).toEqual([
-      'Pass 1morning, 1 exercises, about 5 min',
-      'Pass 2midday, 1 exercises, about 5 minStart',
-      'Pass 3evening, 1 exercises, about 5 min'
+      'Session 1morning, 1 exercises, about 5 min',
+      'Session 2midday, 1 exercises, about 5 minStart',
+      'Session 3evening, 1 exercises, about 5 min'
     ])
     click(button('Start'))
-    expect(screen.getByRole('region', { name: 'Hand pass 2' })).not.toBeNull()
+    expect(screen.getByRole('region', { name: 'Hand session 2' })).not.toBeNull()
   })
 
   it('opens the once-a-day work and marks what is worn', () => {
@@ -532,16 +595,16 @@ describe('the week tab', () => {
     mountApp({ dark })
     tab('Week')
     expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Week')
-    expect(screen.getByText('No sessions.')).not.toBeNull()
+    expect(screen.getByText('No shoulder or leg work.')).not.toBeNull()
     click(strip('Monday'))
     expect(strip('Monday').getAttribute('aria-pressed')).toBe('true')
     const detail = screen.getByRole('region', { name: 'Monday in detail' })
-    expect(within(detail).getByText('Hand passes: 2 of 3')).not.toBeNull()
+    expect(within(detail).getByText('Hand sessions: 2 of 3')).not.toBeNull()
     expect(within(detail).queryByRole('heading', { name: /sessions/ })).toBeNull()
 
-    click(button('Add a session to Monday'))
+    click(button('Add shoulder or leg work to Monday'))
     click(button('Never mind'))
-    click(button('Add a session to Monday'))
+    click(button('Add shoulder or leg work to Monday'))
     startSession('Mobility')
     expect(progress()).toBe('Mobility, Monday, 0 of 2')
     tapDone()
@@ -579,7 +642,7 @@ describe('the week tab', () => {
     mountApp()
     tab('Week')
     expect(screen.getByRole('region', { name: 'Left this week' }).textContent).toBe(
-      'Left this weekPush day, 2 moreMobility, 2 more'
+      'Left this weekPush day2 moreMobility2 more'
     )
   })
 

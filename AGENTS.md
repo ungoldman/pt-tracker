@@ -82,6 +82,7 @@ src/
     SessionPicker.jsx      every session ranked for a day, full or short
     DayLog.jsx             a day's sessions with Resume or Open
     WeekStrip.jsx          Monday to Sunday, one mark per session, days open on tap
+    Pips.jsx               a count of a target at a glance, part-done ones filled by share
     ItemGroup.jsx          a block's exercises as rows under its accent header
     ExerciseRow.jsx        one exercise row: toggle, badges, note editor (memoized)
     Footer.jsx             hold timer (prep, hold, rest) and its free-running bar
@@ -90,12 +91,15 @@ src/
   hooks/
     usePersistentState.js  useState mirrored to localStorage (init + persist)
     useDismiss.js          close on Escape or outside press
+    useSingleTap.js        drops the second tap of a double tap on a toggle
+    useWakeLock.js         keep the screen awake, taken again when the tab returns
+    useWide.js             true from lg up, for what a tab shows outright on a big screen
   lib/
     plan.js                dates, session items, credit, ranking, Up next, daily parts (pure)
     stats.js               exerciseId, the storage hash of an exercise name
     duration.js            time estimates and hold plans
     blockStyle.js          per-block accent color + icon
-    exerciseDisplay.jsx    name formatting + equipment/priority icon badges
+    exerciseDisplay.jsx    name and dose formatting + equipment/priority icon badges
     audio.js               hold-timer WebAudio cues (bowl chime, temple-block rest)
     updates.js             service worker registration and the new-version signal
   kill-sw.js               emergency-exit service worker, published only by the kill switch
@@ -190,6 +194,10 @@ session while the day has room, any pass left, the once-a-day work, rest. The
 pass times are a habit cue rather than a rule. Only the next pass can be
 started, so they stay spread through the day.
 
+The screens call a pass a hand session, the word hand therapy uses, while the
+code and storage keep `pass`, so `session` in the code always means a weekly
+one. The picker's copy says shoulder or leg work, since hand work is not on it.
+
 ## State and persistence
 
 Durable state goes through `usePersistentState`: dark mode, history, notes.
@@ -229,17 +237,27 @@ one job per screen.
 - The tabs sit in a bar at the foot of the screen, and hide while a run is
   open. From `lg` up they move into the header and each tab lays out in two
   columns.
-- The player shows one card at a time in a horizontal scroll-snap track. A tap
-  on the card's target checks it and moves on after `ADVANCE_MS`, so a second
-  tap cannot land on the next card. Swipes and the arrows move without
-  checking. A swipe is read only after `SETTLE_MS` of quiet, because the smooth
+- A run takes the whole screen on a phone. The header stands aside, and the
+  screen stays awake while the player is open, since a set outlasts the phone's
+  timeout.
+- The player shows one card at a time in a horizontal scroll-snap track. Mark
+  done sits at the foot of the card, in thumb reach. A tap checks it and moves
+  on after `ADVANCE_MS`, so a second tap cannot land on the next card. Swipes
+  and the arrows move without checking. A swipe is read only after `SETTLE_MS` of quiet, because the smooth
   scroll an arrow starts fires scroll events on the way and reading one of
   those pulls the card back. From `lg` up the run is listed beside the card,
-  and the arrow keys step through it.
+  the arrow keys step through it, and Space marks the card done.
+- Off-screen cards are `inert`, so they stay mounted for the swipe but out of
+  the tab order.
+- Today shows the session picker outright from `lg` up. Layout that changes what
+  is rendered goes through `useWide`, so the tests can set it with `width`.
 - The free-running hold-timer bar shows from `lg` up only. On phones every
   prescribed hold starts from its own card.
 - Small controls get a 44px hit area on touch screens from the `hit-44` class
   in `index.css`, which leaves their look alone. The element must be positioned.
+- A double tap neither zooms nor selects text, and pinch still works. See
+  `index.css`. With zoom off both taps reach the app, so anything that toggles
+  on a tap goes through `useSingleTap`, or a double tap undoes itself.
 - The note textarea is 16px. Anything smaller makes iOS Safari zoom on focus.
 
 The tests cannot see any of this, since jsdom has no layout and no smooth
@@ -312,3 +330,9 @@ Follow `CONTRIBUTING.md` for commit and coding conventions. Two that bite here:
 Backgrounds and surfaces stay quiet: flat surfaces, a single semantic accent,
 low-contrast wallpaper. When in doubt on background contrast, go quieter. The
 wallpaper opacity is deliberately low and meant to stay that way.
+
+Blue is the action and green is done. Block colors stay on small icons and
+labels. Text sits on a surface, never directly on the wallpaper. The one loud
+thing is the player's dose and Mark done, which have to read from across a room.
+Headings and counts use `font-display` (SF Rounded on Apple devices, no font
+file to ship).

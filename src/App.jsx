@@ -312,12 +312,12 @@ const App = () => {
         }
       },
       pass: () => ({
-        title: `Hand pass ${player.pass}`,
+        title: `Hand session ${player.pass}`,
         scope: `pass:${player.pass}`,
         items: PARTS.pass,
         summary: (
           <p>
-            Pass {player.pass} of {hand.perDay} today.
+            Session {player.pass} of {hand.perDay} today.
           </p>
         )
       }),
@@ -397,11 +397,12 @@ const App = () => {
     const left = sessions
       .map((s) => ({
         name: s.name,
-        remaining: round(s.perWeek - Math.min(s.perWeek, weekCredit(history, today, s.id)))
+        target: s.perWeek,
+        credit: Math.min(s.perWeek, weekCredit(history, today, s.id))
       }))
-      .filter(({ remaining }) => remaining > 0)
+      .filter(({ credit, target }) => credit < target)
       // A part-done session still takes a whole sitting to finish.
-      .map(({ name, remaining }) => ({ name, remaining: `${Math.ceil(remaining)} more` }))
+      .map((s) => ({ ...s, remaining: `${Math.ceil(s.target - s.credit)} more` }))
     screen = (
       <WeekTab
         strip={weekStrip(sessions, history, today)}
@@ -427,8 +428,14 @@ const App = () => {
   return (
     <TrackerContext.Provider value={tracker}>
       <div
-        className={`flex min-h-screen flex-col ${
-          darkMode ? 'app-bg-dark text-gray-100' : 'app-bg-light text-gray-900'
+        className={`flex min-h-dvh flex-col ${
+          player
+            ? darkMode
+              ? 'bg-gray-900 text-gray-100'
+              : 'bg-gray-50 text-gray-900'
+            : darkMode
+              ? 'app-bg-dark text-gray-100'
+              : 'app-bg-light text-gray-900'
         }`}
       >
         <Header

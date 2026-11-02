@@ -1,7 +1,14 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { getBlockStyle } from '../src/lib/blockStyle'
-import { formatExerciseName, getExerciseIcon, getPriorityIcon } from '../src/lib/exerciseDisplay'
+import {
+  doseParts,
+  equipmentOf,
+  formatDose,
+  formatExerciseName,
+  getExerciseIcon,
+  getPriorityIcon
+} from '../src/lib/exerciseDisplay'
 import { exercises } from './fixtures/program'
 
 describe('getBlockStyle', () => {
@@ -33,7 +40,7 @@ describe('exercise display', () => {
   it.each([
     ['Curl with Dumbbell', 'Dumbbell'],
     ['Press with Dowel', 'Dowel'],
-    ['Row with Resistance', 'Resistance Band']
+    ['Row with Resistance', 'Resistance band']
   ])('badges %s in both themes', (name, title) => {
     for (const dark of [false, true]) {
       const { container, unmount } = render(getExerciseIcon(name, dark))
@@ -53,5 +60,29 @@ describe('exercise display', () => {
       expect(container.querySelector('svg')).not.toBeNull()
       unmount()
     }
+  })
+})
+
+describe('doses', () => {
+  it.each([
+    [{ sets: 3, reps: 10 }, '3 × 10', null],
+    [{ sets: 3, reps: 10, hold: '3s' }, '3 × 10', '3s hold each'],
+    [{ sets: 2, hold: '30s' }, '2 × 30s', 'hold each'],
+    [{ reps: 3, hold: '20s' }, '3 reps', '20s hold each'],
+    [{ hold: '30s' }, '30s', 'hold each'],
+    [{ target: 5000 }, '5000', null]
+  ])('splits %j', (ex, main, sub) => {
+    expect(doseParts(ex)).toEqual({ main, sub })
+  })
+
+  it('reads on one line, and is empty for an item with no dose', () => {
+    expect(formatDose({ sets: 3, reps: 10, hold: '3s' })).toBe('3 × 10, 3s hold each')
+    expect(formatDose({ sets: 3, reps: 10 })).toBe('3 × 10')
+    expect(formatDose({ name: 'Hand Foam Roll' })).toBe('')
+  })
+
+  it('names the equipment in an exercise', () => {
+    expect(equipmentOf('Curl with Dumbbell').label).toBe('Dumbbell')
+    expect(equipmentOf('Wall Slides')).toBeUndefined()
   })
 })

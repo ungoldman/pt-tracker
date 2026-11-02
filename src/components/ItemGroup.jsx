@@ -34,11 +34,11 @@ export default function ItemGroup({ scope, category, list, label }) {
   return (
     <div data-group={`${scope}-${category}`}>
       <div
-        className={`flex items-center gap-2 px-2 py-1 text-xs font-semibold uppercase tracking-wide ${
-          darkMode ? textDark : textLight
+        className={`flex items-center gap-2 px-2 py-1 text-sm font-medium ${
+          darkMode ? 'text-gray-200' : 'text-gray-700'
         }`}
       >
-        <Icon size={14} className="shrink-0" />
+        <Icon size={14} className={`shrink-0 ${darkMode ? textDark : textLight}`} />
         {label}
         <span
           className={`ml-auto font-normal tabular-nums ${
@@ -49,7 +49,7 @@ export default function ItemGroup({ scope, category, list, label }) {
                 : 'text-gray-500'
           }`}
         >
-          {doneCount}/{list.length}
+          {doneCount} of {list.length}
         </span>
       </div>
       <div className={`divide-y ${darkMode ? 'divide-gray-700/40' : 'divide-gray-200'}`}>

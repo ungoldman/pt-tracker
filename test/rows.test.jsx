@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { button, click, mountApp, openSession, row, savedHistory } from './helpers'
+import { button, click, mountApp, openSession, row, savedHistory, tick } from './helpers'
 
 const notes = () => JSON.parse(localStorage.getItem('ptTrackerExerciseNotes'))
 
@@ -10,13 +10,13 @@ describe('exercise rows', () => {
     const text = (name) => row(name).textContent
     expect(text('Daily Steps')).toBe('Daily Steps5000')
     openSession('Push day', { list: true })
-    expect(text('Arm Circles')).toBe('Arm Circles2 x 10')
-    expect(text('Doorway Stretch')).toBe('Doorway Stretch3 x 30s')
-    expect(text('Sleeper Stretch')).toBe('Sleeper Stretch1 x 2 · 10s hold')
+    expect(text('Arm Circles')).toBe('Arm Circles2 × 10')
+    expect(text('Doorway Stretch')).toBe('Doorway Stretch3 × 30s')
+    expect(text('Sleeper Stretch')).toBe('Sleeper Stretch1 × 2, 10s hold each')
     click(button('Close'))
-    click(button('Start pass'))
+    click(button('Start session'))
     click(button('List'))
-    expect(text('Tendon Glide')).toBe('Tendon Glide3 x 10 · 3s hold · 3x/day')
+    expect(text('Tendon Glide')).toBe('Tendon Glide3 × 10, 3s hold each, 3x/day')
   })
 
   it('offers a timer only for holds worth timing', () => {
@@ -37,6 +37,17 @@ describe('exercise rows', () => {
     expect(link.getAttribute('rel')).toBe('noopener noreferrer')
     click(link)
     expect(savedHistory()['2026-10-06'].sessions.pull.done).toEqual({})
+  })
+
+  it('reads a double tap as one check, and a later tap as an undo', () => {
+    mountApp()
+    click(row('Daily Steps'))
+    tick(100)
+    click(row('Daily Steps'))
+    expect(row('Daily Steps').querySelector('svg')).not.toBeNull()
+    tick(400)
+    click(row('Daily Steps'))
+    expect(Object.values(savedHistory()['2026-10-06'].daily)).toEqual([false])
   })
 
   it.each([false, true])('greens a finished row (dark: %s)', (dark) => {

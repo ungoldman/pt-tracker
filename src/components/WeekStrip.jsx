@@ -30,7 +30,7 @@ export default function WeekStrip({ strip, today, shown, onSelect }) {
   return (
     <section
       aria-label="This week"
-      className={`rounded-xl p-3 shadow-sm ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
+      className={`rounded-xl p-3 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
     >
       <ol className="grid grid-cols-7 gap-1">
         {strip.map(({ key, entries }) => {
@@ -49,11 +49,11 @@ export default function WeekStrip({ strip, today, shown, onSelect }) {
                     ? entries.map(({ session }) => session.name).join(', ')
                     : 'nothing yet'
                 }`}
-                className={`flex min-h-16 w-full flex-col items-center gap-1 rounded-md py-1.5 disabled:opacity-40 ${
+                className={`flex min-h-20 w-full flex-col items-center gap-1 rounded-lg py-1.5 disabled:opacity-40 ${
                   key === shown
                     ? darkMode
-                      ? 'bg-gray-700 ring-1 ring-gray-400'
-                      : 'bg-gray-100 ring-1 ring-gray-400'
+                      ? 'bg-gray-700 ring-1 ring-blue-500'
+                      : 'bg-gray-100 ring-1 ring-blue-500'
                     : darkMode
                       ? 'enabled:hover:bg-gray-700/50'
                       : 'enabled:hover:bg-gray-100'
@@ -67,6 +67,9 @@ export default function WeekStrip({ strip, today, shown, onSelect }) {
                   }`}
                 >
                   {isToday ? 'Today' : weekday}
+                </span>
+                <span className="font-display text-sm font-semibold tabular-nums">
+                  {date.getDate()}
                 </span>
                 {entries.slice(0, SHOWN).map(({ session, entry }) => {
                   const count = doneCount(entry)
@@ -87,9 +90,20 @@ export default function WeekStrip({ strip, today, shown, onSelect }) {
           )
         })}
       </ol>
-      <p className={`mt-2 text-xs ${muted}`}>
-        Tap a day to see or add to it. Purple is shoulder weights, a faint mark is part done.
-      </p>
+      <ul className={`mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs ${muted}`}>
+        <li className="flex items-center gap-1.5">
+          <span className={`h-2 w-3 rounded-sm border ${MARK.strength.full}`} />
+          Shoulder weights
+        </li>
+        <li className="flex items-center gap-1.5">
+          <span className={`h-2 w-3 rounded-sm border ${MARK.light.full}`} />
+          Lighter
+        </li>
+        <li className="flex items-center gap-1.5">
+          <span className={`h-2 w-3 rounded-sm border ${MARK.strength.part}`} />
+          Part done
+        </li>
+      </ul>
     </section>
   )
 }

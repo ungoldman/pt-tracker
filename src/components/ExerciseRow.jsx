@@ -1,7 +1,13 @@
 import { BellRing, Check, FileText, Timer } from 'lucide-react'
 import { memo } from 'react'
+import { useSingleTap } from '../hooks/useSingleTap'
 import { holdPlan } from '../lib/duration'
-import { formatExerciseName, getExerciseIcon, getPriorityIcon } from '../lib/exerciseDisplay'
+import {
+  formatDose,
+  formatExerciseName,
+  getExerciseIcon,
+  getPriorityIcon
+} from '../lib/exerciseDisplay'
 import Confetti from './Confetti'
 
 /**
@@ -39,8 +45,7 @@ export default memo(function ExerciseRow({
   const nameBlock = ex.link ? (
     <>
       <span>{formatExerciseName(ex.name)}</span>
-      <span className="text-xs text-gray-500">
-        &nbsp;(
+      <span className="ml-1.5 text-xs">
         <a
           href={ex.link}
           target="_blank"
@@ -51,24 +56,21 @@ export default memo(function ExerciseRow({
         >
           video
         </a>
-        )
       </span>
     </>
   ) : (
     formatExerciseName(ex.name)
   )
 
+  const singleTap = useSingleTap()
   const plan = holdPlan(ex)
-  const repsText = (
-    <>
-      {ex.sets ? `${ex.sets} x ` : ''}
-      {ex.reps}
-      {ex.reps && ex.hold ? ` · ${ex.hold} hold` : ex.hold}
-      {ex.target}
-      {ex.perDay ? ` · ${ex.perDay}x/day` : ''}
-      {ex.perWeek ? ` · ${weekCount} of ${ex.perWeek} this week` : ''}
-    </>
-  )
+  const repsText = [
+    formatDose(ex),
+    ex.perDay && `${ex.perDay}x/day`,
+    ex.perWeek && `${weekCount} of ${ex.perWeek} this week`
+  ]
+    .filter(Boolean)
+    .join(', ')
   const nameColor = completed
     ? darkMode
       ? 'text-green-300'
@@ -90,7 +92,7 @@ export default memo(function ExerciseRow({
   const handleToggle = () => {
     const selection = window.getSelection?.()
     if (selection && !selection.isCollapsed) return
-    toggleComplete(scope, category, exId)
+    if (singleTap()) toggleComplete(scope, category, exId)
   }
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {

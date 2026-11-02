@@ -24,7 +24,7 @@ export default function SessionPicker({ ranked, sizes, onStart, dayName }) {
   const muted = darkMode ? 'text-gray-400' : 'text-gray-500'
 
   const heading = dayName
-    ? `Add a session to ${dayName}`
+    ? `Add shoulder or leg work to ${dayName}`
     : started
       ? 'Room for another?'
       : 'Pick today’s session'
@@ -40,7 +40,7 @@ export default function SessionPicker({ ranked, sizes, onStart, dayName }) {
           this week
         </span>
       </div>
-      <div className="mt-2 flex flex-wrap gap-1.5">
+      <div className="mt-2 flex gap-1.5 lg:max-w-xs">
         {['full', 'short'].map((size) => {
           const { minutes, count } = sizes(r.session, size)
           const primary = highlight && size === 'full'
@@ -50,7 +50,7 @@ export default function SessionPicker({ ranked, sizes, onStart, dayName }) {
               type="button"
               onClick={() => onStart(r.session.id, size)}
               aria-label={`Start ${r.session.name}, ${size}, about ${minutes} minutes`}
-              className={`rounded-md px-3 py-1.5 text-left text-sm ${
+              className={`min-w-0 flex-1 rounded-lg px-3 py-2 text-left text-sm ${
                 primary
                   ? 'bg-blue-600 text-white hover:bg-blue-500'
                   : darkMode
@@ -69,7 +69,7 @@ export default function SessionPicker({ ranked, sizes, onStart, dayName }) {
     </li>
   )
 
-  const card = `rounded-xl shadow-sm ${darkMode ? 'bg-gray-800' : 'bg-white'}`
+  const card = `rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'}`
   const title = `px-3 pt-3 text-base font-semibold ${darkMode ? 'text-gray-100' : 'text-gray-800'}`
 
   if (!available.length && !rest.length) {

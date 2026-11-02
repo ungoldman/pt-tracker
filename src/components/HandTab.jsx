@@ -13,29 +13,33 @@ const when = (n, of) => ['morning', 'midday', 'evening'][Math.floor(((n - 1) * 3
 export default function HandTab({ hand, passMinutes, once, ambient, onPass, onOnce }) {
   const { darkMode } = useTracker()
   const muted = darkMode ? 'text-gray-400' : 'text-gray-500'
-  const row = darkMode ? 'bg-gray-800' : 'bg-white'
+  const card = `rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'}`
   const passes = Array.from({ length: hand.perDay }, (_, n) => n + 1)
 
   return (
     <div className="space-y-5 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
-      <ol aria-label="Passes" className="space-y-2 lg:row-span-2">
+      <ol
+        aria-label="Hand sessions"
+        className={`divide-y lg:row-span-2 ${card} ${
+          darkMode ? 'divide-gray-700/50' : 'divide-gray-200'
+        }`}
+      >
         {passes.map((n) => {
           const done = n <= hand.done
           const next = n === hand.done + 1
           return (
-            <li
-              key={n}
-              className={`flex items-center gap-3 rounded-xl px-4 py-4 shadow-sm ${row} ${
-                next ? 'ring-1 ring-indigo-400/50' : ''
-              }`}
-            >
+            <li key={n} className="flex items-center gap-3 px-4 py-4">
               {done ? (
                 <Check size={18} strokeWidth={3} className="shrink-0 text-green-500" />
               ) : (
-                <span className="h-[18px] w-[18px] shrink-0 rounded-full border-2 border-gray-500" />
+                <span
+                  className={`h-[18px] w-[18px] shrink-0 rounded-full border-2 ${
+                    next ? 'border-blue-500' : 'border-gray-500'
+                  }`}
+                />
               )}
-              <span className="flex-1">
-                <span className="block text-base">Pass {n}</span>
+              <span className={`flex-1 ${done || next ? '' : muted}`}>
+                <span className="block text-base">Session {n}</span>
                 <span className={`text-xs ${muted}`}>
                   {when(n, hand.perDay)}, {hand.size} exercises, about {passMinutes} min
                 </span>
@@ -44,7 +48,7 @@ export default function HandTab({ hand, passMinutes, once, ambient, onPass, onOn
                 <button
                   type="button"
                   onClick={onPass}
-                  className="rounded-lg bg-indigo-500 px-3 py-1.5 text-sm text-white"
+                  className="relative hit-44 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
                 >
                   Start
                 </button>
@@ -55,10 +59,7 @@ export default function HandTab({ hand, passMinutes, once, ambient, onPass, onOn
       </ol>
 
       {once.count > 0 && (
-        <section
-          aria-label="Once a day"
-          className={`flex items-center gap-3 rounded-xl px-4 py-4 shadow-sm ${row}`}
-        >
+        <section aria-label="Once a day" className={`flex items-center gap-3 px-4 py-4 ${card}`}>
           <span className="flex-1">
             <span className="block text-base">Putty and band work</span>
             <span className={`text-xs ${muted}`}>
@@ -68,7 +69,7 @@ export default function HandTab({ hand, passMinutes, once, ambient, onPass, onOn
           <button
             type="button"
             onClick={onOnce}
-            className={`rounded-lg px-3 py-1.5 text-sm ${
+            className={`relative hit-44 rounded-lg px-4 py-2 text-sm ${
               darkMode ? 'border border-gray-600' : 'border border-gray-300'
             }`}
           >
@@ -78,7 +79,7 @@ export default function HandTab({ hand, passMinutes, once, ambient, onPass, onOn
       )}
 
       {ambient.map(({ category, list }) => (
-        <section key={category} className={`rounded-xl p-2 shadow-sm ${row}`}>
+        <section key={category} className={`p-2 ${card}`}>
           <ItemGroup scope="daily" category={category} label="Through the day" list={list} />
         </section>
       ))}

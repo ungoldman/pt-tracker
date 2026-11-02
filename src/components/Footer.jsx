@@ -1,6 +1,7 @@
 import { Square, TimerReset } from 'lucide-react'
 import { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useWakeLock } from '../hooks/useWakeLock'
 import { chime, ensureAudio, knock, silence } from '../lib/audio'
 
 const TIMER_LINKS = [
@@ -137,33 +138,7 @@ export default function Footer({ darkMode, ref }) {
 
   useImperativeHandle(ref, () => ({ start }))
 
-  // Keep the screen awake for the length of a run. The lock drops whenever the
-  // tab is hidden, so take it again on return.
-  const running = phase !== 'idle'
-  useEffect(() => {
-    if (!running || !navigator.wakeLock) return undefined
-    let lock = null
-    let released = false
-    const acquire = async () => {
-      try {
-        const next = await navigator.wakeLock.request('screen')
-        if (released) next.release()
-        else lock = next
-      } catch {
-        // Denied or unsupported (low battery, insecure origin): run without it.
-      }
-    }
-    const onVisible = () => {
-      if (document.visibilityState === 'visible') acquire()
-    }
-    acquire()
-    document.addEventListener('visibilitychange', onVisible)
-    return () => {
-      released = true
-      document.removeEventListener('visibilitychange', onVisible)
-      lock?.release()
-    }
-  }, [running])
+  useWakeLock(phase !== 'idle')
 
   // Esc closes the takeover modal while it's up.
   useEffect(() => {
@@ -183,7 +158,7 @@ export default function Footer({ darkMode, ref }) {
     : 'border-blue-400 text-blue-700 bg-blue-50'
 
   const inProgress = phase !== 'idle'
-  const bigDigits = 'font-bold tabular-nums leading-none text-[34vw] sm:text-[22rem]'
+  const bigDigits = 'font-display font-bold tabular-nums leading-none text-[34vw] sm:text-[22rem]'
 
   return (
     <>
@@ -198,7 +173,7 @@ export default function Footer({ darkMode, ref }) {
             }`}
           >
             <span
-              className={`text-sm uppercase tracking-[0.25em] ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}
+              className={`max-w-md text-center text-base ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}
             >
               {planRef.current?.label ?? `${duration}-second holds`}
             </span>
@@ -217,14 +192,14 @@ export default function Footer({ darkMode, ref }) {
                 <span
                   className={`text-2xl font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}
                 >
-                  Rest — next up rep {reps + 1}
+                  Rest, then rep {reps + 1}
                 </span>
                 <span className={`${bigDigits} text-emerald-400`}>{breakLeft}</span>
               </>
             ) : (
               <>
                 <span className="text-2xl font-medium">
-                  Hold — rep {reps + 1}
+                  Hold, rep {reps + 1}
                   {planRef.current?.count ? ` of ${planRef.current.count}` : ''}
                 </span>
                 <span className={`${bigDigits} ${remaining <= 3 ? 'text-orange-400' : ''}`}>
@@ -254,7 +229,7 @@ export default function Footer({ darkMode, ref }) {
       <footer
         className={`hidden lg:block w-full border-t lg:sticky lg:bottom-0 z-40 ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}
       >
-        <div className="px-3 sm:px-6 py-3">
+        <div className="mx-auto max-w-5xl px-6 py-2">
           <div
             className={`flex flex-wrap items-center gap-x-4 gap-y-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}
           >

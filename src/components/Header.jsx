@@ -11,7 +11,8 @@ export const TABS = [
 /**
  * Top bar: the screen's title, the week's session count, theme, and resets.
  * The tabs sit in a bar at the foot of the screen on phones, where a thumb
- * reaches them, and inline in this bar from lg up.
+ * reaches them, and inline in this bar from lg up. A run on a phone has the
+ * whole screen, so this bar stands aside for it.
  */
 export default function Header({
   darkMode,
@@ -40,12 +41,12 @@ export default function Header({
 
   return (
     <header
-      className={`sticky top-0 z-40 border-b ${
+      className={`sticky top-0 z-40 border-b ${showTabs ? '' : 'hidden lg:block'} ${
         darkMode ? 'border-gray-800 bg-gray-900/95' : 'border-gray-200 bg-gray-50/95'
       }`}
     >
       <div className="mx-auto flex max-w-xl items-center gap-3 px-4 py-3 lg:max-w-5xl lg:px-6">
-        <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+        <h1 className="font-display text-2xl font-semibold tracking-tight">{title}</h1>
         {showTabs && (
           <nav
             aria-label="Screens"
@@ -60,10 +61,16 @@ export default function Header({
                 onClick={() => onTab(id)}
                 aria-current={tab === id ? 'page' : undefined}
                 className={`flex flex-col items-center gap-1 text-[11px] lg:flex-row lg:rounded-lg lg:px-3 lg:py-1.5 lg:text-sm ${
-                  tab === id ? 'text-blue-500' : muted
+                  tab === id
+                    ? `font-medium lg:bg-blue-500/10 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`
+                    : muted
                 }`}
               >
-                <Icon size={20} className="lg:hidden" />
+                <span
+                  className={`rounded-full px-4 py-0.5 lg:hidden ${tab === id ? 'bg-blue-500/15' : ''}`}
+                >
+                  <Icon size={20} />
+                </span>
                 {label}
               </button>
             ))}

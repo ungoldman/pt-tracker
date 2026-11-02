@@ -1,4 +1,5 @@
 import {
+  ArrowRight,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -11,9 +12,11 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { useTracker } from '../context/TrackerContext'
 import { exercises } from '../data'
+import { useSingleTap } from '../hooks/useSingleTap'
+import { useWakeLock } from '../hooks/useWakeLock'
 import { getBlockStyle } from '../lib/blockStyle'
 import { holdPlan } from '../lib/duration'
-import { formatExerciseName } from '../lib/exerciseDisplay'
+import { doseParts, equipmentOf, formatExerciseName } from '../lib/exerciseDisplay'
 import { itemKey } from '../lib/plan'
 import { exerciseId } from '../lib/stats'
 import ItemGroup from './ItemGroup'
@@ -24,12 +27,6 @@ const ADVANCE_MS = 600
 
 // Quiet time after the last scroll event before the track counts as at rest.
 const SETTLE_MS = 120
-
-// "3 × 10, 3s hold", "2 × 30s hold", "5000".
-const dose = ({ sets, reps, hold, target }) => {
-  const what = [reps, hold && `${hold} hold`].filter(Boolean).join(', ')
-  return [sets && `${sets} ×`, what, target].filter(Boolean).join(' ')
-}
 
 const labelOf = ({ category, label }) => label ?? exercises[category]?.displayName ?? category
 
@@ -48,6 +45,9 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
     return open === -1 ? items.length : open
   })
   const [noteOpen, setNoteOpen] = useState(false)
+  // A set takes longer than a phone's screen timeout.
+  useWakeLock(true)
+  const singleTap = useSingleTap()
   const trackRef = useRef(null)
   const advanceRef = useRef(null)
   const settleRef = useRef(null)
@@ -89,14 +89,20 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
     }, SETTLE_MS)
   }
 
-  // Arrow keys step through the cards on a keyboard, unless typing a note.
+  // Arrow keys step through the cards on a keyboard, unless typing a note, and
+  // Space marks the card done unless a focused control would take it.
   const goRef = useRef(go)
   goRef.current = go
+  const checkCurrent = useRef(null)
   useEffect(() => {
     const onKey = (e) => {
       if (e.target.tagName === 'TEXTAREA') return
       if (e.key === 'ArrowRight') goRef.current(indexRef.current + 1)
       if (e.key === 'ArrowLeft') goRef.current(indexRef.current - 1)
+      if (e.key === ' ' && e.target === document.body) {
+        e.preventDefault()
+        checkCurrent.current()
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -108,6 +114,7 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
   }
 
   const check = ({ category, ex }) => {
+    if (!singleTap()) return
     // An undo cancels the move a check just queued.
     clearTimeout(advanceRef.current)
     const wasDone = isDone(scope, itemKey(category, ex))
@@ -115,13 +122,24 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
     if (!wasDone) advanceRef.current = setTimeout(() => go(index + 1), ADVANCE_MS)
   }
 
+  checkCurrent.current = () => {
+    if (items[index]) check(items[index])
+  }
+
   const doneCount = items.filter(({ category, ex }) => isDone(scope, itemKey(category, ex))).length
   const surface = darkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'
   const muted = darkMode ? 'text-gray-400' : 'text-gray-500'
-  const control = `hit-44 relative flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs ${muted}`
+  const shared = 'hit-44 relative flex items-center gap-1.5 whitespace-nowrap px-2 text-sm'
+  const control = `${shared} min-h-11 rounded-lg ${muted}`
+  // The row under Mark done, the same size as it on a desktop.
+  const step = `${shared} min-h-14 justify-center rounded-xl border disabled:cursor-default disabled:opacity-30 lg:px-4 lg:text-base ${
+    darkMode
+      ? 'border-gray-700 text-gray-200 not-disabled:hover:bg-gray-800 not-disabled:active:bg-gray-800'
+      : 'border-gray-300 text-gray-700 not-disabled:hover:bg-white not-disabled:active:bg-white'
+  }`
 
   const top = (
-    <div className="px-4 pt-3">
+    <div className="px-4 pt-3 lg:px-6">
       <div className="flex gap-1" aria-hidden="true">
         {items.map(({ category, ex }, n) => (
           <span
@@ -171,7 +189,9 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
     return (
       <section aria-label={title} className={`flex-1 ${surface}`}>
         {top}
-        <div className={`m-3 space-y-3 rounded-xl p-2 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+        <div
+          className={`m-3 space-y-3 rounded-xl p-2 lg:mx-6 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
+        >
           {groups.map((g) => (
             <ItemGroup
               key={`${g.label}-${g.list[0].name}`}
@@ -182,11 +202,11 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
             />
           ))}
         </div>
-        <div className="px-3 pb-6">
+        <div className="px-3 pb-6 lg:px-6">
           <button
             type="button"
             onClick={onDone}
-            className="w-full rounded-xl bg-blue-600 py-3 text-base font-medium text-white"
+            className="w-full rounded-xl bg-blue-600 py-3 text-base font-medium text-white hover:bg-blue-500 lg:w-auto lg:px-8"
           >
             Done for now
           </button>
@@ -196,13 +216,15 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
   }
 
   const current = items[index]
+  const following = items[index + 1]
+  const firstOpen = items.findIndex(({ category, ex }) => !isDone(scope, itemKey(category, ex)))
 
   return (
     <section aria-label={title} className={`flex flex-1 flex-col ${surface}`}>
       {top}
       {/* From lg up the run is listed beside the card, to see and jump. */}
-      <div className="flex flex-1 flex-col lg:grid lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-6 lg:px-4">
-        <nav aria-label="Exercises" className="hidden lg:block lg:pt-6">
+      <div className="flex flex-1 flex-col lg:grid lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8 lg:px-6">
+        <nav aria-label="Exercises" className="hidden lg:block lg:pt-4">
           <ol className="space-y-0.5">
             {items.map(({ category, ex }, n) => (
               <li key={itemKey(category, ex)}>
@@ -214,7 +236,7 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
                     n === index
                       ? darkMode
                         ? 'bg-gray-800 text-gray-100'
-                        : 'bg-white text-gray-900 shadow-sm'
+                        : 'bg-white text-gray-900'
                       : muted
                   }`}
                 >
@@ -241,59 +263,89 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
               const done = isDone(scope, key)
               const plan = holdPlan(ex)
               const { textDark, textLight } = getBlockStyle(category)
+              const { main, sub } = doseParts(ex)
+              const equipment = equipmentOf(ex.name)
+              const note = notes[key]
               return (
                 <article
                   key={key}
                   aria-label={formatExerciseName(ex.name)}
                   aria-hidden={n !== index}
-                  className="flex w-full shrink-0 snap-center flex-col px-6 pt-8"
+                  // Off-screen cards stay mounted for the swipe, out of tab order.
+                  inert={n !== index}
+                  className="flex w-full shrink-0 snap-center flex-col px-5 pt-6 lg:px-0 lg:pt-4"
                 >
-                  <p className={`text-xs font-medium ${darkMode ? textDark : textLight}`}>
+                  <p className={`text-sm font-medium ${darkMode ? textDark : textLight}`}>
                     {labelOf(item)}
+                    {equipment && <span className={muted}>, {equipment.label.toLowerCase()}</span>}
                   </p>
-                  <h3 className="mt-2 text-3xl font-semibold leading-tight">
+                  <h3 className="font-display mt-1 text-2xl font-semibold leading-tight lg:text-3xl">
                     {formatExerciseName(ex.name)}
                   </h3>
-                  <p className="mt-6 text-4xl font-semibold tabular-nums">{dose(ex)}</p>
+                  <p className="font-display mt-6 text-7xl font-bold leading-none tracking-tight tabular-nums">
+                    {main}
+                  </p>
+                  {sub && <p className={`mt-2 text-xl ${muted}`}>{sub}</p>}
                   {ex.perDay && <p className={`mt-1 text-sm ${muted}`}>{ex.perDay} times a day</p>}
-                  {plan && !done && (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        startHold(
-                          scope,
-                          category,
-                          exerciseId(ex),
-                          plan,
-                          formatExerciseName(ex.name)
-                        )
-                      }
-                      className={`mt-6 flex items-center justify-center gap-2 rounded-xl py-3 text-base ${
-                        darkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-800'
+                  {note && !noteOpen && (
+                    <p
+                      className={`mt-4 whitespace-pre-line rounded-lg px-3 py-2 text-sm ${
+                        darkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-700'
                       }`}
                     >
-                      <Timer size={18} />
-                      Start holds, {plan.count} × {plan.seconds}s
-                    </button>
+                      {note}
+                    </p>
                   )}
-                  <button
-                    type="button"
-                    onClick={() => check(item)}
-                    aria-pressed={done}
-                    className={`mt-6 flex min-h-40 flex-1 max-h-56 items-center justify-center gap-2 rounded-3xl text-lg ${
-                      done
-                        ? 'bg-green-600/20 text-green-400'
-                        : `border-2 border-dashed ${darkMode ? 'border-gray-600 text-gray-300' : 'border-gray-300 text-gray-600'}`
-                    }`}
-                  >
-                    {done ? (
-                      <>
-                        <Check size={22} strokeWidth={3} /> Done, tap to undo
-                      </>
-                    ) : (
-                      'Tap when done'
+                  {/* The lower half of the screen, where the thumb already is. */}
+                  <div className="mt-auto space-y-2 pt-6">
+                    {plan && !done && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          startHold(
+                            scope,
+                            category,
+                            exerciseId(ex),
+                            plan,
+                            formatExerciseName(ex.name)
+                          )
+                        }
+                        className={`flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl text-base font-medium lg:rounded-xl ${
+                          darkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-800'
+                        }`}
+                      >
+                        <Timer size={18} />
+                        Start holds, {plan.count} × {plan.seconds}s
+                      </button>
                     )}
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => check(item)}
+                      aria-label="Mark done"
+                      aria-pressed={done}
+                      className={`flex min-h-[min(9rem,18dvh)] w-full flex-col items-center justify-center rounded-3xl transition-colors active:scale-[0.99] lg:min-h-14 lg:flex-row lg:gap-3 lg:rounded-xl ${
+                        done
+                          ? `bg-green-600/20 ${darkMode ? 'text-green-300' : 'text-green-800'}`
+                          : 'bg-blue-600 text-white hover:bg-blue-500'
+                      }`}
+                    >
+                      {done ? (
+                        <>
+                          <span className="flex items-center gap-2 text-2xl font-semibold lg:text-lg">
+                            <Check size={24} strokeWidth={3} /> Done
+                          </span>
+                          <span className="mt-1 text-sm lg:mt-0">Undo</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-2xl font-semibold lg:text-lg">Mark done</span>
+                          <span className="hidden text-sm text-blue-100 lg:block">
+                            or press Space
+                          </span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </article>
               )
             })}
@@ -302,26 +354,45 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
               aria-hidden={index !== items.length}
               className="flex w-full shrink-0 snap-center flex-col items-center px-8 pt-16 text-center"
             >
-              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500/15">
-                <Check size={32} strokeWidth={3} className="text-green-500" />
-              </span>
-              <h3 className="mt-5 text-2xl font-semibold">
+              {doneCount === items.length && (
+                <span className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500/15">
+                  <Check size={32} strokeWidth={3} className="text-green-500" />
+                </span>
+              )}
+              <h3 className="font-display mt-5 text-2xl font-semibold">
                 {doneCount === items.length
                   ? `${title} done`
-                  : `${doneCount} of ${items.length} done`}
+                  : doneCount
+                    ? `${doneCount} of ${items.length} done`
+                    : 'Nothing checked off yet'}
               </h3>
-              <div className={`mt-6 w-full text-sm ${muted}`}>{summary}</div>
+              {doneCount > 0 && <div className={`mt-6 w-full text-sm ${muted}`}>{summary}</div>}
               <button
                 type="button"
                 onClick={onDone}
-                className="mt-8 w-full rounded-xl bg-blue-600 py-3 text-base font-medium text-white"
+                className="mt-8 w-full rounded-xl bg-blue-600 py-3 text-base font-medium text-white hover:bg-blue-500"
               >
                 {doneCount === items.length ? 'Back to today' : 'Stop here'}
               </button>
+              {firstOpen !== -1 && (
+                <button
+                  type="button"
+                  onClick={() => go(firstOpen)}
+                  className={`${control} mt-2 justify-center`}
+                >
+                  Keep going
+                  <ArrowRight size={16} />
+                </button>
+              )}
             </article>
           </div>
           {current && (
-            <div className="px-4 pb-6">
+            <div className="px-5 pb-4 lg:px-0">
+              {following && (
+                <p className={`truncate pt-2 pb-1 text-center text-sm lg:hidden ${muted}`}>
+                  Next: {formatExerciseName(following.ex.name)}
+                </p>
+              )}
               {noteOpen && (
                 <textarea
                   value={notes[itemKey(current.category, current.ex)] ?? ''}
@@ -335,45 +406,47 @@ export default function Player({ title, scope, items, summary, onDone, onClose }
                   }`}
                 />
               )}
-              <div className="grid grid-cols-4 items-center">
+              <div className="grid grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] gap-2 pt-1 lg:auto-cols-fr lg:grid-flow-col lg:grid-cols-none lg:pt-2">
                 <button
                   type="button"
                   onClick={() => go(index - 1)}
-                  className={control}
+                  className={step}
                   aria-label="Previous exercise"
                   disabled={index === 0}
                 >
-                  <ChevronLeft size={16} />
+                  <ChevronLeft size={24} className="lg:-ml-1 lg:size-5" />
+                  <span className="hidden lg:inline">Previous</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setNoteOpen((v) => !v)}
-                  className={`${control} justify-center`}
-                  aria-expanded={noteOpen}
-                >
-                  <FileText size={14} />
-                  {notes[itemKey(current.category, current.ex)] ? 'Note' : 'Add note'}
-                </button>
-                {current.ex.link ? (
-                  <a
-                    href={current.ex.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${control} justify-center`}
+                <div className="flex gap-2 *:flex-1 lg:contents">
+                  <button
+                    type="button"
+                    onClick={() => setNoteOpen((v) => !v)}
+                    className={step}
+                    aria-expanded={noteOpen}
                   >
-                    <PlayCircle size={14} />
-                    Video
-                  </a>
-                ) : (
-                  <span />
-                )}
+                    <FileText size={16} />
+                    {notes[itemKey(current.category, current.ex)] ? 'Note' : 'Add note'}
+                  </button>
+                  {current.ex.link && (
+                    <a
+                      href={current.ex.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={step}
+                    >
+                      <PlayCircle size={16} />
+                      Video
+                    </a>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={() => go(index + 1)}
-                  className={`${control} justify-end`}
+                  className={step}
                   aria-label="Next exercise"
                 >
-                  <ChevronRight size={16} />
+                  <span className="hidden lg:inline">Next</span>
+                  <ChevronRight size={24} className="lg:-mr-1 lg:size-5" />
                 </button>
               </div>
             </div>

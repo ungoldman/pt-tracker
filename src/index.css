@@ -22,6 +22,11 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
+  :focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
 }
 
 /* App background: exercise doodle wallpaper (WhatsApp/Signal chat-background
@@ -74,9 +79,34 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* SF Rounded on Apple devices, the system face elsewhere. Headings and counts
+   only, and no font file to ship or precache. */
+.font-display {
+  font-family: ui-rounded, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+}
+
+/* No double-tap zoom. Pinch and swipe still work, and it spares the wait a
+   browser adds to every tap to see if a second one follows. */
+html {
+  touch-action: manipulation;
+}
+
 /* Touch screens get a 44px hit area on small controls without changing how
    they look. The element must be positioned. */
 @media (pointer: coarse) {
+  /* This is a screen of tap targets, so a double tap or a long press must not
+     start a text selection. Only what is typed stays selectable. */
+  body,
+  body * {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
   .hit-44::after {
     content: "";
     position: absolute;

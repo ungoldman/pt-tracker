@@ -13,10 +13,7 @@ export default function DayLog({ title, logged, onOpen, quiet = false }) {
   const muted = darkMode ? 'text-gray-400' : 'text-gray-500'
 
   return (
-    <section
-      aria-label={title}
-      className={`rounded-xl shadow-sm ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
-    >
+    <section aria-label={title} className={`rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
       {!quiet && (
         <h2
           className={`px-3 pt-3 text-base font-semibold ${darkMode ? 'text-gray-100' : 'text-gray-800'}`}

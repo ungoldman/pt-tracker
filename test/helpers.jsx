@@ -17,14 +17,16 @@ export function freezeDate(date = TUESDAY) {
  * is prefers-reduced-motion, and `width` drives both the lg breakpoint query
  * and the day view's column count.
  */
-export function setMedia({ dark = false, reduced = false, width = 1400 } = {}) {
+export function setMedia({ dark = false, reduced = false, width = 390 } = {}) {
   window.innerWidth = width
   window.matchMedia = (query) => ({
     matches:
       (query.includes('prefers-color-scheme: dark') && dark) ||
       (query.includes('prefers-reduced-motion') && reduced) ||
       (query.includes('min-width: 1024px') && width >= 1024),
-    media: query
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {}
   })
 }
 
